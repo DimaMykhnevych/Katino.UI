@@ -1,0 +1,17 @@
+
+{
+    "landing": {
+        "welcome": "Welcome To Store&Deliver!",
+        "description": "Do you need to transport or store your cargo under certain environmental conditions? Then you've come to the right place. With the help of the service, you can independently configure all the necessary environmental indicators.",
+        "card1Header": "Reliability",
+        "card1Body": "Our service uses the latest vehicles to transport your goods. Besure that your cargo will arrive at the appointed time safe and sound.",
+        "card2Header": "Full Control",
+        "card2Body": "You set the conditions under which you need to transfer or save the cargo. At any time, you can track the condition of your cargo.",
+        "card3Header": "Warehouses... A lot of warehouses",
+        "card3Body": "In addition to the transportation of goods, our service also provides their storage. As with transportation, you yourself indicate all the necessary environmental parameters."
+    },
+    "common": {
+        "signin": "Sign In",
+        "signup": "Sign Up"
+    }
+}
