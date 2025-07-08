@@ -9,6 +9,9 @@ import { MaterialModule } from './layout/material';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { CoreModule } from './core/core.module';
+import { AdminFeaturesModule } from './features/admin-features/admin-features.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +29,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
         deps: [HttpClient],
       },
     }),
+    ToastrModule.forRoot(),
+    CoreModule,
+    AdminFeaturesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

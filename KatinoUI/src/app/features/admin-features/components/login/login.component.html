@@ -1,0 +1,99 @@
+<div class="login-container">
+  <div class="background-overlay"></div>
+
+  <div class="login-card-wrapper">
+    <mat-card class="login-card">
+      <mat-card-header class="login-header">
+        <div class="logo-section">
+          <mat-icon class="logo-icon">account_circle</mat-icon>
+          <h1 class="app-title">Katino</h1>
+        </div>
+        <p class="login-subtitle text-center">
+          Увійдіть до свого облікового запису
+        </p>
+      </mat-card-header>
+
+      <mat-card-content class="login-content">
+        <form
+          [formGroup]="form"
+          (ngSubmit)="onLoginButtonClick()"
+          class="login-form"
+        >
+          <!-- Username Field -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Ім'я користувача</mat-label>
+            <input
+              matInput
+              formControlName="userName"
+              type="text"
+              autocomplete="username"
+              [class.error]="userName?.invalid && userName?.touched"
+            />
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="userName?.hasError('required')">
+              Ім'я користувача обов'язкове
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password Field -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Пароль</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              type="password"
+              autocomplete="current-password"
+              [class.error]="password?.invalid && password?.touched"
+            />
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="password?.hasError('required')">
+              Пароль обов'язковий
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Error Messages -->
+          <div
+            class="error-messages"
+            *ngIf="authResponse && !authResponse.isAuthorized"
+          >
+            <mat-error *ngIf="isInvalidCredentials()" class="error-message">
+              <mat-icon>error</mat-icon>
+              Неправильне ім'я користувача або пароль
+            </mat-error>
+
+            <mat-error
+              *ngIf="isEmailConfirmationRequired()"
+              class="error-message email-confirmation"
+            >
+              <mat-icon>email</mat-icon>
+              <div>
+                <strong>Підтвердження електронної пошти необхідне</strong>
+                <p>
+                  Будь ласка, перевірте свою електронну пошту та підтвердіть
+                  свій обліковий запис
+                </p>
+              </div>
+            </mat-error>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="login-button"
+            [disabled]="form.invalid || isLoggingIn"
+          >
+            <span *ngIf="!isLoggingIn">Увійти</span>
+
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoggingIn" class="spinner-container">
+              <mat-spinner diameter="20" color="accent"></mat-spinner>
+              <span class="loading-text">Вхід...</span>
+            </div>
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
