@@ -4,30 +4,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('../../../../../assets/images/admin-login-background.png');
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-image: 
+    linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.75) 100%),
+    url('../../../../../assets/images/admin-login-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: relative;
-  overflow: hidden;
-
-  // Background overlay for better readability with dark theme
-  .background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.75) 100%);
-    z-index: 1;
-  }
+  background-attachment: fixed;
 
   .login-card-wrapper {
-    position: relative;
-    z-index: 2;
     width: 100%;
     max-width: 450px;
-    padding: 20px;
+    max-height: calc(100vh - 10px);
     animation: slideInUp 0.8s ease-out;
 
     @keyframes slideInUp {
@@ -46,11 +37,13 @@
     padding: 0;
     border-radius: 16px !important;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.3) !important;
-    backdrop-filter: blur(20px);
     border: 1px solid rgba(148, 163, 184, 0.2);
     overflow: hidden;
     transition: all 0.3s ease;
     background: rgba(15, 23, 42, 0.95);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
 
     &:hover {
       transform: translateY(-2px);
@@ -101,10 +94,12 @@
     }
 
     .login-content {
-      padding: 40px 30px;
+      padding: 15px;
       background: rgba(15, 23, 42, 0.98);
       backdrop-filter: blur(20px);
       color: #f8fafc;
+      flex: 1;
+      overflow-y: auto;
 
       .login-form {
         .form-field {

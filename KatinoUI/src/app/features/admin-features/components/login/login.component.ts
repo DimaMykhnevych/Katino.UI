@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
   }
 
   private defineRedirectRoute(userInfo: UserInfo): void {
+    // TODO move to constants routes
     switch (userInfo.role) {
       case Roles.Admin:
         this._router.navigate(['/admin-dashboard']);
