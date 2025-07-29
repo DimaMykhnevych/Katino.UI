@@ -12,6 +12,7 @@ import { catchError } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { UserResponseCode } from '../../http/request/response-codes.enum';
 import { AuthService } from './auth.service';
+import { RouteConstants } from '../../constants/route-constants';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -44,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private _handleError(err: HttpErrorResponse): void {
     if (err.status === UserResponseCode.Unauthorized) {
       this._authService.unauthorize();
-      this._router.navigate([`/login`]);
+      this._router.navigate([RouteConstants.unauthorizedRedirection]);
     } else {
       throw err;
     }

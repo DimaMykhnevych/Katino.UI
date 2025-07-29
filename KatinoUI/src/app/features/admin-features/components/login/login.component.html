@@ -9,7 +9,7 @@
           <h1 class="app-title">Katino</h1>
         </div>
         <p class="login-subtitle text-center">
-          Увійдіть до свого облікового запису
+          {{ "login.subtitle" | translate }}
         </p>
       </mat-card-header>
 
@@ -21,7 +21,7 @@
         >
           <!-- Username Field -->
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Ім'я користувача</mat-label>
+            <mat-label>{{ "login.username" | translate }}</mat-label>
             <input
               matInput
               formControlName="userName"
@@ -31,13 +31,13 @@
             />
             <mat-icon matSuffix>person</mat-icon>
             <mat-error *ngIf="userName?.hasError('required')">
-              Ім'я користувача обов'язкове
+              {{ "validationMessages.usernameRequired" | translate }}
             </mat-error>
           </mat-form-field>
 
           <!-- Password Field -->
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Пароль</mat-label>
+            <mat-label>{{ "login.password" | translate }}</mat-label>
             <input
               matInput
               formControlName="password"
@@ -47,7 +47,7 @@
             />
             <mat-icon matSuffix>lock</mat-icon>
             <mat-error *ngIf="password?.hasError('required')">
-              Пароль обов'язковий
+              {{ "validationMessages.passwordRequired" | translate }}
             </mat-error>
           </mat-form-field>
 
@@ -58,7 +58,7 @@
           >
             <mat-error *ngIf="isInvalidCredentials()" class="error-message">
               <mat-icon>error</mat-icon>
-              Неправильне ім'я користувача або пароль
+              {{ "validationMessages.wrongUsernameOrPassword" | translate }}
             </mat-error>
 
             <mat-error
@@ -67,10 +67,11 @@
             >
               <mat-icon>email</mat-icon>
               <div>
-                <strong>Підтвердження електронної пошти необхідне</strong>
+                <strong>{{
+                  "emailConfirmation.requiredValidation" | translate
+                }}</strong>
                 <p>
-                  Будь ласка, перевірте свою електронну пошту та підтвердіть
-                  свій обліковий запис
+                  {{ "emailConfirmation.checkEmail" | translate }}
                 </p>
               </div>
             </mat-error>
@@ -84,12 +85,14 @@
             class="login-button"
             [disabled]="form.invalid || isLoggingIn"
           >
-            <span *ngIf="!isLoggingIn">Увійти</span>
+            <span *ngIf="!isLoggingIn">{{ "common.signin" | translate }}</span>
 
             <!-- Loading Spinner -->
             <div *ngIf="isLoggingIn" class="spinner-container">
               <mat-spinner diameter="20" color="accent"></mat-spinner>
-              <span class="loading-text">Вхід...</span>
+              <span class="loading-text">{{
+                "common.signInProcessText" | translate
+              }}</span>
             </div>
           </button>
         </form>

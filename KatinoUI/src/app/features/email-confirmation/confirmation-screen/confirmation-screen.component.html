@@ -1,0 +1,69 @@
+<div class="confirmation-container">
+  <div class="confirmation-card-wrapper">
+    <mat-card class="confirmation-card">
+      <mat-card-header class="confirmation-header">
+        <div class="logo-section">
+          <mat-icon class="confirmation-icon">mark_email_read</mat-icon>
+          <h1 class="app-title">Katino</h1>
+        </div>
+        <p class="confirmation-subtitle">
+          {{ "emailConfirmation.emailConfirmation" | translate }}
+        </p>
+      </mat-card-header>
+
+      <mat-card-content class="confirmation-content">
+        <!-- Error State -->
+        <div *ngIf="showError" class="status-message error-message">
+          <mat-icon class="status-icon">error</mat-icon>
+          <div class="message-content">
+            <h3>{{ "emailConfirmation.error" | translate }}</h3>
+            <p class="error-details">{{ errorMessage | json }}</p>
+            <p class="help-text">
+              {{ "emailConfirmation.errorHelpText" | translate }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div *ngIf="showSuccess" class="status-message success-message">
+          <mat-icon class="status-icon">check_circle</mat-icon>
+          <div class="message-content">
+            <h3>{{ "emailConfirmation.successHeader" | translate }}</h3>
+            <p class="success-details">
+              {{ "emailConfirmation.success" | translate }}
+            </p>
+            <p class="help-text">
+              {{ "emailConfirmation.successHelpText" | translate }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Loading State (if needed) -->
+        <div
+          *ngIf="!showError && !showSuccess"
+          class="status-message loading-message"
+        >
+          <mat-spinner diameter="40" color="accent"></mat-spinner>
+          <div class="message-content">
+            <h3>{{ "emailConfirmation.loadingHeader" | translate }}</h3>
+            <p class="help-text">
+              {{ "emailConfirmation.loadingHelpText" | translate }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="confirmation-actions">
+        <a
+          [routerLink]="['/login']"
+          mat-raised-button
+          color="primary"
+          class="login-button"
+        >
+          <mat-icon>login</mat-icon>
+          {{ "emailConfirmation.clickToLogin" | translate }}
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { AdminFeaturesModule } from './features/admin-features/admin-features.module';
+import { EmailConfirmationModule } from './features/email-confirmation/email-confirmation.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { AdminFeaturesModule } from './features/admin-features/admin-features.mo
     ToastrModule.forRoot(),
     CoreModule,
     AdminFeaturesModule,
+    EmailConfirmationModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

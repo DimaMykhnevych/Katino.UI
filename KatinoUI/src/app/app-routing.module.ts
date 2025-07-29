@@ -4,6 +4,7 @@ import { LoginComponent } from './features/admin-features/components/login/login
 import { AdminDashboardComponent } from './features/admin-features/components/admin-dashboard/admin-dashboard.component';
 import { AuthGuard } from './core/auth';
 import { Roles } from './core/models/roles';
+import { ConfirmationScreenComponent } from './features/email-confirmation/confirmation-screen/confirmation-screen.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
     data: {
       roles: [Roles.Admin],
     },
+  },
+  {
+    path: 'emailConfirmation',
+    component: ConfirmationScreenComponent,
   },
 ];
 

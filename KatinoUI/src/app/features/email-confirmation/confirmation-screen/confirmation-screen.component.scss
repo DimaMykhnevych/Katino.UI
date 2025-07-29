@@ -1,0 +1,307 @@
+.confirmation-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px;
+  box-sizing: border-box;
+  background-image: 
+    linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.75) 100%),
+    url('../../../../assets/images/admin-login-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  .confirmation-card-wrapper {
+    width: 100%;
+    max-width: 500px;
+    animation: slideInUp 0.8s ease-out;
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .confirmation-card {
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: rgba(15, 23, 42, 0.95);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 15px 25px rgba(0, 0, 0, 0.35) !important;
+      border-color: rgba(148, 163, 184, 0.3);
+    }
+
+    .confirmation-header {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: #f8fafc;
+      text-align: center;
+      padding: 40px 30px 30px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+
+      .logo-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+
+        .confirmation-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          margin-bottom: 10px;
+          color: #06b6d4;
+        }
+
+        .app-title {
+          font-size: 32px;
+          font-weight: 700;
+          margin: 0;
+          letter-spacing: 1px;
+          color: #f8fafc;
+        }
+      }
+
+      .confirmation-subtitle {
+        font-size: 16px;
+        opacity: 0.8;
+        margin: 0;
+        font-weight: 300;
+        color: #cbd5e1;
+      }
+    }
+
+    .confirmation-content {
+      padding: 40px 30px;
+      background: rgba(15, 23, 42, 0.98);
+      color: #f8fafc;
+
+      .status-message {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 24px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid;
+
+        .status-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          margin-top: 4px;
+          flex-shrink: 0;
+        }
+
+        .message-content {
+          flex: 1;
+          min-width: 0;
+
+          h3 {
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            font-weight: 600;
+          }
+
+          .success-details,
+          .error-details {
+            font-size: 16px;
+            margin: 0 0 12px 0;
+            line-height: 1.5;
+          }
+
+          .help-text {
+            font-size: 14px;
+            opacity: 0.8;
+            margin: 0;
+            line-height: 1.5;
+          }
+        }
+
+        &.success-message {
+          background: rgba(34, 197, 94, 0.15);
+          border-color: rgba(34, 197, 94, 0.3);
+          color: #bbf7d0;
+
+          .status-icon {
+            color: #22c55e;
+          }
+
+          .message-content h3 {
+            color: #86efac;
+          }
+        }
+
+        &.error-message {
+          background: rgba(239, 68, 68, 0.15);
+          border-color: rgba(239, 68, 68, 0.3);
+          color: #fca5a5;
+
+          .status-icon {
+            color: #ef4444;
+          }
+
+          .message-content h3 {
+            color: #f87171;
+          }
+
+          .error-details {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #ef4444;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-height: 150px;
+            overflow-y: auto;
+          }
+        }
+
+        &.loading-message {
+          background: rgba(6, 182, 212, 0.15);
+          border-color: rgba(6, 182, 212, 0.3);
+          color: #67e8f9;
+          justify-content: center;
+          text-align: center;
+          flex-direction: column;
+          align-items: center;
+          padding: 40px 24px;
+
+          ::ng-deep .mat-spinner circle {
+            stroke: #06b6d4;
+          }
+
+          .message-content {
+            margin-top: 20px;
+
+            h3 {
+              color: #22d3ee;
+            }
+          }
+        }
+      }
+    }
+
+    .confirmation-actions {
+      padding: 30px;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      .login-button {
+        border-radius: 12px !important;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: none;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+        color: #f8fafc !important;
+        border: 1px solid #06b6d4;
+        box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        transition: all 0.3s ease;
+        padding: 12px 24px;
+        min-width: 180px;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+          background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%) !important;
+          border-color: #22d3ee;
+        }
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+
+      .resend-button {
+        border-radius: 12px !important;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: none;
+        color: #94a3b8 !important;
+        border-color: rgba(148, 163, 184, 0.3) !important;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #06b6d4 !important;
+          border-color: rgba(6, 182, 212, 0.5) !important;
+          background: rgba(6, 182, 212, 0.1) !important;
+        }
+
+        mat-icon {
+          margin-right: 6px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .confirmation-container {
+    padding: 15px;
+
+    .confirmation-card {
+      .confirmation-header {
+        padding: 30px 20px 25px;
+
+        .logo-section .app-title {
+          font-size: 28px;
+        }
+      }
+
+      .confirmation-content {
+        padding: 30px 20px;
+      }
+
+      .confirmation-actions {
+        padding: 25px 20px;
+        flex-direction: column;
+
+        .login-button {
+          min-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-container {
+    padding: 10px;
+
+    .confirmation-card {
+      .confirmation-header {
+        padding: 25px 15px 20px;
+      }
+
+      .confirmation-content {
+        padding: 25px 15px;
+      }
+
+      .confirmation-actions {
+        padding: 20px 15px;
+      }
+    }
+  }
+}

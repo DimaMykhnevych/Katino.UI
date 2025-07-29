@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { CurrentUserService } from '../../permission/services';
 import { AuthService } from '../services/auth.service';
+import { RouteConstants } from '../../constants/route-constants';
 
 @Injectable()
 export class AuthGuard implements CanActivateChild, CanActivate {
@@ -35,16 +36,15 @@ export class AuthGuard implements CanActivateChild, CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    // TODO double-check the home routes
     const isAuthorized = this._authService.isAuthenticated();
     if (!isAuthorized) {
-      this._router.navigate(['/home']);
+      this._router.navigate([RouteConstants.insufficientRightsRedirection]);
 
       return false;
     }
     const currentUser = this._currentUserService.userInfo;
     if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
-      this._router.navigate(['/home']);
+      this._router.navigate([RouteConstants.insufficientRightsRedirection]);
       return false;
     }
     return true;

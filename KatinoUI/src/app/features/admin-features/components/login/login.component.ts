@@ -13,7 +13,9 @@ import {
   UserInfo,
 } from 'src/app/core/auth';
 import { LoginErrorCodes } from 'src/app/core/auth/enums/login-errors-code.enum';
+import { RouteConstants } from 'src/app/core/constants/route-constants';
 import { Roles } from 'src/app/core/models/roles';
+import { CurrentUserService } from 'src/app/core/permission/services';
 
 @Component({
   selector: 'app-login',
@@ -28,11 +30,25 @@ export class LoginComponent implements OnInit {
   constructor(
     private _builder: FormBuilder,
     private _auth: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _currentUserService: CurrentUserService
   ) {}
 
   public ngOnInit(): void {
     this.initializeForm();
+    if (this._auth.isAuthenticated()) {
+      const isCurrentUserAdmin =
+        this._currentUserService.userInfo.role === Roles.Admin;
+      if (isCurrentUserAdmin) {
+        this._router.navigate([
+          RouteConstants.alreadySignedInAdminWhenOnLoginPage,
+        ]);
+      } else {
+        this._router.navigate([
+          RouteConstants.alreadySignedInUserWhenOnLoginPage,
+        ]);
+      }
+    }
   }
 
   public onLoginButtonClick(): void {
@@ -66,13 +82,12 @@ export class LoginComponent implements OnInit {
   }
 
   private defineRedirectRoute(userInfo: UserInfo): void {
-    // TODO move to constants routes
     switch (userInfo.role) {
       case Roles.Admin:
-        this._router.navigate(['/admin-dashboard']);
+        this._router.navigate([RouteConstants.successLoginAdmin]);
         break;
       default:
-        this._router.navigate(['/dashboard']);
+        this._router.navigate([RouteConstants.successLoginUser]);
     }
   }
 

@@ -27,6 +27,6 @@ export class CurrentUserService {
   }
 
   public get isAdmin(): boolean {
-    return this._userInfo.role == Roles.Admin;
+    return this._userInfo.role === Roles.Admin;
   }
 }
