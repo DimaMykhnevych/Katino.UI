@@ -1,2 +1,2 @@
 # Katino.UI
-WEB UI for Katino store
+A WEB UI for Katino store
