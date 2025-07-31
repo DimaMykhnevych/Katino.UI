@@ -13,6 +13,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { AdminFeaturesModule } from './features/admin-features/admin-features.module';
 import { EmailConfirmationModule } from './features/email-confirmation/email-confirmation.module';
+import { NavbarModule } from './layout/navbar/navbar.module';
+import { SidenavModule } from './layout/sidenav/sidenav.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +36,8 @@ import { EmailConfirmationModule } from './features/email-confirmation/email-con
     CoreModule,
     AdminFeaturesModule,
     EmailConfirmationModule,
+    NavbarModule,
+    SidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

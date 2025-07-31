@@ -1,0 +1,12 @@
+.navbar {
+  background-color: rgb(58, 68, 58);
+  .navbar-brand {
+    font-size: 1.3em;
+    line-height: 2.5em;
+  }
+  .language {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

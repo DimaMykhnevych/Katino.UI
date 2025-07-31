@@ -5,19 +5,27 @@ import { AdminDashboardComponent } from './features/admin-features/components/ad
 import { AuthGuard } from './core/auth';
 import { Roles } from './core/models/roles';
 import { ConfirmationScreenComponent } from './features/email-confirmation/confirmation-screen/confirmation-screen.component';
+import { SidenavComponent } from './layout/sidenav/sidenav.component';
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent,
+    path: '',
+    component: SidenavComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: 'admin-dashboard',
+        component: AdminDashboardComponent,
+        data: {
+          roles: [Roles.Admin],
+        },
+      },
+    ],
   },
   {
-    path: 'admin-dashboard',
-    component: AdminDashboardComponent,
-    canActivate: [AuthGuard],
-    data: {
-      roles: [Roles.Admin],
-    },
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'emailConfirmation',

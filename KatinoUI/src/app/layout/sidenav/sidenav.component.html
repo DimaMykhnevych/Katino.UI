@@ -1,0 +1,115 @@
+<app-navbar></app-navbar>
+<div class="main">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      opened
+      [ngStyle]="{ 'width.em': sidenavWidth }"
+      (mouseenter)="increase(sidenav)"
+      (mouseleave)="decrease(sidenav)"
+      class="sidenav"
+      fixedInViewport
+    >
+      <mat-nav-list>
+        <mat-list-item
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          *ngIf="showTab('dashboard')"
+        >
+          <mat-icon class="mr-2" aria-hidden="false" aria-label="Home icon"
+            >dashboard</mat-icon
+          >
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3>{{ "navbar.dashboard" | translate }}</h3>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item
+          *ngIf="showTab('createRequest')"
+          routerLink="/create-request"
+          routerLinkActive="active"
+        >
+          <i class="fa fa-truck" aria-hidden="false"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">{{ "navbar.createRequest" | translate }}</h3>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item
+          *ngIf="showTab('reviewOptimized')"
+          routerLink="/optimized-requests"
+          routerLinkActive="active"
+        >
+          <i class="fa fa-truck" aria-hidden="false"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">
+              {{ "cargoRequest.reviewOptimizedRequests" | translate }}
+            </h3>
+          </div>
+        </mat-list-item>
+        <mat-list-item
+          *ngIf="showTab('reviewUserRequests')"
+          routerLink="/my-requests"
+          routerLinkActive="active"
+        >
+          <i class="fas fa-receipt" style="font-size: 20px"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">
+              {{ "cargoRequest.myRequests" | translate }}
+            </h3>
+          </div>
+        </mat-list-item>
+        <mat-list-item
+          *ngIf="showTab('carrierManagement')"
+          routerLink="/carrier-management"
+          routerLinkActive="active"
+        >
+          <i class="far fa-user-edit"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">
+              {{ "sidenav.carrierManagement" | translate }}
+            </h3>
+          </div>
+        </mat-list-item>
+        <mat-list-item
+          *ngIf="showTab('storeManagement')"
+          routerLink="/store-management"
+          routerLinkActive="active"
+        >
+          <i class="fas fa-container-storage"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">
+              {{ "sidenav.storeManagement" | translate }}
+            </h3>
+          </div>
+        </mat-list-item>
+        <mat-list-item
+          *ngIf="showTab('charts')"
+          routerLink="/company-statistics"
+          routerLinkActive="active"
+        >
+          <i class="fas fa-chart-bar"></i>
+          <div fxFlex="10"></div>
+          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+            <h3 class="ml-2">
+              {{ "sidenav.statistics" | translate }}
+            </h3>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
