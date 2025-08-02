@@ -5,4 +5,6 @@ export class RouteConstants {
   static successLoginUser = '/dashboard';
   static alreadySignedInAdminWhenOnLoginPage = '/admin-dashboard';
   static alreadySignedInUserWhenOnLoginPage = '/dashboard';
+  static logoutButtonClickRedirection = '/login';
+  static navbarBrandClickAdmin = '/admin-dashboard';
 }

@@ -3,7 +3,8 @@
     "common": {
         "signin": "Sign In",
         "signup": "Sign Up",
-        "signInProcessText": "Signing in..."
+        "signInProcessText": "Signing in...",
+        "logout": "Log Out"
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -27,5 +28,13 @@
         "usernameRequired": "Username is required",
         "passwordRequired": "Password is requried",
         "wrongUsernameOrPassword": "Incorrect username or password"
-    }
+    },
+    "languageSelection": {
+        "ua": "Ua",
+        "en": "En"
+    },
+    "roles": {
+        "admin": "Admin",
+        "user": "User"
+    }     
 }

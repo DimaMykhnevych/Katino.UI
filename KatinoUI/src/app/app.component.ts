@@ -12,7 +12,13 @@ export class AppComponent {
   constructor(private _translate: TranslateService) {}
 
   ngOnInit() {
-    this._translate.setDefaultLang('ua');
-    this._translate.use('ua');
+    let lang = localStorage.getItem('language');
+    if (lang === null) {
+      lang = 'ua';
+      localStorage.setItem('language', lang);
+    }
+
+    this._translate.setDefaultLang(lang);
+    this._translate.use(lang);
   }
 }

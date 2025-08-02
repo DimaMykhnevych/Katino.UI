@@ -1,12 +1,282 @@
 .navbar {
-  background-color: rgb(58, 68, 58);
-  .navbar-brand {
-    font-size: 1.3em;
-    line-height: 2.5em;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  min-height: 70px;
+  padding: 0 1rem;
+
+  .container-fluid {
+    max-width: 1400px;
   }
-  .language {
-    &:hover {
-      cursor: pointer;
+
+  // Brand styling
+  .navbar-brand {
+    padding: 0;
+    
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      .brand-logo {
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .brand-text {
+        font-size: 24px;
+        font-weight: 700;
+        color: #f8fafc;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
     }
   }
+
+  // Custom hamburger menu
+  .custom-toggler {
+    border: none;
+    padding: 8px;
+    background: transparent;
+    
+    &:focus {
+      box-shadow: none;
+    }
+
+    .toggler-line {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #06b6d4;
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    &:hover .toggler-line {
+      background: #22d3ee;
+    }
+  }
+
+  // Language selector
+  .language-selector {
+    margin-right: 20px;
+
+    .language-toggle {
+      display: flex;
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 25px;
+      padding: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+
+      .language-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 45px;
+
+        &:hover {
+          color: #cbd5e1;
+          background: rgba(148, 163, 184, 0.1);
+        }
+
+        &.active {
+          background: linear-gradient(135deg, #06b6d4, #0891b2);
+          color: white;
+          box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  // User dropdown
+  .user-dropdown {
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 25px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #f8fafc;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(51, 65, 85, 0.8);
+        border-color: rgba(6, 182, 212, 0.4);
+        color: #f8fafc;
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: white;
+        box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+
+        .user-initial {
+          line-height: 1;
+        }
+      }
+
+      .user-name {
+        font-weight: 500;
+        font-size: 15px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &::after {
+        margin-left: 8px;
+        font-size: 12px;
+        opacity: 0.7;
+      }
+    }
+
+    .custom-dropdown {
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 0;
+      margin-top: 8px;
+      min-width: 220px;
+
+      .dropdown-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+
+        .user-info {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .user-avatar-large {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: white;
+            box-shadow: 0 3px 12px rgba(6, 182, 212, 0.4);
+
+            .user-initial {
+              line-height: 1;
+            }
+          }
+
+          .user-details {
+            display: flex;
+            flex-direction: column;
+
+            .user-name-full {
+              color: #f8fafc;
+              font-weight: 600;
+              font-size: 16px;
+              margin-bottom: 2px;
+            }
+
+            .user-role {
+              color: #94a3b8;
+              font-size: 13px;
+            }
+          }
+        }
+      }
+
+      .logout-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        color: #f8fafc;
+        background: transparent;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-size: 14px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.1);
+          color: #fca5a5;
+        }
+
+        .logout-icon {
+          font-size: 16px;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .navbar {
+    .language-selector {
+      margin-right: 0;
+      margin-bottom: 15px;
+      justify-content: center;
+
+      .language-toggle {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .user-dropdown {
+      .user-menu {
+        justify-content: center;
+        margin-top: 10px;
+      }
+    }
+
+    .navbar-nav {
+      &.ms-auto {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+// Animation for navbar on scroll (optional)
+.navbar-scrolled {
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
 }

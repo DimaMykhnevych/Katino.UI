@@ -3,7 +3,8 @@
     "common": {
         "signin": "Увійти",
         "signup": "Регістрація",
-        "signInProcessText": "Вхід..."
+        "signInProcessText": "Вхід...",
+        "logout": "Вийти"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -27,5 +28,13 @@
         "usernameRequired": "Ім'я користувача обов'язкове",
         "passwordRequired": "Пароль обов'язковий",
         "wrongUsernameOrPassword": "Неправильне ім'я користувача або пароль"
+    },
+    "languageSelection": {
+        "ua": "Укр",
+        "en": "En"
+    },
+    "roles": {
+        "admin": "Адміністратор",
+        "user": "Користувач"
     }
 }
