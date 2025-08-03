@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './features/admin-features/components/login/login.component';
-import { AdminDashboardComponent } from './features/admin-features/components/admin-dashboard/admin-dashboard.component';
+import { InventoryComponent } from './features/admin-features/components/inventory/inventory.component';
 import { AuthGuard } from './core/auth';
 import { Roles } from './core/models/roles';
 import { ConfirmationScreenComponent } from './features/email-confirmation/confirmation-screen/confirmation-screen.component';
@@ -15,8 +15,8 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: 'admin-dashboard',
-        component: AdminDashboardComponent,
+        path: 'inventory',
+        component: InventoryComponent,
         data: {
           roles: [Roles.Admin],
         },

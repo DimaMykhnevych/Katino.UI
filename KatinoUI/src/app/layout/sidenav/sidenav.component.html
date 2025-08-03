@@ -11,103 +11,48 @@
       class="sidenav"
       fixedInViewport
     >
-      <mat-nav-list>
-        <mat-list-item
-          routerLink="/dashboard"
-          routerLinkActive="active"
-          *ngIf="showTab('dashboard')"
-        >
-          <mat-icon class="mr-2" aria-hidden="false" aria-label="Home icon"
-            >dashboard</mat-icon
-          >
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3>{{ "navbar.dashboard" | translate }}</h3>
+      <div class="sidenav-header" *ngIf="sidenavWidth > 6">
+        <div class="header-content">
+          <div class="header-icon">
+            <mat-icon>dashboard</mat-icon>
           </div>
+          <span class="header-text">Меню</span>
+        </div>
+      </div>
+
+      <mat-nav-list class="nav-list">
+        <mat-list-item
+          routerLink="/inventory"
+          routerLinkActive="active"
+          *ngIf="showTab('inventory')"
+          class="nav-item"
+        >
+          <div class="nav-item-content">
+            <div class="nav-icon">
+              <mat-icon>inventory</mat-icon>
+            </div>
+            <div *ngIf="sidenavWidth > 6" class="nav-label">
+              <span class="nav-text">{{
+                "navbar.availability" | translate
+              }}</span>
+            </div>
+          </div>
+          <div class="nav-indicator" *ngIf="sidenavWidth <= 6"></div>
         </mat-list-item>
 
-        <mat-list-item
-          *ngIf="showTab('createRequest')"
-          routerLink="/create-request"
-          routerLinkActive="active"
-        >
-          <i class="fa fa-truck" aria-hidden="false"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">{{ "navbar.createRequest" | translate }}</h3>
-          </div>
-        </mat-list-item>
-
-        <mat-list-item
-          *ngIf="showTab('reviewOptimized')"
-          routerLink="/optimized-requests"
-          routerLinkActive="active"
-        >
-          <i class="fa fa-truck" aria-hidden="false"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">
-              {{ "cargoRequest.reviewOptimizedRequests" | translate }}
-            </h3>
-          </div>
-        </mat-list-item>
-        <mat-list-item
-          *ngIf="showTab('reviewUserRequests')"
-          routerLink="/my-requests"
-          routerLinkActive="active"
-        >
-          <i class="fas fa-receipt" style="font-size: 20px"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">
-              {{ "cargoRequest.myRequests" | translate }}
-            </h3>
-          </div>
-        </mat-list-item>
-        <mat-list-item
-          *ngIf="showTab('carrierManagement')"
-          routerLink="/carrier-management"
-          routerLinkActive="active"
-        >
-          <i class="far fa-user-edit"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">
-              {{ "sidenav.carrierManagement" | translate }}
-            </h3>
-          </div>
-        </mat-list-item>
-        <mat-list-item
-          *ngIf="showTab('storeManagement')"
-          routerLink="/store-management"
-          routerLinkActive="active"
-        >
-          <i class="fas fa-container-storage"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">
-              {{ "sidenav.storeManagement" | translate }}
-            </h3>
-          </div>
-        </mat-list-item>
-        <mat-list-item
-          *ngIf="showTab('charts')"
-          routerLink="/company-statistics"
-          routerLinkActive="active"
-        >
-          <i class="fas fa-chart-bar"></i>
-          <div fxFlex="10"></div>
-          <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-            <h3 class="ml-2">
-              {{ "sidenav.statistics" | translate }}
-            </h3>
-          </div>
-        </mat-list-item>
+        <!-- Add more menu items here as needed -->
       </mat-nav-list>
+
+      <div class="sidenav-footer" *ngIf="sidenavWidth > 6">
+        <div class="footer-content">
+          <mat-icon class="footer-icon">info</mat-icon>
+          <span class="footer-text">v1.0.0</span>
+        </div>
+      </div>
     </mat-sidenav>
 
-    <mat-sidenav-content>
-      <div class="container-fluid">
+    <mat-sidenav-content class="main-content">
+      <div class="content-wrapper">
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

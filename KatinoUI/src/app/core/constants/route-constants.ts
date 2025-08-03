@@ -1,10 +1,10 @@
 export class RouteConstants {
   static insufficientRightsRedirection = '/login';
   static unauthorizedRedirection = `/login`;
-  static successLoginAdmin = '/admin-dashboard';
+  static successLoginAdmin = '/inventory';
   static successLoginUser = '/dashboard';
-  static alreadySignedInAdminWhenOnLoginPage = '/admin-dashboard';
+  static alreadySignedInAdminWhenOnLoginPage = '/inventory';
   static alreadySignedInUserWhenOnLoginPage = '/dashboard';
   static logoutButtonClickRedirection = '/login';
-  static navbarBrandClickAdmin = '/admin-dashboard';
+  static navbarBrandClickAdmin = '/inventory';
 }

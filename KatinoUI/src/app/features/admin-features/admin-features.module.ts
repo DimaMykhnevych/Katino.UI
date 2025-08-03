@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from 'src/app/core/core.module';
 import { LoginComponent } from './components/login/login.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 @NgModule({
-  declarations: [LoginComponent, AdminDashboardComponent],
+  declarations: [LoginComponent, InventoryComponent],
   imports: [
     CommonModule,
     MaterialModule,

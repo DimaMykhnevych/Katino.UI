@@ -12,7 +12,7 @@ import { CurrentUserService } from 'src/app/core/permission/services';
 export class SidenavComponent implements OnInit {
   public sidenavWidth = 4;
   public userInfo: UserInfo = null as any;
-  public dashboard: string[] = [Roles.Admin];
+  public inventoryPage: string[] = [Roles.Admin];
   constructor(private _currentUserService: CurrentUserService) {}
 
   public ngOnInit(): void {
@@ -21,8 +21,8 @@ export class SidenavComponent implements OnInit {
 
   public showTab(tabName: string): boolean {
     switch (tabName) {
-      case 'dashboard':
-        return this.dashboard.includes(this.userInfo.role || '');
+      case 'inventory':
+        return this.inventoryPage.includes(this.userInfo.role || '');
       default:
         return false;
     }

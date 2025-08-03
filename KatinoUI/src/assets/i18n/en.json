@@ -36,5 +36,8 @@
     "roles": {
         "admin": "Admin",
         "user": "User"
+    },
+    "navbar": {
+        "availability": "Availability"
     }     
 }
