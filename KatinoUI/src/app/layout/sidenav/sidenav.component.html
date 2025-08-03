@@ -16,11 +16,11 @@
           <div class="header-icon">
             <mat-icon>dashboard</mat-icon>
           </div>
-          <span class="header-text">Меню</span>
+          <span class="header-text">{{ "navbar.menu" | translate }}</span>
         </div>
       </div>
 
-      <mat-nav-list class="nav-list" (click)="onNavListClick()">
+      <mat-nav-list class="nav-list">
         <mat-list-item
           routerLink="/inventory"
           routerLinkActive="active"
@@ -46,7 +46,7 @@
       <div class="sidenav-footer" *ngIf="sidenavWidth > 6">
         <div class="footer-content">
           <mat-icon class="footer-icon">info</mat-icon>
-          <span class="footer-text">v1.0.0</span>
+          <span class="footer-text">{{ version }}</span>
         </div>
       </div>
     </mat-sidenav>
