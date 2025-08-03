@@ -42,4 +42,8 @@ export class SidenavComponent implements OnInit {
       this.sidenavWidth = 4;
     });
   }
+
+  public onNavListClick(): void {
+    // TODO close sidebar
+  }
 }
