@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from 'src/app/core/core.module';
 import { LoginComponent } from './components/login/login.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { SpinnerModule } from 'src/app/layout/spinner/spinner.module';
 
 @NgModule({
   declarations: [LoginComponent, InventoryComponent],
@@ -15,6 +16,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
     CoreModule,
     TranslateModule,
     ReactiveFormsModule,
+    SpinnerModule,
   ],
 })
 export class AdminFeaturesModule {}

@@ -1,1 +1,5 @@
-<h1>Inventory (таблица наличие в excel таблице)</h1>
+<app-spinner *ngIf="isRetrievingProductVariants"></app-spinner>
+<div *ngIf="!isRetrievingProductVariants" class="main container-fluid p-3">
+  <h1>Inventory (таблица наличие в excel таблице)</h1>
+  <p>{{ productVariantResponse?.productVariants | json }}</p>
+</div>

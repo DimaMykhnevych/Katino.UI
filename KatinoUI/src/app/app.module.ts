@@ -15,6 +15,7 @@ import { AdminFeaturesModule } from './features/admin-features/admin-features.mo
 import { EmailConfirmationModule } from './features/email-confirmation/email-confirmation.module';
 import { NavbarModule } from './layout/navbar/navbar.module';
 import { SidenavModule } from './layout/sidenav/sidenav.module';
+import { SpinnerModule } from './layout/spinner/spinner.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { SidenavModule } from './layout/sidenav/sidenav.module';
     EmailConfirmationModule,
     NavbarModule,
     SidenavModule,
+    SpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
