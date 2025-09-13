@@ -1,8 +1,36 @@
 .main {
   padding-top: 70px;
+
+  // Mobile toggle button
+  .mobile-toggle-btn {
+    position: fixed;
+    top: 75px;
+    left: 16px;
+    z-index: 1001;
+    background: rgba(6, 182, 212, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    color: white;
+    border-radius: 12px;
+    width: 38px;
+    height: 38px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(6, 182, 212, 1);
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+    }
+
+    mat-icon {
+      font-size: 24px;
+    }
+  }
   
   .sidenav-container {
     min-height: calc(100vh - 70px);
+    
     .sidenav {
       background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(20px);
@@ -244,7 +272,6 @@
   ::ng-deep .mat-list-item-content {
     padding: 0!important;
   }
-
 }
 
 // Responsive design
@@ -252,40 +279,57 @@
   .main {
     .sidenav-container {
       .sidenav {
-        .nav-list .nav-item {
-          .nav-item-content {
-            padding: 10px 12px;
-          }
-
-          .nav-icon {
-            width: 36px;
-            height: 36px;
-
-            mat-icon {
-              font-size: 18px;
-            }
-          }
-
-          .nav-text {
-            font-size: 13px;
-          }
+        // Hide desktop hover effects on mobile
+        &:not(.mobile-sidenav) {
+          display: none;
         }
 
-        .sidenav-header {
-          padding: 16px 12px;
+        &.mobile-sidenav {
+          .nav-list .nav-item {
+            .nav-item-content {
+              padding: 16px 20px;
+            }
 
-          .header-content {
-            .header-icon {
-              width: 36px;
-              height: 36px;
+            .nav-icon {
+              width: 44px;
+              height: 44px;
 
               mat-icon {
-                font-size: 18px;
+                font-size: 22px;
               }
             }
 
-            .header-text {
-              font-size: 14px;
+            .nav-text {
+              font-size: 16px;
+            }
+          }
+
+          .sidenav-header {
+            padding: 24px 20px;
+
+            .header-content {
+              .header-icon {
+                width: 44px;
+                height: 44px;
+
+                mat-icon {
+                  font-size: 22px;
+                }
+              }
+
+              .header-text {
+                font-size: 18px;
+              }
+            }
+          }
+
+          .sidenav-footer {
+            padding: 20px;
+
+            .footer-content {
+              .footer-text {
+                font-size: 16px;
+              }
             }
           }
         }
@@ -293,6 +337,7 @@
 
       .main-content .content-wrapper {
         padding: 16px;
+        padding-top: 50px; // Add space for mobile toggle button
 
         ::ng-deep .container-fluid {
           padding: 16px;

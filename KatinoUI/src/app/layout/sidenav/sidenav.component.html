@@ -1,14 +1,26 @@
 <app-navbar></app-navbar>
 <div class="main">
-  <mat-sidenav-container class="sidenav-container">
+  <button
+    mat-icon-button
+    class="mobile-toggle-btn"
+    (click)="toggleMobileSidenav(sidenav)"
+    *ngIf="isMobile && !isSidenavOpened"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-sidenav-container
+    class="sidenav-container"
+    (backdropClick)="isMobile && closeMobileSidenav(sidenav)"
+  >
     <mat-sidenav
       #sidenav
-      mode="side"
-      opened
+      [mode]="isMobile ? 'over' : 'side'"
+      [opened]="!isMobile"
       [ngStyle]="{ 'width.em': sidenavWidth }"
-      (mouseenter)="increase(sidenav)"
-      (mouseleave)="decrease(sidenav)"
+      (mouseenter)="!isMobile && increase(sidenav)"
+      (mouseleave)="!isMobile && decrease(sidenav)"
       class="sidenav"
+      [class.mobile-sidenav]="isMobile"
       fixedInViewport
     >
       <div class="sidenav-header" *ngIf="sidenavWidth > 6">
@@ -26,6 +38,7 @@
           routerLinkActive="active"
           *ngIf="showTab('inventory')"
           class="nav-item"
+          (click)="isMobile && closeMobileSidenav(sidenav)"
         >
           <div class="nav-item-content">
             <div class="nav-icon">

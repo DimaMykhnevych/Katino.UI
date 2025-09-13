@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { UserInfo } from 'src/app/core/auth/models/user-info';
 import { Roles } from 'src/app/core/models/roles';
@@ -15,10 +15,29 @@ export class SidenavComponent implements OnInit {
   public sidenavWidth = 4;
   public userInfo: UserInfo = null as any;
   public inventoryPage: string[] = [Roles.Admin];
-  constructor(private _currentUserService: CurrentUserService) {}
+  public isMobile = false;
+  public isSidenavOpened = false;
+
+  constructor(private _currentUserService: CurrentUserService) {
+    this.checkScreenSize();
+  }
 
   public ngOnInit(): void {
     this.userInfo = this._currentUserService.userInfo;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) {
+      this.sidenavWidth = 20; // Always expanded on mobile when open
+    } else {
+      this.sidenavWidth = 4; // Collapsed by default on desktop
+    }
   }
 
   public showTab(tabName: string): boolean {
@@ -31,17 +50,36 @@ export class SidenavComponent implements OnInit {
   }
 
   public increase(sidenav: MatSidenav) {
-    sidenav.close();
-    setTimeout(() => {
-      sidenav.open();
-      this.sidenavWidth = 20;
-    });
+    if (!this.isMobile) {
+      sidenav.close();
+      setTimeout(() => {
+        sidenav.open();
+        this.sidenavWidth = 20;
+      });
+    }
   }
+
   public decrease(sidenav: MatSidenav) {
-    sidenav.close();
-    setTimeout(() => {
-      sidenav.open();
-      this.sidenavWidth = 4;
-    });
+    if (!this.isMobile) {
+      sidenav.close();
+      setTimeout(() => {
+        sidenav.open();
+        this.sidenavWidth = 4;
+      });
+    }
+  }
+
+  public toggleMobileSidenav(sidenav: MatSidenav): void {
+    if (this.isMobile) {
+      sidenav.toggle();
+      this.isSidenavOpened = sidenav.opened;
+    }
+  }
+
+  public closeMobileSidenav(sidenav: MatSidenav): void {
+    if (this.isMobile && sidenav.opened) {
+      sidenav.close();
+      this.isSidenavOpened = false;
+    }
   }
 }
