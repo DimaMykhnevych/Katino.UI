@@ -40,5 +40,26 @@
     "navbar": {
         "menu": "Меню",
         "availability": "Наявність"
+    },
+    "inventory": {
+        "availability": "Наявність",
+        "searchingProducts": "Пошук товарів ...",
+        "productName": "Назва товару",
+        "product": "Товар",
+        "photo": "Фото",
+        "status": "Статус",
+        "measurements": "Заміри",
+        "prices": "Ціни",
+        "costPrice": "Собівартість",
+        "dropPrice":"Дроп",
+        "wholesalePrice": "РРЦ(ОПТ)",
+        "price": "Ціна",
+        "amount": "Кількість",
+        "quantityInStock": "Пошито",
+        "quantityDropSold": "Витрати Дроп",
+        "quantityRegularSold": "Витрати Мої",
+        "article": "Артикул",
+        "actions": "Дії",
+        "info": "Інфо"
     }
 }

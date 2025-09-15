@@ -40,5 +40,26 @@
     "navbar": {
         "menu": "Menu",
         "availability": "Availability"
-    }     
+    },
+    "inventory": {
+        "availability": "Availability",
+        "searchingProducts": "Searching products ...",
+        "productName": "Product name",
+        "product": "Product",
+        "photo": "Photo",
+        "status": "Status",
+        "measurements": "Measurements",
+        "prices": "Prices",
+        "costPrice": "Cost Price",
+        "dropPrice":"Drop Price",
+        "wholesalePrice": "Wholesale",
+        "price": "Price",
+        "amount": "Amount",
+        "quantityInStock": "In Stock",
+        "quantityDropSold": "Drop Sold",
+        "quantityRegularSold": "Regular Sold",
+        "article": "Article",
+        "actions": "Actions",
+        "info": "Info"
+    }
 }

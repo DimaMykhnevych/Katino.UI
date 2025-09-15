@@ -14,6 +14,7 @@ export interface ProductVariant {
   quantityDropSold: number;
   quantityRegularSold: number;
   isDrop: boolean;
+  article: string;
   createdAt: Date;
   updatedAt: Date;
   color: Color;

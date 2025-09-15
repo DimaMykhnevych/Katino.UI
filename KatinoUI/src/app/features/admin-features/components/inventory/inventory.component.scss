@@ -168,6 +168,96 @@ td, th {
     }
     }
 }
+
+    // New styles for collapsible measurements column
+    .collapsible-header {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &.collapsed {
+        min-width: 25px;
+        max-width: 25px;
+        width: 25px;
+      }
+
+      .collapsible-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        .collapse-icon {
+          font-size: 18px;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      &.collapsed .collapsible-header-content {
+        .collapse-icon {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+
+    .collapsible-header-secondary{
+      &.collapsed {
+        display: none;
+      }
+
+      .collapsible-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+    }
+
+    .collapsible-cell {
+      transition: all 0.3s ease;
+      overflow: hidden;
+
+      &.collapsed {
+        min-width: 5px;
+        max-width: 5px;
+        width: 5px;
+      }
+
+      .measurements-collapsed {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        opacity: 0.6;
+
+        mat-icon {
+          font-size: 20px;
+          color: #64748b;
+        }
+      }
+
+      &.collapsed .collapsible-content {
+        opacity: 0;
+        transform: translateX(-20px);
+        pointer-events: none;
+      }
+    }
+
+    .collapsible-cell-secondary{
+      transition: all 0.3s ease;
+      overflow: hidden;
+
+      &.collapsed {
+        display: none;
+      }
+
+      &.collapsed .collapsible-content {
+        opacity: 0;
+        transform: translateX(-20px);
+        pointer-events: none;
+      }
+    }
 }
 
 .first-in-group {
@@ -200,14 +290,45 @@ td, th {
 }
 
 @media (max-width: 768px){
-    .article{
-        display: none;
-    }
-
     .variants-table{
         .color-size-cell{
         display: flex;
         flex-direction: column;
-    }
+        }
+
+        // Responsive behavior for measurements column
+        .collapsible-header {
+          min-width: 50px;
+          
+          &.collapsed {
+            min-width: 36px;
+            max-width: 36px;
+            width: 36px;
+            padding: 0 2px;
+          }
+        }
+
+    .collapsible-header-secondary{
+      &.collapsed {
+        display: none;
+      }
+    }        
+
+        .collapsible-cell {
+          min-width: 50px;
+          
+          &.collapsed {
+            min-width: 28px;
+            max-width: 28px;
+            width: 28px;
+            padding: 0;
+          }
+        }
+
+      .collapsible-cell-secondary{
+        &.collapsed {
+          display: none;
+        }
+      }        
     }
 }

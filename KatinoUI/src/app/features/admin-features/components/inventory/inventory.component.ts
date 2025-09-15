@@ -29,13 +29,18 @@ export class InventoryComponent implements OnInit {
   public productVariantResponse?: GetProductVariant;
   public isRetrievingProductVariants: boolean = false;
 
+  // Add property to track measurements column collapsed state
+  public isHeadersCollapsed: boolean = true;
+
   public displayedColumns: string[] = [
     'product',
     'productPhoto',
-    'article',
     'availability',
     'productStatus',
     'measurements',
+    'prices',
+    'amount',
+    'article',
     'actions',
   ];
 
@@ -57,6 +62,11 @@ export class InventoryComponent implements OnInit {
         .toLocaleLowerCase()
         .includes(filter.toLocaleLowerCase());
     };
+  }
+
+  // Add method to toggle measurements column
+  public toggleMeasurementsColumn(): void {
+    this.isHeadersCollapsed = !this.isHeadersCollapsed;
   }
 
   public getProductStatusDisplayName(productStatus: ProductStatus): string {
