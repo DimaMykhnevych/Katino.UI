@@ -71,7 +71,10 @@
             src="https://t3.ftcdn.net/jpg/04/83/25/50/360_F_483255019_m1r1ujM8EOkr8PamCHF85tQ0rHG3Fiqz.jpg"
             width="100"
             height="100"
+            class="product-thumbnail"
+            (click)="showLargeImage = true"
             *ngIf="variant.showProductInfo"
+            [alt]="variant.product.name"
           />
         </td>
       </ng-container>
@@ -278,4 +281,19 @@
     <mat-paginator [pageSizeOptions]="[1000, 5, 10, 20]" showFirstLastButtons>
     </mat-paginator>
   </div>
+</div>
+
+<!-- Simple Photo Modal -->
+<!-- TODO use real URLs instead of placeholders-->
+<div
+  class="photo-overlay"
+  *ngIf="showLargeImage"
+  (click)="showLargeImage = false"
+>
+  <img
+    src="https://t3.ftcdn.net/jpg/04/83/25/50/360_F_483255019_m1r1ujM8EOkr8PamCHF85tQ0rHG3Fiqz.jpg"
+    class="large-photo"
+    (click)="$event.stopPropagation()"
+  />
+  <button class="close-btn" (click)="showLargeImage = false">×</button>
 </div>

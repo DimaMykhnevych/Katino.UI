@@ -28,6 +28,7 @@ export class InventoryComponent implements OnInit {
 
   public productVariantResponse?: GetProductVariant;
   public isRetrievingProductVariants: boolean = false;
+  public showLargeImage: boolean = false;
 
   // Add property to track measurements column collapsed state
   public isHeadersCollapsed: boolean = true;

@@ -2,7 +2,6 @@ td, th {
     text-align: center;
 }
 
-
 .main {
   .table-header {
     padding: 24px;
@@ -87,199 +86,253 @@ td, th {
     }
   }
 
-.table-wrapper{
+  .table-wrapper{
     overflow-x: auto;
-.variants-table{
-    width: 100%;
 
-    .remove-bottom-border{
+    .variants-table{
+      width: 100%;
+
+      .remove-bottom-border{
         border: none;
-    }
+      }
 
-    .product-name {
+      .product-name {
         font-weight: 600;
         color: #1e293b;
         font-size: 14px;
-    }
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      }
 
-    .article{
-        text-align: center;
-    }
+      .product-thumbnail {
+        cursor: pointer;
+        border-radius: 4px;
+        transition: transform 0.2s ease;
 
-    .article-cell {
-        .article-code {
-            font-family: 'Courier New', monospace;
-            background: rgba(75, 85, 99, 0.1);
-            color: #374151;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 13px;
+        &:hover {
+          transform: scale(1.05);
         }
-    }
+      }
 
-    .color-size-cell {
+      .article{
+        text-align: center;
+      }
+
+      .article-cell {
+        .article-code {
+          font-family: 'Courier New', monospace;
+          background: rgba(75, 85, 99, 0.1);
+          color: #374151;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 13px;
+        }
+      }
+
+      .color-size-cell {
         display: flex;
         flex-direction: row;
         gap: 8px;
 
-    .color-size-cell-content {
-        display: flex;
-        gap: 8px;
+        .color-size-cell-content {
+          display: flex;
+          gap: 8px;
 
-    .color-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+          .color-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
 
-        .color-swatch {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            border: 2px solid rgba(148, 163, 184, 0.3);
-            flex-shrink: 0;
-        }
+            .color-swatch {
+              width: 20px;
+              height: 20px;
+              border-radius: 4px;
+              border: 2px solid rgba(148, 163, 184, 0.3);
+              flex-shrink: 0;
+            }
 
-        .color-name {
-            font-size: 13px;
-            color: #374151;
-            font-weight: 500;
-        }
-    }
+            .color-name {
+              font-size: 13px;
+              color: #374151;
+              font-weight: 500;
+            }
+          }
 
-    .size-info {
-        display: flex;
-        align-items: center;
+          .size-info {
+            display: flex;
+            align-items: center;
 
-        .size-badge {
-            background: rgba(99, 102, 241, 0.1);
-            color: #6366f1;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 24px;
-            text-align: center;
+            .size-badge {
+              background: rgba(99, 102, 241, 0.1);
+              color: #6366f1;
+              padding: 2px 8px;
+              border-radius: 4px;
+              font-size: 12px;
+              font-weight: 600;
+              min-width: 24px;
+              text-align: center;
 
-            &.letter-size {
+              &.letter-size {
                 background: rgba(16, 185, 129, 0.1);
                 color: #10b981;
+              }
             }
+          }
         }
-    }
-    }
-}
+      }
 
-    // New styles for collapsible measurements column
-    .collapsible-header {
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.3s ease;
+      // New styles for collapsible measurements column
+      .collapsible-header {
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &.collapsed {
+          min-width: 25px;
+          max-width: 25px;
+          width: 25px;
+        }
+
+        .collapsible-header-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+
+          .collapse-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+          }
+        }
+
+        &.collapsed .collapsible-header-content {
+          .collapse-icon {
+            transform: rotate(-90deg);
+          }
+        }
+      }
+
+      .collapsible-header-secondary{
+        &.collapsed {
+          display: none;
+        }
+
+        .collapsible-header-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+      }
+
+      .collapsible-cell {
+        transition: all 0.3s ease;
+        overflow: hidden;
+
+        &.collapsed {
+          min-width: 5px;
+          max-width: 5px;
+          width: 5px;
+        }
+
+        .measurements-collapsed {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          opacity: 0.6;
+
+          mat-icon {
+            font-size: 20px;
+            color: #64748b;
+          }
+        }
+
+        &.collapsed .collapsible-content {
+          opacity: 0;
+          transform: translateX(-20px);
+          pointer-events: none;
+        }
+      }
+
+      .collapsible-cell-secondary{
+        transition: all 0.3s ease;
+        overflow: hidden;
+
+        &.collapsed {
+          display: none;
+        }
+
+        &.collapsed .collapsible-content {
+          opacity: 0;
+          transform: translateX(-20px);
+          pointer-events: none;
+        }
+      }
+    }
+
+    .first-in-group {
+      border-top: 2px solid #06b6d4;
+    }
+
+    .group-border {
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #06b6d4, transparent);
+      }
+      
       position: relative;
-
-      &.collapsed {
-        min-width: 25px;
-        max-width: 25px;
-        width: 25px;
-      }
-
-      .collapsible-header-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-
-        .collapse-icon {
-          font-size: 18px;
-          transition: transform 0.3s ease;
-        }
-      }
-
-      &.collapsed .collapsible-header-content {
-        .collapse-icon {
-          transform: rotate(-90deg);
-        }
-      }
     }
-
-    .collapsible-header-secondary{
-      &.collapsed {
-        display: none;
-      }
-
-      .collapsible-header-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-    }
-
-    .collapsible-cell {
-      transition: all 0.3s ease;
-      overflow: hidden;
-
-      &.collapsed {
-        min-width: 5px;
-        max-width: 5px;
-        width: 5px;
-      }
-
-      .measurements-collapsed {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        opacity: 0.6;
-
-        mat-icon {
-          font-size: 20px;
-          color: #64748b;
-        }
-      }
-
-      &.collapsed .collapsible-content {
-        opacity: 0;
-        transform: translateX(-20px);
-        pointer-events: none;
-      }
-    }
-
-    .collapsible-cell-secondary{
-      transition: all 0.3s ease;
-      overflow: hidden;
-
-      &.collapsed {
-        display: none;
-      }
-
-      &.collapsed .collapsible-content {
-        opacity: 0;
-        transform: translateX(-20px);
-        pointer-events: none;
-      }
-    }
-}
-
-.first-in-group {
-  border-top: 2px solid #06b6d4;
-}
-
-.group-border {
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, #06b6d4, transparent);
   }
-  
-  position: relative;
-}
 }
 
+// Simple Photo Modal
+.photo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
 }
+
+.large-photo {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 100px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: white;
+}
+
 // Add spacing between groups
 .variant-row.first-in-group:not(:first-child) {
   border-top: 3px solid #e2e8f0;
@@ -289,46 +342,59 @@ td, th {
   }
 }
 
-@media (max-width: 768px){
-    .variants-table{
-        .color-size-cell{
-        display: flex;
-        flex-direction: column;
-        }
+// Mobile responsive
+@media (max-width: 768px) {
+  .photo-overlay {
+    padding: 10px;
+  }
+  
+  .close-btn {
+    top: 75px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
 
-        // Responsive behavior for measurements column
-        .collapsible-header {
-          min-width: 50px;
-          
-          &.collapsed {
-            min-width: 36px;
-            max-width: 36px;
-            width: 36px;
-            padding: 0 2px;
-          }
-        }
+  .variants-table {
+    .color-size-cell {
+      display: flex;
+      flex-direction: column;
+    }
 
-    .collapsible-header-secondary{
+    // Responsive behavior for measurements column
+    .collapsible-header {
+      min-width: 50px;
+      
+      &.collapsed {
+        min-width: 36px;
+        max-width: 36px;
+        width: 36px;
+        padding: 0 2px;
+      }
+    }
+
+    .collapsible-header-secondary {
       &.collapsed {
         display: none;
       }
     }        
 
-        .collapsible-cell {
-          min-width: 50px;
-          
-          &.collapsed {
-            min-width: 28px;
-            max-width: 28px;
-            width: 28px;
-            padding: 0;
-          }
-        }
-
-      .collapsible-cell-secondary{
-        &.collapsed {
-          display: none;
-        }
-      }        
+    .collapsible-cell {
+      min-width: 50px;
+      
+      &.collapsed {
+        min-width: 28px;
+        max-width: 28px;
+        width: 28px;
+        padding: 0;
+      }
     }
+
+    .collapsible-cell-secondary {
+      &.collapsed {
+        display: none;
+      }
+    }        
+  }
 }
