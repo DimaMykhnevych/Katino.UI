@@ -4,7 +4,8 @@
         "signin": "Sign In",
         "signup": "Sign Up",
         "signInProcessText": "Signing in...",
-        "logout": "Log Out"
+        "logout": "Log Out",
+        "allOption":"All"
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -60,6 +61,7 @@
         "quantityRegularSold": "Regular Sold",
         "article": "Article",
         "actions": "Actions",
-        "info": "Info"
+        "info": "Info",
+        "category": "Category"
     }
 }

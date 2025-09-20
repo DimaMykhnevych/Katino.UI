@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProductVariantService } from '../../services/product-variant.service';
 import { GetProductVariant } from '../../models/get-product-variant';
-import { catchError } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductVariant } from 'src/app/core/models/product-variant';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,13 +12,19 @@ import { CustomTranslateService } from 'src/app/core/services/custom-translate.s
 import { ProductStatus } from 'src/app/core/enums/product-status';
 import { ProductStatusMapper } from 'src/app/core/mappers/product-status-mapper';
 import { MatSort } from '@angular/material/sort';
+import { GetProductVariantRequest } from '../../models/get-product-variant-request';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { CategoryService } from '../../services/category.service';
+import { GetCategoriesResponse } from '../../models/get-categories-response';
+import { DefaultOptions } from 'src/app/core/constants/default-options';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss'],
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort)
@@ -27,8 +33,19 @@ export class InventoryComponent implements OnInit {
   private productGroups: ProductGroup[] = [];
 
   public productVariantResponse?: GetProductVariant;
-  public isRetrievingProductVariants: boolean = false;
+  public categoriesResponse?: GetCategoriesResponse;
+  public isRetrievingData: boolean = false;
   public showLargeImage: boolean = false;
+  public form: FormGroup = this._builder.group({});
+  public allSelectionOptionId = DefaultOptions.allSelectionOptionId;
+  public translatedAllOption$?: Observable<string>;
+  public allProductStatuses: ProductStatus[] = [
+    ProductStatus.inStock,
+    ProductStatus.onOrder,
+    ProductStatus.discontinued,
+  ];
+
+  private _destroy$: Subject<void> = new Subject<void>();
 
   // Add property to track measurements column collapsed state
   public isHeadersCollapsed: boolean = true;
@@ -50,19 +67,23 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     private _productVariantService: ProductVariantService,
-    private _customTranslateService: CustomTranslateService
+    private _customTranslateService: CustomTranslateService,
+    private _categoryService: CategoryService,
+    private _builder: FormBuilder,
+    private _translate: TranslateService
   ) {}
 
   public ngOnInit(): void {
-    this.getProductVariants();
-    this.dataSource.filterPredicate = (
-      data: GroupedProductVariant,
-      filter: string
-    ) => {
-      return data.product.name
-        .toLocaleLowerCase()
-        .includes(filter.toLocaleLowerCase());
-    };
+    this.initializeForm();
+    this.translatedAllOption$ = this._translate.stream('common.allOption');
+    this.subscribeOnFormValueChanges();
+    this.getCategories();
+    this.getProductVariants({});
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   // Add method to toggle measurements column
@@ -89,27 +110,42 @@ export class InventoryComponent implements OnInit {
     }
   }
 
-  public applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  private subscribeOnFormValueChanges(): void {
+    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this.dataSource.data = [];
+
+      let categoryId =
+        this.form.value.categoryId === this.allSelectionOptionId
+          ? null
+          : this.form.value.categoryId;
+
+      let productStatus =
+        this.form.value.productStatus === this.allSelectionOptionId
+          ? null
+          : this.form.value.productStatus;
+
+      this.getProductVariants({
+        productName: this.form.value.productName,
+        categoryId: categoryId,
+        productStatus: productStatus,
+      });
+    });
   }
 
-  private getProductVariants(): void {
-    this.isRetrievingProductVariants = true;
+  private getProductVariants(searchParams: GetProductVariantRequest): void {
+    this.isRetrievingData = true;
     this._productVariantService
-      .getProductVariants()
+      .getProductVariants(searchParams)
       .pipe(
         catchError((error) => {
           return this.onCatchError(error);
-        })
+        }),
+        takeUntil(this._destroy$)
       )
       .subscribe((resp: GetProductVariant) => {
         this.productVariantResponse = resp;
         this.processGroupedData(resp.productVariants);
-        this.isRetrievingProductVariants = false;
+        this.isRetrievingData = false;
       });
   }
 
@@ -163,10 +199,48 @@ export class InventoryComponent implements OnInit {
           return (item as any)[property];
       }
     };
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  private getCategories(): void {
+    this.isRetrievingData = true;
+    this._categoryService
+      .getCategories()
+      .pipe(
+        catchError((error) => {
+          return this.onCatchError(error);
+        }),
+        takeUntil(this._destroy$)
+      )
+      .subscribe((resp) => {
+        this.categoriesResponse = resp;
+      });
   }
 
   private onCatchError(error: any): Observable<any> {
-    this.isRetrievingProductVariants = false;
+    this.isRetrievingData = false;
     return of({});
+  }
+
+  private initializeForm(): void {
+    this.form = this._builder.group({
+      productName: new FormControl(),
+      categoryId: new FormControl(DefaultOptions.allSelectionOptionId),
+      productStatus: new FormControl(DefaultOptions.allSelectionOptionId),
+    });
+  }
+
+  get productName() {
+    return this.form.get('productName');
+  }
+
+  get categoryId() {
+    return this.form.get('categoryId');
+  }
+
+  get productStatus() {
+    return this.form.get('productStatus');
   }
 }

@@ -18,7 +18,9 @@ td, th {
         flex: 1;
         min-width: 300px;
         max-width: 400px;
+      }
 
+      .form-custom-control{
         ::ng-deep {
           .mat-form-field-outline {
             color: rgba(148, 163, 184, 0.3);

@@ -10,15 +10,54 @@
     </div>
 
     <div class="table-controls">
-      <mat-form-field class="search-field" appearance="outline">
-        <mat-label>{{ "inventory.searchingProducts" | translate }}</mat-label>
-        <input
-          matInput
-          (keyup)="applyFilter($event)"
-          placeholder="{{ 'inventory.productName' | translate }}"
-        />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+      <form [formGroup]="form">
+        <mat-form-field
+          class="search-field form-custom-control"
+          appearance="outline"
+        >
+          <mat-label>{{ "inventory.searchingProducts" | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="productName"
+            placeholder="{{ 'inventory.productName' | translate }}"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-custom-control">
+          <mat-label>{{ "inventory.category" | translate }}</mat-label>
+          <mat-select formControlName="categoryId">
+            <ng-container *ngIf="translatedAllOption$ | async as allLabel">
+              <mat-option [value]="allSelectionOptionId">
+                {{ allLabel }}
+              </mat-option>
+            </ng-container>
+
+            <mat-option
+              *ngFor="let category of categoriesResponse?.categories"
+              [value]="category.id"
+            >
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-custom-control">
+          <mat-label>{{ "inventory.status" | translate }}</mat-label>
+          <mat-select formControlName="productStatus">
+            <ng-container *ngIf="translatedAllOption$ | async as allLabel">
+              <mat-option [value]="allSelectionOptionId">
+                {{ allLabel }}
+              </mat-option>
+            </ng-container>
+
+            <mat-option
+              *ngFor="let status of allProductStatuses"
+              [value]="status"
+            >
+              {{ getProductStatusDisplayName(status) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
     </div>
   </div>
   <div class="mat-elevation-z8 table-wrapper">
@@ -274,7 +313,7 @@
       ></tr>
     </table>
 
-    <div *ngIf="isRetrievingProductVariants">
+    <div *ngIf="isRetrievingData">
       <app-spinner [diameter]="50"></app-spinner>
     </div>
 

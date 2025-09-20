@@ -4,7 +4,8 @@
         "signin": "Увійти",
         "signup": "Регістрація",
         "signInProcessText": "Вхід...",
-        "logout": "Вийти"
+        "logout": "Вийти",
+        "allOption":"Всі"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -60,6 +61,7 @@
         "quantityRegularSold": "Витрати Мої",
         "article": "Артикул",
         "actions": "Дії",
-        "info": "Інфо"
+        "info": "Інфо",
+        "category": "Категорія"
     }
 }
