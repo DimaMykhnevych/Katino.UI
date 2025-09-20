@@ -10,53 +10,61 @@
     </div>
 
     <div class="table-controls">
-      <form [formGroup]="form">
-        <mat-form-field
-          class="search-field form-custom-control"
-          appearance="outline"
-        >
-          <mat-label>{{ "inventory.searchingProducts" | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="productName"
-            placeholder="{{ 'inventory.productName' | translate }}"
-          />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="form-custom-control">
-          <mat-label>{{ "inventory.category" | translate }}</mat-label>
-          <mat-select formControlName="categoryId">
-            <ng-container *ngIf="translatedAllOption$ | async as allLabel">
-              <mat-option [value]="allSelectionOptionId">
-                {{ allLabel }}
-              </mat-option>
-            </ng-container>
+      <form [formGroup]="form" class="filter-form">
+        <div class="form-row">
+          <mat-form-field
+            class="search-field form-control"
+            appearance="outline"
+          >
+            <mat-label>{{
+              "inventory.searchingProducts" | translate
+            }}</mat-label>
+            <input
+              matInput
+              formControlName="productName"
+              placeholder="{{ 'inventory.productName' | translate }}"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
 
-            <mat-option
-              *ngFor="let category of categoriesResponse?.categories"
-              [value]="category.id"
-            >
-              {{ category.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="form-custom-control">
-          <mat-label>{{ "inventory.status" | translate }}</mat-label>
-          <mat-select formControlName="productStatus">
-            <ng-container *ngIf="translatedAllOption$ | async as allLabel">
-              <mat-option [value]="allSelectionOptionId">
-                {{ allLabel }}
-              </mat-option>
-            </ng-container>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-control">
+            <mat-label>{{ "inventory.category" | translate }}</mat-label>
+            <mat-select formControlName="categoryId">
+              <ng-container *ngIf="translatedAllOption$ | async as allLabel">
+                <mat-option [value]="allSelectionOptionId">
+                  {{ allLabel }}
+                </mat-option>
+              </ng-container>
 
-            <mat-option
-              *ngFor="let status of allProductStatuses"
-              [value]="status"
-            >
-              {{ getProductStatusDisplayName(status) }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+              <mat-option
+                *ngFor="let category of categoriesResponse?.categories"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-control">
+            <mat-label>{{ "inventory.status" | translate }}</mat-label>
+            <mat-select formControlName="productStatus">
+              <ng-container *ngIf="translatedAllOption$ | async as allLabel">
+                <mat-option [value]="allSelectionOptionId">
+                  {{ allLabel }}
+                </mat-option>
+              </ng-container>
+
+              <mat-option
+                *ngFor="let status of allProductStatuses"
+                [value]="status"
+              >
+                {{ getProductStatusDisplayName(status) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </form>
     </div>
   </div>
