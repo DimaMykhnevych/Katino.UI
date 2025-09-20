@@ -5,7 +5,8 @@
         "signup": "Регістрація",
         "signInProcessText": "Вхід...",
         "logout": "Вийти",
-        "allOption":"Всі"
+        "allOption":"Всі",
+        "totalItems": "Загальна кількість"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",

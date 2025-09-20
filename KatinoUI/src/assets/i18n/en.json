@@ -5,7 +5,8 @@
         "signup": "Sign Up",
         "signInProcessText": "Signing in...",
         "logout": "Log Out",
-        "allOption":"All"
+        "allOption":"All",
+        "totalItems": "Total items"
     },
     "login": {
         "subtitle": "Log in to your account",

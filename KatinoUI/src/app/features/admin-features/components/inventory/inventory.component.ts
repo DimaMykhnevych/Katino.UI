@@ -99,11 +99,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   public getProductStatusClass(productStatus: ProductStatus): string {
     switch (productStatus) {
       case ProductStatus.inStock:
-        return 'badge text-bg-success';
+        return 'status-badge badge-success';
       case ProductStatus.onOrder:
-        return 'badge text-bg-info';
+        return 'status-badge badge-info';
       case ProductStatus.discontinued:
-        return 'badge text-bg-danger';
+        return 'status-badge badge-danger';
 
       default:
         return '';
