@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>
+  <div *ngIf="data.isAdding">
+    {{ "adminFeatures.addingProductVariant" | translate }}
+  </div>
+  <div *ngIf="!data.isAdding">
+    {{ "adminFeatures.updatingProductVariant" | translate }}
+  </div>
+</h1>
+<div mat-dialog-content>
+  <ng-container *ngIf="isRetrievingData">
+    <app-spinner [diameter]="50"></app-spinner
+  ></ng-container>
+  <ng-container *ngIf="!isRetrievingData">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-4">
+          <mat-form-field>
+            <mat-label>{{ "inventory.product" | translate }}</mat-label>
+            <mat-select formControlName="productId" required>
+              <mat-option
+                *ngFor="let product of productsResponse?.products ?? []"
+                [value]="product.id"
+              >
+                {{ product.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="productId?.invalid && productId?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+        <div class="col-lg-2 col-md-2 col-2 d-flex justify-content-center">
+          <ng-container *ngIf="data?.isAdding">
+            <button
+              class="action-button"
+              mat-flat-button
+              (click)="onAddEditProduct(true)"
+            >
+              <mat-icon>add</mat-icon>
+            </button></ng-container
+          ><ng-container *ngIf="!data?.isAdding">
+            <button
+              class="action-button"
+              mat-flat-button
+              (click)="onAddEditProduct(false)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button></ng-container
+          >
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="warn" mat-dialog-close="false">
+    {{ "common.close" | translate }}
+  </button>
+  <ng-container>
+    <button type="submit" mat-button [disabled]="!isFormValid()">
+      <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
+      <span *ngIf="!data?.isAdding">{{ "common.update" | translate }}</span>
+    </button></ng-container
+  >
+</div>

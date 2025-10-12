@@ -6,12 +6,22 @@
         "signInProcessText": "Signing in...",
         "logout": "Log Out",
         "allOption":"All",
-        "totalItems": "Total items"
+        "totalItems": "Total items",
+        "close": "Close",
+        "update": "Update",
+        "add": "Add",
+        "name": "Name",
+        "description": "Description",
+        "addingButtonText": "Adding...",
+        "updatingButtonText":"Updating..."        
     },
     "login": {
         "subtitle": "Log in to your account",
         "username": "Username",
         "password": "Password"
+    },
+    "validation": {
+        "requiredField": "This field is required"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Email Confirmation",
@@ -53,9 +63,15 @@
         "measurements": "Measurements",
         "prices": "Prices",
         "costPrice": "Cost Price",
+        "productCostPrice": "Product Cost Price",
         "dropPrice":"Drop Price",
+        "dropPriceDescr":"Drop Price",
+        "productDropPrice":"Product Drop Price",        
         "wholesalePrice": "Wholesale",
+        "wholesalePriceDescr": "Wholesale Price",
+        "wholesaleProductPrice": "Wholesale Product Price",
         "price": "Price",
+        "productPrice": "Product Price",
         "amount": "Amount",
         "quantityInStock": "In Stock",
         "quantityDropSold": "Drop Sold",
@@ -63,6 +79,26 @@
         "article": "Article",
         "actions": "Actions",
         "info": "Info",
-        "category": "Category"
+        "category": "Category",
+        "categoryName": "Category Name",
+        "categoryDescription": "Category Description"        
+    },
+    "adminFeatures": {
+        "addingProductVariant": "Adding Product Variant",
+        "updatingProductVariant": "Updating Product Variant",
+        "addingProduct": "Adding Product",
+        "updatingProduct": "Updating Product",
+        "addingCategory": "Adding Category",
+        "updatingCategory": "Updating Category"
+    },
+    "toastrs": {
+        "categoryAdded": "Category was successfully added",
+        "categoryUpdated": "Category was successfully updated",
+        "categoryAddedError": "An error occurred during adding category",
+        "categoryUpdatedError": "An error occurred during updating category",
+        "productAdded": "Product was successfully added",
+        "productUpdated": "Product was successfully updated",
+        "productAddedError": "An error occurred during adding product",
+        "productUpdatedError": "An error occurred during updating product"            
     }
 }

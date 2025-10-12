@@ -1,0 +1,37 @@
+.category-form-input{
+    width: 100%;
+
+    ::ng-deep {
+        .mat-form-field-outline {
+        color: rgba(148, 163, 184, 0.3);
+        }
+        
+        .mat-form-field-outline-thick {
+        color: #06b6d4;
+        }
+        
+        .mat-form-field-label {
+        color: #64748b;
+        }
+        
+        .mat-select-arrow {
+        color: #64748b;
+        }
+    }
+}
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    .loading-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    ::ng-deep .mat-spinner circle {
+        stroke: #06b6d4;
+    }
+}

@@ -6,13 +6,23 @@
         "signInProcessText": "Вхід...",
         "logout": "Вийти",
         "allOption":"Всі",
-        "totalItems": "Загальна кількість"
+        "totalItems": "Загальна кількість",
+        "close": "Закрити",
+        "update": "Змінити",
+        "add": "Додати",
+        "name": "Назва",
+        "description": "Опис",
+        "addingButtonText": "Додавання...",
+        "updatingButtonText":"Оновлення..."
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
         "username": "Ім'я користувача",
         "password": "Пароль"
     },
+    "validation": {
+        "requiredField": "Це поле обов'язкове"
+    },    
     "emailConfirmation": {
         "emailConfirmation": "Підтвердження електронною поштою",
         "success": "Вашу електронну пошту було успішно підтверджено",
@@ -53,9 +63,15 @@
         "measurements": "Заміри",
         "prices": "Ціни",
         "costPrice": "Собівартість",
+        "productCostPrice": "Собівартість Товару",
         "dropPrice":"Дроп",
+        "dropPriceDescr":"Дроп Ціна",
+        "productDropPrice":"Ціна Товару За Дроп",
         "wholesalePrice": "РРЦ(ОПТ)",
+        "wholesalePriceDescr": "ОПТ Ціна",
+        "wholesaleProductPrice": "Оптова Ціна Товару",
         "price": "Ціна",
+        "productPrice": "Ціна Товару",
         "amount": "Кількість",
         "quantityInStock": "Пошито",
         "quantityDropSold": "Витрати Дроп",
@@ -63,6 +79,26 @@
         "article": "Артикул",
         "actions": "Дії",
         "info": "Інфо",
-        "category": "Категорія"
+        "category": "Категорія",
+        "categoryName": "Назва Категорії",
+        "categoryDescription": "Опис Категорії"
+    },
+    "adminFeatures": {
+        "addingProductVariant": "Додавання Варіанту Товару",
+        "updatingProductVariant": "Оновлення Варіанту Товару",
+        "addingProduct": "Додавання Товару",
+        "updatingProduct": "Оновлення Товару",
+        "addingCategory": "Додавання Категорії",
+        "updatingCategory": "Оновлення Категорії"
+    },
+    "toastrs": {
+        "categoryAdded": "Категорію успішно збережено",
+        "categoryUpdated": "Категорію успішно оновлено",
+        "categoryAddedError": "Виникла помилка під час додавання категорії",
+        "categoryUpdatedError": "Виникла помилка під час оновлення категорії",
+        "productAdded": "Товар успішно збережено",
+        "productUpdated": "Товар успішно оновлено",
+        "productAddedError": "Виникла помилка під час додавання товару",
+        "productUpdatedError": "Виникла помилка під час оновлення товару"
     }
 }

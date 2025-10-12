@@ -1,0 +1,184 @@
+<h1 mat-dialog-title>
+  <div *ngIf="data.isAdding">
+    {{ "adminFeatures.addingProduct" | translate }}
+  </div>
+  <div *ngIf="!data.isAdding">
+    {{ "adminFeatures.updatingProduct" | translate }}
+  </div>
+</h1>
+<div mat-dialog-content>
+  <ng-container *ngIf="isRetrievingData">
+    <app-spinner [diameter]="50"></app-spinner
+  ></ng-container>
+  <ng-container *ngIf="!isRetrievingData">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-12">
+          <mat-form-field appearance="outline" class="product-form-input">
+            <mat-label>{{ "common.name" | translate }}</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="name"
+              placeholder="{{ 'inventory.productName' | translate }}"
+              required
+            />
+            <mat-error *ngIf="name?.invalid && name?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-12">
+          <mat-form-field appearance="outline" class="product-form-input">
+            <mat-label>{{ "inventory.costPrice" | translate }}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="costPrice"
+              placeholder="{{ 'inventory.productCostPrice' | translate }}"
+              min="0"
+              required
+            />
+            <mat-error *ngIf="costPrice?.invalid && costPrice?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-12">
+          <mat-form-field appearance="outline" class="product-form-input">
+            <mat-label>{{
+              "inventory.wholesalePriceDescr" | translate
+            }}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="wholesalePrice"
+              placeholder="{{ 'inventory.wholesaleProductPrice' | translate }}"
+              min="0"
+              required
+            />
+            <mat-error
+              *ngIf="wholesalePrice?.invalid && wholesalePrice?.touched"
+            >
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-12">
+          <mat-form-field appearance="outline" class="product-form-input">
+            <mat-label>{{ "inventory.dropPriceDescr" | translate }}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="dropPrice"
+              placeholder="{{ 'inventory.productDropPrice' | translate }}"
+              min="0"
+              required
+            />
+            <mat-error *ngIf="dropPrice?.invalid && dropPrice?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-12">
+          <mat-form-field appearance="outline" class="product-form-input">
+            <mat-label>{{ "inventory.price" | translate }}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="price"
+              placeholder="{{ 'inventory.productPrice' | translate }}"
+              min="0"
+              required
+            />
+            <mat-error *ngIf="price?.invalid && price?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-10">
+          <mat-form-field
+            appearance="outline"
+            class="product-form-input category-select"
+          >
+            <mat-label>{{ "inventory.category" | translate }}</mat-label>
+            <mat-select
+              formControlName="categoryId"
+              required
+              (selectionChange)="onCategorySelectionChange($event)"
+            >
+              <mat-option
+                *ngFor="let category of categoriesResponse?.categories ?? []"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="categoryId?.invalid && categoryId?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+        <div class="col-lg-2 col-md-2 col-2 d-flex justify-content-center">
+          <ng-container *ngIf="data?.isAdding">
+            <button
+              class="action-button"
+              mat-flat-button
+              (click)="onAddEditCategory(true)"
+            >
+              <mat-icon>add</mat-icon>
+            </button></ng-container
+          ><ng-container *ngIf="!data?.isAdding">
+            <button
+              class="action-button"
+              mat-flat-button
+              (click)="onAddEditCategory(false)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button></ng-container
+          >
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-stroked-button
+    color="warn"
+    mat-dialog-close="false"
+    [disabled]="isUpdatingData"
+  >
+    {{ "common.close" | translate }}
+  </button>
+  <button
+    type="submit"
+    mat-button
+    [disabled]="!isFormValid() || isUpdatingData"
+    (click)="onAddEditClick()"
+  >
+    <ng-container *ngIf="!isUpdatingData">
+      <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
+      <span *ngIf="!data?.isAdding">{{
+        "common.update" | translate
+      }}</span></ng-container
+    >
+
+    <div *ngIf="isUpdatingData" class="spinner-container">
+      <mat-spinner diameter="20" color="accent"></mat-spinner>
+      <span *ngIf="data?.isAdding" class="loading-text">{{
+        "common.addingButtonText" | translate
+      }}</span>
+      <span *ngIf="!data?.isAdding" class="loading-text">{{
+        "common.updatingButtonText" | translate
+      }}</span>
+    </div>
+  </button>
+</div>

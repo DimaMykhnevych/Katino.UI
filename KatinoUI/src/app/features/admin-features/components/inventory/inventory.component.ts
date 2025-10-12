@@ -18,6 +18,8 @@ import { CategoryService } from '../../services/category.service';
 import { GetCategoriesResponse } from '../../models/get-categories-response';
 import { DefaultOptions } from 'src/app/core/constants/default-options';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from 'src/app/features/common-services/dialog.service';
+import { AddEditProductVariantData } from '../../models/add-edit-product-variant-data';
 
 @Component({
   selector: 'app-inventory',
@@ -70,7 +72,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private _customTranslateService: CustomTranslateService,
     private _categoryService: CategoryService,
     private _builder: FormBuilder,
-    private _translate: TranslateService
+    private _translate: TranslateService,
+    private _dialogService: DialogService
   ) {}
 
   public ngOnInit(): void {
@@ -86,7 +89,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  // Add method to toggle measurements column
   public toggleMeasurementsColumn(): void {
     this.isHeadersCollapsed = !this.isHeadersCollapsed;
   }
@@ -110,25 +112,56 @@ export class InventoryComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onAddProductVariantClick(): void {
+    const data: AddEditProductVariantData = {
+      productVariant: null,
+      isAdding: true,
+    };
+    const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
+    dialogRef.afterClosed().subscribe(() => {
+      this.onAddEditDialogClose();
+    });
+  }
+
+  public onEditClick(productVariant: ProductVariant): void {
+    const data: AddEditProductVariantData = {
+      productVariant: productVariant,
+      isAdding: false,
+    };
+    const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
+    dialogRef.afterClosed().subscribe(() => {
+      this.onAddEditDialogClose();
+    });
+  }
+
+  private onAddEditDialogClose(): void {
+    this.clearForm();
+    this.getCategories();
+    this.getProductVariants({});
+  }
+
   private subscribeOnFormValueChanges(): void {
     this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
       this.dataSource.data = [];
+      this.getProductVariantsWithSelectedFilters();
+    });
+  }
 
-      let categoryId =
-        this.form.value.categoryId === this.allSelectionOptionId
-          ? null
-          : this.form.value.categoryId;
+  private getProductVariantsWithSelectedFilters(): void {
+    let categoryId =
+      this.form.value.categoryId === this.allSelectionOptionId
+        ? null
+        : this.form.value.categoryId;
 
-      let productStatus =
-        this.form.value.productStatus === this.allSelectionOptionId
-          ? null
-          : this.form.value.productStatus;
+    let productStatus =
+      this.form.value.productStatus === this.allSelectionOptionId
+        ? null
+        : this.form.value.productStatus;
 
-      this.getProductVariants({
-        productName: this.form.value.productName,
-        categoryId: categoryId,
-        productStatus: productStatus,
-      });
+    this.getProductVariants({
+      productName: this.form.value.productName,
+      categoryId: categoryId,
+      productStatus: productStatus,
     });
   }
 
@@ -150,7 +183,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   private processGroupedData(variants: ProductVariant[]): void {
-    // Group variants by product ID
     const groupedMap = new Map<string, ProductVariant[]>();
 
     variants.forEach((variant) => {
@@ -229,6 +261,15 @@ export class InventoryComponent implements OnInit, OnDestroy {
       productName: new FormControl(),
       categoryId: new FormControl(DefaultOptions.allSelectionOptionId),
       productStatus: new FormControl(DefaultOptions.allSelectionOptionId),
+    });
+  }
+
+  private clearForm(): void {
+    this.dataSource.data = [];
+    this.productName!.setValue('', { emitEvent: false });
+    this.categoryId!.setValue(this.allSelectionOptionId, { emitEvent: false });
+    this.productStatus!.setValue(this.allSelectionOptionId, {
+      emitEvent: false,
     });
   }
 
