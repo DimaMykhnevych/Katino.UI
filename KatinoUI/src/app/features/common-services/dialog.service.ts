@@ -6,6 +6,9 @@ import { AddEditProductData } from '../admin-features/models/add-edit-product-da
 import { AddEditProductDialogComponent } from '../admin-features/components/add-edit-product-dialog/add-edit-product-dialog.component';
 import { AddEditCategoryData } from '../admin-features/models/add-edit-category-data';
 import { AddEditCategoryDialogComponent } from '../admin-features/components/add-edit-category-dialog/add-edit-category-dialog.component';
+import { AddSizeDialogComponent } from '../admin-features/components/add-size-dialog/add-size-dialog.component';
+import { AddEditColorData } from '../admin-features/models/add-edit-color-data';
+import { AddEditColorDialogComponent } from '../admin-features/components/add-edit-color-dialog/add-edit-color-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +40,23 @@ export class DialogService {
     data: AddEditCategoryData
   ): MatDialogRef<AddEditCategoryDialogComponent> {
     return this.dialog.open(AddEditCategoryDialogComponent, {
+      width: '300px',
+      disableClose: true,
+      data: data,
+    });
+  }
+
+  public openAddSizeDialog(): MatDialogRef<AddSizeDialogComponent> {
+    return this.dialog.open(AddSizeDialogComponent, {
+      width: '300px',
+      disableClose: true,
+    });
+  }
+
+  public openAddEditColorDialog(
+    data: AddEditColorData
+  ): MatDialogRef<AddEditColorDialogComponent> {
+    return this.dialog.open(AddEditColorDialogComponent, {
       width: '300px',
       disableClose: true,
       data: data,

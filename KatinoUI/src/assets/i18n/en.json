@@ -10,10 +10,12 @@
         "close": "Close",
         "update": "Update",
         "add": "Add",
+        "edit": "Edit",
         "name": "Name",
         "description": "Description",
         "addingButtonText": "Adding...",
-        "updatingButtonText":"Updating..."        
+        "updatingButtonText":"Updating...",
+        "hexCode": "HEX Code"   
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -81,7 +83,12 @@
         "info": "Info",
         "category": "Category",
         "categoryName": "Category Name",
-        "categoryDescription": "Category Description"        
+        "categoryDescription": "Category Description",
+        "size": "Size",
+        "sizeName": "Size Name",
+        "color": "Color",
+        "colorName": "Color Name",
+        "colorHexCodeDescription": "Color HEX-code"
     },
     "adminFeatures": {
         "addingProductVariant": "Adding Product Variant",
@@ -89,7 +96,10 @@
         "addingProduct": "Adding Product",
         "updatingProduct": "Updating Product",
         "addingCategory": "Adding Category",
-        "updatingCategory": "Updating Category"
+        "updatingCategory": "Updating Category",
+        "addingSize": "Adding Size",
+        "addingColor": "Adding Color",
+        "updatingColor": "Updating Color"
     },
     "toastrs": {
         "categoryAdded": "Category was successfully added",
@@ -99,6 +109,12 @@
         "productAdded": "Product was successfully added",
         "productUpdated": "Product was successfully updated",
         "productAddedError": "An error occurred during adding product",
-        "productUpdatedError": "An error occurred during updating product"            
+        "productUpdatedError": "An error occurred during updating product",
+        "sizeAdded": "Size was successfully added",
+        "sizeAddedError": "An error occurred during adding size",
+        "colorAddedError": "An error occurred during adding color",
+        "colorUpdatedError": "An error occurred during updating color",
+        "colorAdded": "Color was successfully added",
+        "colorUpdated": "Color was successfully updated"
     }
 }

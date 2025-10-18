@@ -20,6 +20,7 @@ import { DefaultOptions } from 'src/app/core/constants/default-options';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
 import { AddEditProductVariantData } from '../../models/add-edit-product-variant-data';
+import { StatusConstants } from 'src/app/core/constants/status-constants';
 
 @Component({
   selector: 'app-inventory',
@@ -41,11 +42,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
   public form: FormGroup = this._builder.group({});
   public allSelectionOptionId = DefaultOptions.allSelectionOptionId;
   public translatedAllOption$?: Observable<string>;
-  public allProductStatuses: ProductStatus[] = [
-    ProductStatus.inStock,
-    ProductStatus.onOrder,
-    ProductStatus.discontinued,
-  ];
+  public allProductStatuses: ProductStatus[] =
+    StatusConstants.allProductStatuses;
 
   private _destroy$: Subject<void> = new Subject<void>();
 

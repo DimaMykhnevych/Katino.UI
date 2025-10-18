@@ -10,10 +10,12 @@
         "close": "Закрити",
         "update": "Змінити",
         "add": "Додати",
+        "edit": "Змінити",
         "name": "Назва",
         "description": "Опис",
         "addingButtonText": "Додавання...",
-        "updatingButtonText":"Оновлення..."
+        "updatingButtonText":"Оновлення...",
+        "hexCode": "HEX-код"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -81,7 +83,12 @@
         "info": "Інфо",
         "category": "Категорія",
         "categoryName": "Назва Категорії",
-        "categoryDescription": "Опис Категорії"
+        "categoryDescription": "Опис Категорії",
+        "size": "Розмір",
+        "sizeName": "Назва Розміру",
+        "color": "Колір",
+        "colorName": "Назва Кольору",
+        "colorHexCodeDescription": "HEX-код Кольору"
     },
     "adminFeatures": {
         "addingProductVariant": "Додавання Варіанту Товару",
@@ -89,7 +96,10 @@
         "addingProduct": "Додавання Товару",
         "updatingProduct": "Оновлення Товару",
         "addingCategory": "Додавання Категорії",
-        "updatingCategory": "Оновлення Категорії"
+        "updatingCategory": "Оновлення Категорії",
+        "addingSize": "Додавання Розміру",
+        "addingColor": "Додавання Кольору",
+        "updatingColor": "Оновлення Кольору"
     },
     "toastrs": {
         "categoryAdded": "Категорію успішно збережено",
@@ -99,6 +109,12 @@
         "productAdded": "Товар успішно збережено",
         "productUpdated": "Товар успішно оновлено",
         "productAddedError": "Виникла помилка під час додавання товару",
-        "productUpdatedError": "Виникла помилка під час оновлення товару"
+        "productUpdatedError": "Виникла помилка під час оновлення товару",
+        "sizeAdded": "Розмір успішно збережено",
+        "sizeAddedError": "Виникла помилка під час додавання розміру",
+        "colorAddedError": "Виникла помилка під час додавання кольору",
+        "colorUpdatedError": "Виникла помилка під час оновлення кольору",
+        "colorAdded": "Колір успішно збережено",
+        "colorUpdated": "Колір успішно оновлено"
     }
 }

@@ -8,13 +8,16 @@
 </h1>
 <div mat-dialog-content>
   <ng-container *ngIf="isRetrievingData">
-    <app-spinner [diameter]="50"></app-spinner
-  ></ng-container>
+    <app-spinner [diameter]="50"></app-spinner>
+  </ng-container>
   <ng-container *ngIf="!isRetrievingData">
     <form [formGroup]="form">
-      <div class="row">
-        <div class="col-lg-4 col-md-4 col-4">
-          <mat-form-field>
+      <div class="row mb-3">
+        <div class="col-lg-5 col-md-5 col-10">
+          <mat-form-field
+            appearance="outline"
+            class="w-100 product-variant-form-input"
+          >
             <mat-label>{{ "inventory.product" | translate }}</mat-label>
             <mat-select formControlName="productId" required>
               <mat-option
@@ -26,27 +29,146 @@
             </mat-select>
             <mat-error *ngIf="productId?.invalid && productId?.touched">
               {{ "validation.requiredField" | translate }}
-            </mat-error></mat-form-field
-          >
+            </mat-error>
+          </mat-form-field>
         </div>
-        <div class="col-lg-2 col-md-2 col-2 d-flex justify-content-center">
-          <ng-container *ngIf="data?.isAdding">
-            <button
-              class="action-button"
-              mat-flat-button
-              (click)="onAddEditProduct(true)"
-            >
-              <mat-icon>add</mat-icon>
-            </button></ng-container
-          ><ng-container *ngIf="!data?.isAdding">
-            <button
-              class="action-button"
-              mat-flat-button
-              (click)="onAddEditProduct(false)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button></ng-container
+        <div
+          class="col-lg-1 col-md-1 col-2 d-flex align-items-start justify-content-center pt-2"
+        >
+          <button
+            class="action-button"
+            mat-icon-button
+            type="button"
+            (click)="onAddEditProduct(data.isAdding)"
+            [matTooltip]="
+              data.isAdding
+                ? ('common.add' | translate)
+                : ('common.edit' | translate)
+            "
           >
+            <mat-icon>{{ data.isAdding ? "add" : "edit" }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-10">
+          <mat-form-field
+            appearance="outline"
+            class="w-100 product-variant-form-input"
+          >
+            <mat-label>{{ "inventory.size" | translate }}</mat-label>
+            <mat-select formControlName="sizeId" required>
+              <mat-option
+                *ngFor="let size of sizesResponse?.sizes ?? []"
+                [value]="size.id"
+              >
+                {{ size.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="sizeId?.invalid && sizeId?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div
+          class="col-lg-1 col-md-1 col-2 d-flex align-items-start justify-content-center pt-2"
+        >
+          <button
+            *ngIf="data?.isAdding"
+            class="action-button"
+            mat-icon-button
+            type="button"
+            (click)="onAddSize()"
+            [matTooltip]="'common.add' | translate"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5 col-md-5 col-10">
+          <mat-form-field
+            appearance="outline"
+            class="w-100 product-variant-form-input"
+          >
+            <mat-label>{{ "inventory.color" | translate }}</mat-label>
+            <mat-select
+              formControlName="colorId"
+              required
+              (selectionChange)="onColorSelectionChange($event)"
+            >
+              <!-- Custom trigger to show color preview in the selected value -->
+              <mat-select-trigger>
+                <ng-container *ngIf="getSelectedColor() as selectedColor">
+                  <div class="color-option">
+                    <span
+                      class="color-preview"
+                      [style.background-color]="selectedColor.hexCode"
+                    ></span>
+                    <span class="color-name">{{ selectedColor.name }}</span>
+                  </div>
+                </ng-container>
+              </mat-select-trigger>
+
+              <!-- Options in dropdown -->
+              <mat-option
+                *ngFor="let color of colorsResponse?.colors ?? []"
+                [value]="color.id"
+              >
+                <div class="color-option">
+                  <span
+                    class="color-preview"
+                    [style.background-color]="color.hexCode"
+                  ></span>
+                  <span class="color-name">{{ color.name }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="colorId?.invalid && colorId?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div
+          class="col-lg-1 col-md-1 col-2 d-flex align-items-start justify-content-center pt-2"
+        >
+          <button
+            class="action-button"
+            mat-icon-button
+            type="button"
+            (click)="onAddEditColor(data.isAdding)"
+            [matTooltip]="
+              data.isAdding
+                ? ('common.add' | translate)
+                : ('common.edit' | translate)
+            "
+          >
+            <mat-icon>{{ data.isAdding ? "add" : "edit" }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-10">
+          <mat-form-field
+            appearance="outline"
+            class="product-variant-form-input"
+          >
+            <mat-label>{{ "inventory.status" | translate }}</mat-label>
+            <mat-select formControlName="status" required>
+              <mat-option
+                *ngFor="let status of allProductStatuses"
+                [value]="status"
+              >
+                {{ getProductStatusDisplayName(status) }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="status?.invalid && status?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div
+          class="col-lg-1 col-md-1 col-2 d-flex align-items-start justify-content-center pt-2"
+        >
+          <!-- Emprty button space for design consistency -->
         </div>
       </div>
     </form>
@@ -56,10 +178,8 @@
   <button mat-stroked-button color="warn" mat-dialog-close="false">
     {{ "common.close" | translate }}
   </button>
-  <ng-container>
-    <button type="submit" mat-button [disabled]="!isFormValid()">
-      <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
-      <span *ngIf="!data?.isAdding">{{ "common.update" | translate }}</span>
-    </button></ng-container
-  >
+  <button type="submit" mat-button [disabled]="!isFormValid()">
+    <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
+    <span *ngIf="!data?.isAdding">{{ "common.update" | translate }}</span>
+  </button>
 </div>

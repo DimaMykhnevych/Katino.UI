@@ -2,3 +2,61 @@
     padding: 5px !important;
     min-width: unset !important;
 }
+
+.product-variant-form-input{
+    width: 100%;
+
+    ::ng-deep {
+        .mat-form-field-outline {
+        color: rgba(148, 163, 184, 0.3);
+        }
+        
+        .mat-form-field-outline-thick {
+        color: #06b6d4;
+        }
+        
+        .mat-form-field-label {
+        color: #64748b;
+        }
+        
+        .mat-select-arrow {
+        color: #64748b;
+        }
+    }
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+// Color preview square
+.color-preview {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  
+  // Add shadow for better visibility with light colors
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.color-name {
+  flex: 1;
+  line-height: 1.4;
+}
+
+// Optional: Style for selected value in the trigger
+::ng-deep .mat-select-value {
+  .color-option {
+    gap: 8px;
+  }
+  
+  .color-preview {
+    margin-right: 8px;
+  }
+}
