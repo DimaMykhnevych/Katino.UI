@@ -179,6 +179,28 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onQuantityInput() {
+    this.checkStatusValidity();
+  }
+
+  public onStatusSelectionChange() {
+    this.checkStatusValidity();
+  }
+
+  private checkStatusValidity(): void {
+    if (
+      this.quantityDropSold?.value + this.quantityRegularSold?.value >=
+        this.quantityInStock?.value &&
+      this.status?.value === ProductStatus.inStock
+    ) {
+      this.status.markAsTouched();
+      this.status.setErrors({ invalidInStockStatus: true });
+    } else {
+      this.status?.markAsUntouched();
+      this.status?.setErrors(null);
+    }
+  }
+
   private loadAllData(): void {
     this.isRetrievingData = true;
 
@@ -242,6 +264,18 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         this.data?.productVariant?.status ?? ProductStatus.inStock,
         [Validators.required]
       ),
+      quantityInStock: new FormControl(
+        this.data?.productVariant?.quantityInStock ?? 1,
+        [Validators.required]
+      ),
+      quantityDropSold: new FormControl(
+        this.data?.productVariant?.quantityDropSold ?? 0,
+        [Validators.required]
+      ),
+      quantityRegularSold: new FormControl(
+        this.data?.productVariant?.quantityRegularSold ?? 0,
+        [Validators.required]
+      ),
     });
   }
 
@@ -259,5 +293,17 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
   get status() {
     return this.form.get('status');
+  }
+
+  get quantityInStock() {
+    return this.form.get('quantityInStock');
+  }
+
+  get quantityDropSold() {
+    return this.form.get('quantityDropSold');
+  }
+
+  get quantityRegularSold() {
+    return this.form.get('quantityRegularSold');
   }
 }

@@ -21,6 +21,4 @@ export interface ProductVariant {
   product: Product;
   size: Size;
   measurements: GetProductVariantMeasurement[];
-  totalSold: number;
-  availableQuantity: number;
 }

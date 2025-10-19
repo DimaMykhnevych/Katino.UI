@@ -152,7 +152,11 @@
             class="product-variant-form-input"
           >
             <mat-label>{{ "inventory.status" | translate }}</mat-label>
-            <mat-select formControlName="status" required>
+            <mat-select
+              formControlName="status"
+              required
+              (selectionChange)="onStatusSelectionChange()"
+            >
               <mat-option
                 *ngFor="let status of allProductStatuses"
                 [value]="status"
@@ -160,8 +164,11 @@
                 {{ getProductStatusDisplayName(status) }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="status?.invalid && status?.touched">
+            <mat-error *ngIf="status?.invalid && status?.errors?.required">
               {{ "validation.requiredField" | translate }}
+            </mat-error>
+            <mat-error *ngIf="status?.errors?.invalidInStockStatus">
+              {{ "validation.invalidStatus" | translate }}
             </mat-error>
           </mat-form-field>
         </div>
@@ -171,6 +178,91 @@
           <!-- Emprty button space for design consistency -->
         </div>
       </div>
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <h2 class="quantity-header">{{ "inventory.amount" | translate }}</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="quantity col-lg-4 col-md-4 col-4">
+          <h4>{{ "common.coming" | translate }}</h4>
+          <mat-form-field
+            appearance="outline"
+            class="product-variant-form-input"
+          >
+            <mat-label>{{ "inventory.quantityInStock" | translate }}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="quantityInStock"
+              placeholder="{{ 'inventory.quantityInStock' | translate }}"
+              min="0"
+              required
+              (input)="onQuantityInput()"
+            />
+            <mat-error
+              *ngIf="quantityInStock?.invalid && quantityInStock?.touched"
+            >
+              {{ "validation.requiredField" | translate }}
+            </mat-error></mat-form-field
+          >
+        </div>
+        <div class="quantity col-lg-8 col-md-8 col-8">
+          <h4>{{ "common.spending" | translate }}</h4>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-6">
+              <mat-form-field
+                appearance="outline"
+                class="product-variant-form-input"
+              >
+                <mat-label>{{ "common.drop" | translate }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="quantityDropSold"
+                  placeholder="{{ 'inventory.quantityDropSold' | translate }}"
+                  min="0"
+                  required
+                  (input)="onQuantityInput()"
+                />
+                <mat-error
+                  *ngIf="quantityDropSold?.invalid && quantityDropSold?.touched"
+                >
+                  {{ "validation.requiredField" | translate }}
+                </mat-error></mat-form-field
+              >
+            </div>
+            <div class="col-lg-6 col-md-6 col-6">
+              <mat-form-field
+                appearance="outline"
+                class="product-variant-form-input"
+              >
+                <mat-label>{{ "common.my" | translate }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="quantityRegularSold"
+                  placeholder="{{
+                    'inventory.quantityRegularSold' | translate
+                  }}"
+                  min="0"
+                  required
+                  (input)="onQuantityInput()"
+                />
+                <mat-error
+                  *ngIf="
+                    quantityRegularSold?.invalid && quantityRegularSold?.touched
+                  "
+                >
+                  {{ "validation.requiredField" | translate }}
+                </mat-error></mat-form-field
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
     </form>
   </ng-container>
 </div>

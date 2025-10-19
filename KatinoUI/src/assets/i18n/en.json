@@ -16,7 +16,11 @@
         "addingButtonText": "Adding...",
         "updatingButtonText":"Updating...",
         "hexCode": "HEX Code",
-        "colorPicker": "Color Picker"
+        "colorPicker": "Color Picker",
+        "spending": "Sold",
+        "drop": "Drop",
+        "my": "Regular",
+        "coming": "Coming"           
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -24,7 +28,8 @@
         "password": "Password"
     },
     "validation": {
-        "requiredField": "This field is required"
+        "requiredField": "This field is required",
+        "invalidStatus": "Invalid status"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Email Confirmation",

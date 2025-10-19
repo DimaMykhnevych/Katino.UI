@@ -16,7 +16,11 @@
         "addingButtonText": "Додавання...",
         "updatingButtonText":"Оновлення...",
         "hexCode": "HEX-код",
-        "colorPicker": "Вибір Кольору"
+        "colorPicker": "Вибір Кольору",
+        "spending": "Витрати",
+        "drop": "Дроп",
+        "my": "Мої",
+        "coming": "Прихід"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -24,7 +28,8 @@
         "password": "Пароль"
     },
     "validation": {
-        "requiredField": "Це поле обов'язкове"
+        "requiredField": "Це поле обов'язкове",
+        "invalidStatus": "Невірний статус"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Підтвердження електронною поштою",
