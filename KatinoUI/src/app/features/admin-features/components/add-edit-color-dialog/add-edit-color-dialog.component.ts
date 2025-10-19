@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColorService } from '../../services/color.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { Color } from 'src/app/core/models/color';
 import { UpdateColor } from '../../models/update-color';
 
@@ -27,6 +27,7 @@ export class AddEditColorDialogComponent implements OnInit, OnDestroy {
 
   public data: AddEditColorData;
   public isUpdatingData: boolean = false;
+  public selectedColor: string = '#000000';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: AddEditColorData,
@@ -41,6 +42,7 @@ export class AddEditColorDialogComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.initializeForm();
+    this.setupColorSync();
   }
 
   public ngOnDestroy(): void {
@@ -54,6 +56,43 @@ export class AddEditColorDialogComponent implements OnInit, OnDestroy {
     } else {
       this.updateColor();
     }
+  }
+
+  public onColorPickerChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const color = input.value;
+    this.selectedColor = color;
+    this.hexCode?.setValue(color.toUpperCase(), { emitEvent: false });
+  }
+
+  private setupColorSync(): void {
+    const initialHex = this.hexCode?.value;
+    if (initialHex) {
+      this.selectedColor = this.normalizeHexCode(initialHex);
+    }
+
+    this.hexCode?.valueChanges
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((value: string) => {
+        if (value && this.isValidHexCode(value)) {
+          this.selectedColor = this.normalizeHexCode(value);
+        }
+      });
+  }
+
+  private normalizeHexCode(hex: string): string {
+    hex = hex.trim();
+
+    if (!hex.startsWith('#')) {
+      hex = '#' + hex;
+    }
+
+    return hex.toUpperCase();
+  }
+
+  private isValidHexCode(hex: string): boolean {
+    const hexPattern = /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    return hexPattern.test(hex);
   }
 
   private addColor(): void {

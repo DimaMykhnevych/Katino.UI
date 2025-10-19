@@ -15,7 +15,8 @@
         "description": "Description",
         "addingButtonText": "Adding...",
         "updatingButtonText":"Updating...",
-        "hexCode": "HEX Code"   
+        "hexCode": "HEX Code",
+        "colorPicker": "Color Picker"
     },
     "login": {
         "subtitle": "Log in to your account",

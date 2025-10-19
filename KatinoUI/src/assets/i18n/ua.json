@@ -15,7 +15,8 @@
         "description": "Опис",
         "addingButtonText": "Додавання...",
         "updatingButtonText":"Оновлення...",
-        "hexCode": "HEX-код"
+        "hexCode": "HEX-код",
+        "colorPicker": "Вибір Кольору"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",

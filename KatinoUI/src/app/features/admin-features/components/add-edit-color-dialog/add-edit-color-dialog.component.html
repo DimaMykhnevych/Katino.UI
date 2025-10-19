@@ -43,6 +43,25 @@
             </mat-error>
           </mat-form-field>
         </div>
+
+        <div class="col-lg-12 col-md-12 col-12">
+          <div class="color-picker-container">
+            <label class="color-picker-label">{{
+              "common.colorPicker" | translate
+            }}</label>
+            <div class="color-picker-wrapper">
+              <input
+                type="color"
+                [value]="selectedColor"
+                (input)="onColorPickerChange($event)"
+                class="color-picker-input"
+              />
+              <div class="color-preview" [style.background]="selectedColor">
+                <span class="color-preview-text">{{ selectedColor }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </ng-container>
