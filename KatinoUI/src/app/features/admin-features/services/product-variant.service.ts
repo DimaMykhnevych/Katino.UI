@@ -24,4 +24,13 @@ export class ProductVariantService {
       }
     );
   }
+
+  public getGeneratedArticle(): Observable<string> {
+    return this._http.get(
+      `${AppSettings.apiHost}/ProductVariant/article/generate`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
 }

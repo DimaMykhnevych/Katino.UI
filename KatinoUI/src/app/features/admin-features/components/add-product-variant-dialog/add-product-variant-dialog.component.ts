@@ -26,6 +26,7 @@ import { GetColorsResponse } from '../../models/get-colors-response';
 import { AddEditColorData } from '../../models/add-edit-color-data';
 import { Color } from 'src/app/core/models/color';
 import { MatSelectChange } from '@angular/material/select';
+import { ProductVariantService } from '../../services/product-variant.service';
 
 @Component({
   selector: 'app-add-product-variant-dialog',
@@ -48,6 +49,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: AddEditProductVariantData,
     private _productService: ProductService,
+    private _productVariantService: ProductVariantService,
     private _sizeService: SizeService,
     private _colorService: ColorService,
     private _dialogService: DialogService,
@@ -229,6 +231,13 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           } as GetColorsResponse);
         })
       ),
+      article: this.data.isAdding
+        ? this._productVariantService.getGeneratedArticle().pipe(
+            catchError((error) => {
+              return of(null);
+            })
+          )
+        : of(null),
     })
       .pipe(takeUntil(this._destroy$))
       .subscribe({
@@ -237,6 +246,9 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           this.sizesResponse = responses.sizes;
           this.colorsResponse = responses.colors;
           this.isRetrievingData = false;
+          if (responses.article !== null) {
+            this.article?.setValue(responses.article);
+          }
         },
         error: (error) => {
           console.error('Error loading data:', error);
@@ -276,6 +288,16 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         this.data?.productVariant?.quantityRegularSold ?? 0,
         [Validators.required]
       ),
+      article: new FormControl(
+        {
+          value: this.data?.productVariant?.article,
+          disabled: true,
+        },
+        [Validators.required]
+      ),
+      // TODO continue with article (generate on back and make the field disabled on add/update) and measurements (form array)
+      // TODO product variants deletion
+      // TODO implement product photos
     });
   }
 
@@ -305,5 +327,9 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
   get quantityRegularSold() {
     return this.form.get('quantityRegularSold');
+  }
+
+  get article() {
+    return this.form.get('article');
   }
 }
