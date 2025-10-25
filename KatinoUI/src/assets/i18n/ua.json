@@ -20,7 +20,8 @@
         "spending": "Витрати",
         "drop": "Дроп",
         "my": "Мої",
-        "coming": "Прихід"
+        "coming": "Прихід",
+        "delete": "Видалити"
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -29,7 +30,8 @@
     },
     "validation": {
         "requiredField": "Це поле обов'язкове",
-        "invalidStatus": "Невірний статус"
+        "invalidStatus": "Невірний статус",
+        "minValue": "Не може бути менше {{value}}"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Підтвердження електронною поштою",
@@ -121,6 +123,16 @@
         "colorAddedError": "Виникла помилка під час додавання кольору",
         "colorUpdatedError": "Виникла помилка під час оновлення кольору",
         "colorAdded": "Колір успішно збережено",
-        "colorUpdated": "Колір успішно оновлено"
+        "colorUpdated": "Колір успішно оновлено",
+        "productVariantAddedError": "Виникла помилка під час додавання варіанту товару",
+        "productVariantUpdatedError": "Виникла помилка під час оновлення варіанту товару",
+        "productVariantAdded": "Варіант товару успішно збережено",
+        "productVariantUpdated": "Варіант товару успішно оновлено",
+        "productVariantDeletedError": "Виникла помилка під час видалення варіанту товару",
+        "productVariantDeleted": "Варіант товару успішно видалено"
+    },
+    "dialogs": {
+        "productVariantDeletionTitle": "Видалення Варіанту Товару",
+        "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?"
     }
 }

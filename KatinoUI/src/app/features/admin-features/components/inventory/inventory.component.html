@@ -153,7 +153,12 @@
             <span>{{
               variant.quantityInStock -
                 variant.quantityDropSold -
-                variant.quantityRegularSold
+                variant.quantityRegularSold <
+              0
+                ? 0
+                : variant.quantityInStock -
+                  variant.quantityDropSold -
+                  variant.quantityRegularSold
             }}</span>
           </div>
         </td>
@@ -326,6 +331,10 @@
             <button mat-menu-item (click)="onEditClick(variant)">
               <mat-icon>edit</mat-icon>
               <span>{{ "common.update" | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="onDeleteClick(variant)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ "common.delete" | translate }}</span>
             </button>
           </mat-menu>
         </td>

@@ -41,7 +41,12 @@
               required
             />
             <mat-error *ngIf="costPrice?.invalid && costPrice?.touched">
-              {{ "validation.requiredField" | translate }}
+              <span *ngIf="costPrice?.errors?.required">
+                {{ "validation.requiredField" | translate }}
+              </span>
+              <span *ngIf="costPrice?.errors?.min">
+                {{ "validation.minValue" | translate : { value: 0 } }}
+              </span>
             </mat-error></mat-form-field
           >
         </div>
@@ -63,7 +68,12 @@
             <mat-error
               *ngIf="wholesalePrice?.invalid && wholesalePrice?.touched"
             >
-              {{ "validation.requiredField" | translate }}
+              <span *ngIf="wholesalePrice?.errors?.required">
+                {{ "validation.requiredField" | translate }}
+              </span>
+              <span *ngIf="wholesalePrice?.errors?.min">
+                {{ "validation.minValue" | translate : { value: 0 } }}
+              </span>
             </mat-error></mat-form-field
           >
         </div>
@@ -80,7 +90,12 @@
               required
             />
             <mat-error *ngIf="dropPrice?.invalid && dropPrice?.touched">
-              {{ "validation.requiredField" | translate }}
+              <span *ngIf="dropPrice?.errors?.required">
+                {{ "validation.requiredField" | translate }}
+              </span>
+              <span *ngIf="dropPrice?.errors?.min">
+                {{ "validation.minValue" | translate : { value: 0 } }}
+              </span>
             </mat-error></mat-form-field
           >
         </div>
@@ -97,7 +112,12 @@
               required
             />
             <mat-error *ngIf="price?.invalid && price?.touched">
-              {{ "validation.requiredField" | translate }}
+              <span *ngIf="price?.errors?.required">
+                {{ "validation.requiredField" | translate }}
+              </span>
+              <span *ngIf="price?.errors?.min">
+                {{ "validation.minValue" | translate : { value: 0 } }}
+              </span>
             </mat-error></mat-form-field
           >
         </div>

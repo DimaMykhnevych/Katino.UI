@@ -16,6 +16,7 @@ import { EmailConfirmationModule } from './features/email-confirmation/email-con
 import { NavbarModule } from './layout/navbar/navbar.module';
 import { SidenavModule } from './layout/sidenav/sidenav.module';
 import { SpinnerModule } from './layout/spinner/spinner.module';
+import { DialogsModule } from './layout/dialogs/dialogs.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { SpinnerModule } from './layout/spinner/spinner.module';
     NavbarModule,
     SidenavModule,
     SpinnerModule,
+    DialogsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

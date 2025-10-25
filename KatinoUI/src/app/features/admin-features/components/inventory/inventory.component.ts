@@ -21,6 +21,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
 import { AddEditProductVariantData } from '../../models/add-edit-product-variant-data';
 import { StatusConstants } from 'src/app/core/constants/status-constants';
+import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inventory',
@@ -71,7 +73,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private _categoryService: CategoryService,
     private _builder: FormBuilder,
     private _translate: TranslateService,
-    private _dialogService: DialogService
+    private _dialogService: DialogService,
+    private _uiDialogService: UIDialogService,
+    private _toastr: ToastrService
   ) {}
 
   public ngOnInit(): void {
@@ -117,7 +121,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {
-      this.onAddEditDialogClose();
+      this.getFreshData();
     });
   }
 
@@ -128,11 +132,76 @@ export class InventoryComponent implements OnInit, OnDestroy {
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {
-      this.onAddEditDialogClose();
+      this.getFreshData();
     });
   }
 
-  private onAddEditDialogClose(): void {
+  public onDeleteClick(productVariant: ProductVariant): void {
+    const productInfo = `${productVariant.product.name} (${productVariant.size.name}, ${productVariant.color.name})`;
+    const dialogRef = this._uiDialogService.openConfirmationDialog({
+      title: this._translate.instant('dialogs.productVariantDeletionTitle'),
+      content: this._translate.instant(
+        'dialogs.productVariantDeletionContent',
+        { productInfo: productInfo }
+      ),
+    });
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp === 'true') {
+        this.onProductVariantDelete(productVariant);
+      }
+    });
+  }
+
+  private onProductVariantDelete(productVariant: ProductVariant): void {
+    this._productVariantService
+      .deleteProductVariant(productVariant.id)
+      .pipe(
+        catchError((error) => {
+          return this.onCatchDeleteError();
+        })
+      )
+      .subscribe((resp: boolean) => {
+        this.onProductVariantDeletionCompleted(resp);
+      });
+  }
+
+  private onProductVariantDeletionCompleted(resp: boolean) {
+    if (resp) {
+      this._translate
+        .get('toastrs.productVariantDeleted')
+        .subscribe((resp: string) => {
+          this.showSuccess(resp);
+        });
+    } else {
+      this._translate
+        .get('toastrs.productVariantDeletedError')
+        .subscribe((resp: string) => {
+          this.showError(resp);
+        });
+    }
+
+    this.getFreshData();
+  }
+
+  private onCatchDeleteError(): Observable<any> {
+    this._translate
+      .get('toastrs.productVariantDeletedError')
+      .subscribe((resp: string) => {
+        this.showError(resp);
+      });
+
+    return of({});
+  }
+
+  private showSuccess(text: string): void {
+    this._toastr.success(`${text}`);
+  }
+
+  private showError(text: string): void {
+    this._toastr.error(`${text}`);
+  }
+
+  private getFreshData(): void {
     this.clearForm();
     this.getCategories();
     this.getProductVariants({});

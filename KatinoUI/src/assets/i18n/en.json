@@ -20,7 +20,8 @@
         "spending": "Sold",
         "drop": "Drop",
         "my": "Regular",
-        "coming": "Coming"           
+        "coming": "Coming",
+        "delete": "Delete"               
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -29,7 +30,8 @@
     },
     "validation": {
         "requiredField": "This field is required",
-        "invalidStatus": "Invalid status"
+        "invalidStatus": "Invalid status",
+        "minValue": "Can not be less than {{value}}"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Email Confirmation",
@@ -121,6 +123,16 @@
         "colorAddedError": "An error occurred during adding color",
         "colorUpdatedError": "An error occurred during updating color",
         "colorAdded": "Color was successfully added",
-        "colorUpdated": "Color was successfully updated"
-    }
+        "colorUpdated": "Color was successfully updated",
+        "productVariantAddedError": "An error occurred during adding product variant",
+        "productVariantUpdatedError": "An error occurred during updating product variant",
+        "productVariantAdded": "Product variant was successfully added",
+        "productVariantUpdated": "Product variant was successfully updated",
+        "productVariantDeletedError": "n error occurred during deleting product variant",
+        "productVariantDeleted": "Product variant was successfully deleted"
+    },
+    "dialogs": {
+        "productVariantDeletionTitle": "Product Variant Deletion",
+        "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?"
+    }    
 }

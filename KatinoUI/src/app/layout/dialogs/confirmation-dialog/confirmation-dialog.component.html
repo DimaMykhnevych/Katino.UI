@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div class="mat-typography mb-2" mat-dialog-content>
+  <b>{{ content }}</b>
+</div>
+<button class="m-2" mat-raised-button mat-dialog-close="false">
+  {{ "common.close" | translate }}
+</button>
+<button mat-raised-button color="warn" mat-dialog-close="true">
+  {{ "common.delete" | translate }}
+</button>

@@ -12,6 +12,7 @@ import { AddEditProductDialogComponent } from './components/add-edit-product-dia
 import { AddEditCategoryDialogComponent } from './components/add-edit-category-dialog/add-edit-category-dialog.component';
 import { AddSizeDialogComponent } from './components/add-size-dialog/add-size-dialog.component';
 import { AddEditColorDialogComponent } from './components/add-edit-color-dialog/add-edit-color-dialog.component';
+import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AddEditColorDialogComponent } from './components/add-edit-color-dialog/
     TranslateModule,
     ReactiveFormsModule,
     SpinnerModule,
+    DialogsModule,
   ],
 })
 export class AdminFeaturesModule {}

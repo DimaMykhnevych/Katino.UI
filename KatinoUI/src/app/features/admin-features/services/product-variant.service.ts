@@ -5,6 +5,8 @@ import { GetProductVariant } from '../models/get-product-variant';
 import { AppSettings } from 'src/app/core/settings';
 import { GetProductVariantRequest } from '../models/get-product-variant-request';
 import { convertToHttpParams } from 'src/app/core/http/request/http-params.util';
+import { AddProductVariantRequest } from '../models/add-product-variant-request';
+import { UpdateProductVariantRequest } from '../models/update-product-variant-request';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +33,30 @@ export class ProductVariantService {
       {
         responseType: 'text',
       }
+    );
+  }
+
+  public addProductVariant(
+    productVariant: AddProductVariantRequest
+  ): Observable<boolean> {
+    return this._http.post<boolean>(
+      `${AppSettings.apiHost}/ProductVariant`,
+      productVariant
+    );
+  }
+
+  public updateProductVariant(
+    productVariant: UpdateProductVariantRequest
+  ): Observable<boolean> {
+    return this._http.put<boolean>(
+      `${AppSettings.apiHost}/ProductVariant`,
+      productVariant
+    );
+  }
+
+  public deleteProductVariant(productVariantId: string): Observable<boolean> {
+    return this._http.delete<boolean>(
+      `${AppSettings.apiHost}/ProductVariant/${productVariantId}`
     );
   }
 }

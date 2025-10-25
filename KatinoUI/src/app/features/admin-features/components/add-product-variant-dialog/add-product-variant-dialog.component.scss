@@ -73,3 +73,19 @@ h1, h4{
   border-top: 1px solid black;
   border-radius: 10px
 }
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    .loading-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    ::ng-deep .mat-spinner circle {
+        stroke: #06b6d4;
+    }
+}
