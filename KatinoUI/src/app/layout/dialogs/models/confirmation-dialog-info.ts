@@ -1,4 +1,9 @@
 export interface ConfirmationDialogInfo {
-  title: string;
-  content: string;
+  titleKey: string;
+  contentKey: string;
+  contentParams?: any;
+  confirmButtonTextKey?: string;
+  cancelButtonTextKey?: string;
+  type?: 'warning' | 'danger' | 'info';
+  icon?: string;
 }

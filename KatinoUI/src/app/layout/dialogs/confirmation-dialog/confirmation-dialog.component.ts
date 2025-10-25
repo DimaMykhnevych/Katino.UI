@@ -8,11 +8,11 @@ import { ConfirmationDialogInfo } from '../models/confirmation-dialog-info';
   styleUrls: ['./confirmation-dialog.component.scss'],
 })
 export class ConfirmationDialogComponent implements OnInit {
-  public content: string;
-  public title: string;
+  public data: ConfirmationDialogInfo;
+
   constructor(@Inject(MAT_DIALOG_DATA) data: ConfirmationDialogInfo) {
-    this.content = data.content;
-    this.title = data.title;
+    this.data = data;
   }
+
   public ngOnInit(): void {}
 }

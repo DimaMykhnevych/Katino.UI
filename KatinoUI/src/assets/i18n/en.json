@@ -21,7 +21,8 @@
         "drop": "Drop",
         "my": "Regular",
         "coming": "Coming",
-        "delete": "Delete"               
+        "delete": "Delete",
+        "cancel": "Cancel"             
     },
     "login": {
         "subtitle": "Log in to your account",

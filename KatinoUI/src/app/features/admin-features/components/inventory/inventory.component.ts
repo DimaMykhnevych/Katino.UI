@@ -138,15 +138,19 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   public onDeleteClick(productVariant: ProductVariant): void {
     const productInfo = `${productVariant.product.name} (${productVariant.size.name}, ${productVariant.color.name})`;
+
     const dialogRef = this._uiDialogService.openConfirmationDialog({
-      title: this._translate.instant('dialogs.productVariantDeletionTitle'),
-      content: this._translate.instant(
-        'dialogs.productVariantDeletionContent',
-        { productInfo: productInfo }
-      ),
+      titleKey: 'dialogs.productVariantDeletionTitle',
+      contentKey: 'dialogs.productVariantDeletionContent',
+      contentParams: { productInfo: productInfo },
+      confirmButtonTextKey: 'common.delete',
+      cancelButtonTextKey: 'common.cancel',
+      type: 'danger',
+      icon: 'delete_outline',
     });
-    dialogRef.afterClosed().subscribe((resp) => {
-      if (resp === 'true') {
+
+    dialogRef.afterClosed().subscribe((confirmed: string) => {
+      if (confirmed === 'true') {
         this.onProductVariantDelete(productVariant);
       }
     });

@@ -1,10 +1,42 @@
-<h1 mat-dialog-title>{{ title }}</h1>
-<div class="mat-typography mb-2" mat-dialog-content>
-  <b>{{ content }}</b>
+<div class="confirmation-dialog">
+  <div class="dialog-header">
+    <mat-icon
+      class="header-icon"
+      [ngClass]="{
+        'icon-warning': data.type === 'warning',
+        'icon-danger': data.type === 'danger',
+        'icon-info': data.type === 'info' || !data.type
+      }"
+    >
+      {{ data.icon || "help_outline" }}
+    </mat-icon>
+    <h1 mat-dialog-title class="dialog-title">
+      {{ data.titleKey | translate }}
+    </h1>
+  </div>
+
+  <div mat-dialog-content>
+    <p>
+      {{ data.contentKey | translate : data.contentParams }}
+    </p>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button mat-dialog-close="false" class="cancel-button">
+      {{ data.cancelButtonTextKey || "common.cancel" | translate }}
+    </button>
+
+    <button
+      mat-button
+      [ngClass]="{
+        'confirm-danger': data.type === 'danger',
+        'confirm-warning': data.type === 'warning',
+        'confirm-info': data.type === 'info' || !data.type
+      }"
+      mat-dialog-close="true"
+      class="confirm-button"
+    >
+      {{ data.confirmButtonTextKey || "common.confirm" | translate }}
+    </button>
+  </div>
 </div>
-<button class="m-2" mat-raised-button mat-dialog-close="false">
-  {{ "common.close" | translate }}
-</button>
-<button mat-raised-button color="warn" mat-dialog-close="true">
-  {{ "common.delete" | translate }}
-</button>
