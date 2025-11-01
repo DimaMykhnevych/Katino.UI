@@ -46,6 +46,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   public translatedAllOption$?: Observable<string>;
   public allProductStatuses: ProductStatus[] =
     StatusConstants.allProductStatuses;
+  public retrievingLastAddedProductVariantInfo: boolean = false;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -162,6 +163,35 @@ export class InventoryComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onCopyClick(productVariant: ProductVariant): void {
+    this.copyProductVariant(productVariant);
+  }
+
+  public showCopyLastAddedButton(): boolean {
+    return this.productVariantResponse!.resultsAmount > 0;
+  }
+
+  public onCopyLastProductVariantClick(): void {
+    this.retrievingLastAddedProductVariantInfo = true;
+    this._productVariantService
+      .getProductVariants({
+        getLastAddedProductVariant: true,
+      })
+      .pipe(
+        catchError((error) => {
+          return this.onCatchError(error);
+        }),
+        takeUntil(this._destroy$)
+      )
+      .subscribe((resp) => {
+        this.retrievingLastAddedProductVariantInfo = false;
+        if (resp && resp.resultsAmount > 0) {
+          const productVariant = resp.productVariants[0];
+          this.copyProductVariant(productVariant);
+        }
+      });
+  }
+
   public openLargeImage(photos: any[], startIndex: number = 0): void {
     if (photos && photos.length > 0) {
       this.currentPhotos = photos.filter((photo) => photo && photo.photoUrl);
@@ -213,6 +243,17 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   public get photoCounter(): string {
     return `${this.currentPhotoIndex + 1} / ${this.currentPhotos.length}`;
+  }
+
+  private copyProductVariant(productVariant: ProductVariant): void {
+    const data: AddEditProductVariantData = {
+      productVariant: productVariant,
+      isAdding: true,
+    };
+    const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
+    dialogRef.afterClosed().subscribe(() => {
+      this.getFreshData();
+    });
   }
 
   private onProductVariantDelete(productVariant: ProductVariant): void {
@@ -383,6 +424,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   private onCatchError(error: any): Observable<any> {
     this.isRetrievingData = false;
+    this.retrievingLastAddedProductVariantInfo = false;
     return of({});
   }
 

@@ -23,7 +23,9 @@
         "coming": "Прихід",
         "delete": "Видалити",
         "cancel": "Відмінити",
-        "restore": "Відновити"   
+        "restore": "Відновити",
+        "copy": "Копіювати",
+        "loading": "Завантаження..."
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -105,7 +107,8 @@
         "colorHexCodeDescription": "HEX-код Кольору",
         "photos": "Фото",
         "uploadPhotos": "Завантажити Фото",
-        "takePhoto": "Зробити Фото"          
+        "takePhoto": "Зробити Фото",
+        "copyLastAddedProductVariant": "Скопіювати останній доданий товар"
     },
     "adminFeatures": {
         "addingProductVariant": "Додавання Варіанту Товару",

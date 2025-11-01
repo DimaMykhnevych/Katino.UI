@@ -4,4 +4,5 @@ export interface GetProductVariantRequest {
   productName?: string;
   categoryId?: string;
   productStatus?: ProductStatus;
+  getLastAddedProductVariant?: boolean;
 }

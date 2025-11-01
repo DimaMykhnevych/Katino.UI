@@ -23,7 +23,9 @@
         "coming": "Coming",
         "delete": "Delete",
         "cancel": "Cancel",
-        "restore": "Restore"       
+        "restore": "Restore",
+        "copy": "Copy",
+        "loading": "Loading..."
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -105,7 +107,8 @@
         "colorHexCodeDescription": "Color HEX-code",
         "photos": "Photos",
         "uploadPhotos": "Upload Photos",
-        "takePhoto": "Take Photo"        
+        "takePhoto": "Take Photo",
+        "copyLastAddedProductVariant": "Copy last added product variant"
     },
     "adminFeatures": {
         "addingProductVariant": "Adding Product Variant",
