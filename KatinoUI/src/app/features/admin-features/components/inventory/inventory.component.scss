@@ -343,14 +343,13 @@ td, th {
   }
 }
 
-// Simple Photo Modal
 .photo-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -359,10 +358,11 @@ td, th {
 }
 
 .large-photo {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 80%;
+  max-height: 80%;
   object-fit: contain;
   border-radius: 8px;
+  transition: opacity 0.2s ease;
 }
 
 .close-btn {
@@ -379,10 +379,69 @@ td, th {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+
+  &:hover {
+    background: white;
+    transform: scale(1.1);
+  }
 }
 
-.close-btn:hover {
-  background: white;
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #1e293b;
+  }
+
+  &:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  &.prev-btn {
+    left: 65px;
+  }
+
+  &.next-btn {
+    right: 30px;
+  }
+}
+
+.photo-counter {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  z-index: 1001;
 }
 
 // Add spacing between groups
@@ -436,9 +495,39 @@ td, th {
   .close-btn {
     top: 75px;
     right: 15px;
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     font-size: 20px;
+  }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+
+    &.prev-btn {
+      left: 10px;
+    }
+
+    &.next-btn {
+      right: 10px;
+    }
+  }
+
+  .photo-counter {
+    bottom: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .large-photo {
+    max-width: 80%;
+    max-height: 80%;
   }
 
   .variants-table {
@@ -495,5 +584,42 @@ td, th {
         gap: 10px;
       }
     }
+  }
+
+  .close-btn {
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    &.prev-btn {
+      left: 5px;
+    }
+
+    &.next-btn {
+      right: 5px;
+    }
+  }
+
+  .photo-counter {
+    bottom: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .large-photo {
+    max-width: 80%;
+    max-height: 80%;
   }
 }
