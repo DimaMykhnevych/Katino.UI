@@ -64,6 +64,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
     'actions',
   ];
 
+  public selectedImageUrl?: string;
+
+  public placeholderImageUrl = 'https://placehold.co/400';
+
   public dataSource: MatTableDataSource<GroupedProductVariant> =
     new MatTableDataSource<GroupedProductVariant>();
 
@@ -154,6 +158,18 @@ export class InventoryComponent implements OnInit, OnDestroy {
         this.onProductVariantDelete(productVariant);
       }
     });
+  }
+
+  public openLargeImage(url: string): void {
+    if (url) {
+      this.showLargeImage = true;
+      this.selectedImageUrl = url;
+    }
+  }
+
+  public closeLargeImage(): void {
+    this.showLargeImage = false;
+    this.selectedImageUrl = undefined;
   }
 
   private onProductVariantDelete(productVariant: ProductVariant): void {

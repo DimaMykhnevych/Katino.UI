@@ -302,6 +302,119 @@
       <hr />
       <div class="row">
         <div class="col-12">
+          <h4 class="photos-header mb-3">
+            {{ "inventory.photos" | translate }}
+            <span class="photo-count"
+              >({{ getVisiblePhotos().length }}/{{ maxPhotos }})</span
+            >
+          </h4>
+        </div>
+      </div>
+
+      <div class="row mb-3" *ngIf="canAddMorePhotos()">
+        <div class="col-12">
+          <input
+            type="file"
+            #photoInput
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif"
+            multiple
+            capture="environment"
+            (change)="onPhotoFileSelected($event)"
+            style="display: none"
+          />
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="photoInput.click()"
+            [disabled]="isUpdatingData"
+            class="m-2"
+          >
+            <mat-icon>add_photo_alternate</mat-icon>
+            {{ "inventory.uploadPhotos" | translate }}
+          </button>
+          <button
+            type="button"
+            mat-stroked-button
+            class="ml-2"
+            (click)="photoInputCamera.click()"
+            [disabled]="isUpdatingData"
+            class="m-2"
+          >
+            <mat-icon>camera_alt</mat-icon>
+            {{ "inventory.takePhoto" | translate }}
+          </button>
+          <input
+            type="file"
+            #photoInputCamera
+            accept="image/*"
+            capture="environment"
+            (change)="onPhotoFileSelected($event)"
+            style="display: none"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-3" *ngIf="photos.length > 0">
+        <div class="col-12">
+          <div class="photo-grid">
+            <div
+              *ngFor="let photo of photos; let i = index"
+              class="photo-item"
+              [class.marked-for-deletion]="photo.markedForDeletion"
+            >
+              <div class="photo-wrapper">
+                <img
+                  [src]="photo.photoUrl"
+                  [alt]="'Photo ' + (i + 1)"
+                  class="photo-thumbnail"
+                />
+
+                <button
+                  *ngIf="!photo.markedForDeletion"
+                  type="button"
+                  mat-icon-button
+                  class="delete-photo-btn"
+                  (click)="onRemovePhoto(i)"
+                  [matTooltip]="'common.delete' | translate"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+
+                <div
+                  class="photo-restore-overlay"
+                  *ngIf="photo.markedForDeletion"
+                >
+                  <button
+                    type="button"
+                    mat-mini-fab
+                    color="primary"
+                    (click)="onRestorePhoto(i)"
+                    [matTooltip]="'common.restore' | translate"
+                  >
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                </div>
+
+                <div class="photo-order-badge" *ngIf="!photo.markedForDeletion">
+                  {{ i + 1 }}
+                </div>
+
+                <div
+                  class="new-photo-badge"
+                  *ngIf="!photo.isExisting && !photo.markedForDeletion"
+                >
+                  <mat-icon>fiber_new</mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
+        <div class="col-12">
           <h4 class="measurements-header">
             {{ "inventory.measurements" | translate }}
           </h4>

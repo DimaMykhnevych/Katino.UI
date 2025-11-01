@@ -22,7 +22,8 @@
         "my": "Мої",
         "coming": "Прихід",
         "delete": "Видалити",
-        "cancel": "Відмінити"
+        "cancel": "Відмінити",
+        "restore": "Відновити"   
     },
     "login": {
         "subtitle": "Увійдіть до свого облікового запису",
@@ -32,7 +33,11 @@
     "validation": {
         "requiredField": "Це поле обов'язкове",
         "invalidStatus": "Невірний статус",
-        "minValue": "Не може бути менше {{value}}"
+        "minValue": "Не може бути менше {{value}}",
+        "maxPhotosReached": "Дозволено максимум {{max}} фото",
+        "invalidImageFormat": "Невірний формат фото. Дозволені формати: JPG, PNG, GIF, WEBP",
+        "fileTooLarge": "Розмір файлу повинен бути менший ніж {{max}}",
+        "failedLoadingImagePreview": "Помилка при завантаженні фото"         
     },    
     "emailConfirmation": {
         "emailConfirmation": "Підтвердження електронною поштою",
@@ -97,7 +102,10 @@
         "sizeName": "Назва Розміру",
         "color": "Колір",
         "colorName": "Назва Кольору",
-        "colorHexCodeDescription": "HEX-код Кольору"
+        "colorHexCodeDescription": "HEX-код Кольору",
+        "photos": "Фото",
+        "uploadPhotos": "Завантажити Фото",
+        "takePhoto": "Зробити Фото"          
     },
     "adminFeatures": {
         "addingProductVariant": "Додавання Варіанту Товару",

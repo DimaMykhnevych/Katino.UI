@@ -89,3 +89,247 @@ h1, h4{
         stroke: #06b6d4;
     }
 }
+
+.photos-header {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  
+  .photo-count {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: normal;
+  }
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.photo-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &.marked-for-deletion {
+    opacity: 0.4;
+    
+    .photo-wrapper {
+      filter: grayscale(100%);
+    }
+  }
+}
+
+.photo-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #06b6d4;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
+  }
+}
+
+.photo-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.delete-photo-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: rgba(239, 68, 68, 0.95);
+  color: white;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  line-height: 24px;
+
+  &:hover {
+    background-color: rgba(220, 38, 38, 1);
+  }
+
+  // Make button always visible on touch devices
+  @media (hover: none) and (pointer: coarse) {
+    background-color: rgba(239, 68, 68, 0.9);
+  }
+
+  ::ng-deep .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: normal;
+  }
+}
+
+.photo-restore-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-order-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(6, 182, 212, 0.9);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.new-photo-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background-color: rgba(34, 197, 94, 0.9);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  ::ng-deep .mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .delete-photo-btn {
+    width: 28px;
+    height: 28px;
+
+    ::ng-deep .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .photo-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .delete-photo-btn {
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    right: 2px;
+
+    ::ng-deep .mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .photo-order-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    top: 4px;
+    left: 4px;
+  }
+
+  .new-photo-badge {
+    width: 20px;
+    height: 20px;
+    bottom: 4px;
+    left: 4px;
+
+    ::ng-deep .mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+// Improve touch targets for mobile
+@media (hover: none) and (pointer: coarse) {
+  .delete-photo-btn {
+    // Increase touch target without changing visual size
+    &::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      bottom: -8px;
+      left: -8px;
+    }
+  }
+
+  .photo-wrapper {
+    // Add subtle shadow to make delete button more visible
+    .delete-photo-btn {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    }
+  }
+}

@@ -133,12 +133,11 @@
           [class.remove-bottom-border]="!variant.isLastInGroup"
         >
           <img
-            src="https://t3.ftcdn.net/jpg/04/83/25/50/360_F_483255019_m1r1ujM8EOkr8PamCHF85tQ0rHG3Fiqz.jpg"
-            width="100"
-            height="100"
+            [src]="variant.photos[0]?.photoUrl ?? placeholderImageUrl"
+            width="80"
+            height="90"
             class="product-thumbnail"
-            (click)="showLargeImage = true"
-            *ngIf="variant.showProductInfo"
+            (click)="openLargeImage(variant.photos[0]?.photoUrl)"
             [alt]="variant.product.name"
           />
         </td>
@@ -357,17 +356,11 @@
   </div>
 </div>
 
-<!-- Simple Photo Modal -->
-<!-- TODO use real URLs instead of placeholders-->
-<div
-  class="photo-overlay"
-  *ngIf="showLargeImage"
-  (click)="showLargeImage = false"
->
+<div class="photo-overlay" *ngIf="showLargeImage" (click)="closeLargeImage()">
   <img
-    src="https://t3.ftcdn.net/jpg/04/83/25/50/360_F_483255019_m1r1ujM8EOkr8PamCHF85tQ0rHG3Fiqz.jpg"
+    [src]="selectedImageUrl"
     class="large-photo"
     (click)="$event.stopPropagation()"
   />
-  <button class="close-btn" (click)="showLargeImage = false">×</button>
+  <button class="close-btn" (click)="closeLargeImage()">×</button>
 </div>

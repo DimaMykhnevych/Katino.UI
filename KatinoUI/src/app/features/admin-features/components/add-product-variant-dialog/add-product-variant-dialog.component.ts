@@ -36,6 +36,7 @@ import { AddProductVariant } from '../../models/add-product-variant';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateProductVariant } from '../../models/update-product-variant';
+import { PhotoItem } from '../../models/photo-item';
 
 @Component({
   selector: 'app-add-product-variant-dialog',
@@ -55,6 +56,11 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     StatusConstants.allProductStatuses;
 
   public measurementTypesResponse?: GetMeasurementTypesResponse;
+
+  public photos: PhotoItem[] = [];
+  public isUploadingPhoto: boolean = false;
+  public maxPhotos: number = 10;
+  public maxPhotoSizeMb: number = 25;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -78,11 +84,16 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.initializeForm();
     this.loadAllData();
+    this.loadExistingPhotos();
   }
 
   public ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+
+    this.photos
+      .filter((p) => !p.isExisting)
+      .forEach((p) => URL.revokeObjectURL(p.photoUrl));
   }
 
   public onColorSelectionChange(event: MatSelectChange): void {
@@ -174,6 +185,151 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onPhotoFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const files = Array.from(input.files);
+    const availableSlots =
+      this.maxPhotos - this.photos.filter((p) => !p.markedForDeletion).length;
+
+    if (files.length > availableSlots) {
+      this._translate
+        .get('validation.maxPhotosReached', { max: this.maxPhotos })
+        .subscribe((msg: string) => {
+          this._toastr.warning(msg);
+        });
+      files.splice(availableSlots);
+    }
+
+    files.forEach((file) => {
+      if (!this.isValidImageFile(file)) {
+        this._translate
+          .get('validation.invalidImageFormat')
+          .subscribe((msg: string) => {
+            this._toastr.error(`${file.name}: ${msg}`);
+          });
+        return;
+      }
+
+      try {
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = (_event) => {
+          const photoItem: PhotoItem = {
+            file: file,
+            photoUrl: reader.result as string,
+            displayOrder: this.photos.length,
+            isExisting: false,
+          };
+
+          this.photos.push(photoItem);
+        };
+      } catch (error) {
+        this._translate
+          .get('validation.failedLoadingImagePreview')
+          .subscribe((msg: string) => {
+            this._toastr.error(msg);
+          });
+      }
+    });
+
+    input.value = '';
+  }
+
+  public onRemovePhoto(index: number): void {
+    const photo = this.photos[index];
+
+    if (photo.isExisting) {
+      photo.markedForDeletion = true;
+    } else {
+      URL.revokeObjectURL(photo.photoUrl);
+      this.photos.splice(index, 1);
+    }
+
+    this.reorderPhotos();
+  }
+
+  public onRestorePhoto(index: number): void {
+    const photo = this.photos[index];
+    const visiblePhotoLength = this.getVisiblePhotos().length;
+    if (photo.isExisting && photo.markedForDeletion) {
+      if (visiblePhotoLength < this.maxPhotos) {
+        photo.markedForDeletion = false;
+        return;
+      }
+
+      this._translate
+        .get('validation.maxPhotosReached', { max: this.maxPhotos })
+        .subscribe((msg: string) => {
+          this._toastr.warning(msg);
+        });
+    }
+  }
+
+  public getVisiblePhotos(): PhotoItem[] {
+    return this.photos.filter((p) => !p.markedForDeletion);
+  }
+
+  public canAddMorePhotos(): boolean {
+    return this.getVisiblePhotos().length < this.maxPhotos;
+  }
+
+  private isValidImageFile(file: File): boolean {
+    const validTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'image/heic',
+      'image/heif',
+    ];
+    const maxSize = this.maxPhotoSizeMb * 1024 * 1024;
+
+    if (
+      !validTypes.includes(file.type.toLowerCase()) &&
+      !file.name.toLowerCase().endsWith('.heic') &&
+      !file.name.toLowerCase().endsWith('.heif')
+    ) {
+      return false;
+    }
+
+    if (file.size > maxSize) {
+      this._translate
+        .get('validation.fileTooLarge', { max: `${this.maxPhotoSizeMb}MB` })
+        .subscribe((msg: string) => {
+          this._toastr.error(msg);
+        });
+      return false;
+    }
+
+    return true;
+  }
+
+  private loadExistingPhotos(): void {
+    if (!this.data.isAdding && this.data.productVariant?.photos) {
+      this.photos = this.data.productVariant.photos
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+        .map((photo) => ({
+          id: photo.id,
+          photoUrl: photo.photoUrl,
+          displayOrder: photo.displayOrder,
+          isExisting: true,
+          markedForDeletion: false,
+        }));
+    }
+  }
+
+  private reorderPhotos(): void {
+    this.photos.forEach((photo, index) => {
+      photo.displayOrder = index;
+    });
+  }
+
   public onAddEditClick(): void {
     if (this.data.isAdding) {
       this.addProductVariant();
@@ -237,8 +393,51 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       isDrop: false,
     };
 
+    const formData = new FormData();
+
+    formData.append('ProductVariant.ProductId', productVariantData.productId);
+    formData.append('ProductVariant.SizeId', productVariantData.sizeId);
+    formData.append('ProductVariant.ColorId', productVariantData.colorId);
+    formData.append(
+      'ProductVariant.Status',
+      productVariantData.status.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityInStock',
+      productVariantData.quantityInStock.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityDropSold',
+      productVariantData.quantityDropSold.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityRegularSold',
+      productVariantData.quantityRegularSold.toString()
+    );
+    formData.append('ProductVariant.Article', productVariantData.article);
+    formData.append(
+      'ProductVariant.IsDrop',
+      productVariantData.isDrop.toString()
+    );
+
+    measurements.forEach((measurement, index) => {
+      formData.append(
+        `ProductVariant.Measurements[${index}].MeasurementTypeId`,
+        measurement.measurementTypeId
+      );
+      formData.append(
+        `ProductVariant.Measurements[${index}].Value`,
+        measurement.value.toString()
+      );
+    });
+
+    const newPhotos = this.photos.filter((p) => !p.isExisting && p.file);
+    newPhotos.forEach((photo, _) => {
+      formData.append('ProductVariant.Photos', photo.file!, photo.file!.name);
+    });
+
     this._productVariantService
-      .addProductVariant({ productVariant: productVariantData })
+      .addProductVariant(formData)
       .pipe(
         takeUntil(this._destroy$),
         catchError((error) => {
@@ -276,8 +475,65 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       isDrop: false,
     };
 
+    const formData = new FormData();
+
+    formData.append('ProductVariant.Id', productVariantData.id);
+    formData.append('ProductVariant.SizeId', productVariantData.sizeId);
+    formData.append('ProductVariant.ColorId', productVariantData.colorId);
+    formData.append(
+      'ProductVariant.Status',
+      productVariantData.status.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityInStock',
+      productVariantData.quantityInStock.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityDropSold',
+      productVariantData.quantityDropSold.toString()
+    );
+    formData.append(
+      'ProductVariant.QuantityRegularSold',
+      productVariantData.quantityRegularSold.toString()
+    );
+    formData.append('ProductVariant.Article', productVariantData.article);
+    formData.append(
+      'ProductVariant.IsDrop',
+      productVariantData.isDrop.toString()
+    );
+
+    measurements.forEach((measurement, index) => {
+      formData.append(
+        `ProductVariant.Measurements[${index}].MeasurementTypeId`,
+        measurement.measurementTypeId
+      );
+      formData.append(
+        `ProductVariant.Measurements[${index}].Value`,
+        measurement.value.toString()
+      );
+    });
+
+    const newPhotos = this.photos.filter((p) => !p.isExisting && p.file);
+    newPhotos.forEach((photo) => {
+      formData.append(
+        'ProductVariant.NewPhotos',
+        photo.file!,
+        photo.file!.name
+      );
+    });
+
+    const photosToDelete = this.photos
+      .filter((p) => p.isExisting && p.markedForDeletion && p.id)
+      .map((p) => p.id!);
+
+    if (photosToDelete.length > 0) {
+      photosToDelete.forEach((photoId, index) => {
+        formData.append(`ProductVariant.PhotoIdsToDelete[${index}]`, photoId);
+      });
+    }
+
     this._productVariantService
-      .updateProductVariant({ productVariant: productVariantData })
+      .updateProductVariant(formData)
       .pipe(
         catchError((error) => {
           return this.onCatchUpdateError(false);

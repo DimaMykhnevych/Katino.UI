@@ -2,6 +2,7 @@ import { ProductStatus } from '../enums/product-status';
 import { Color } from './color';
 import { GetProductVariantMeasurement } from './get-product-variant-measurement';
 import { Product } from './product';
+import { ProductPhoto } from './product-photo';
 import { Size } from './size';
 
 export interface ProductVariant {
@@ -21,4 +22,5 @@ export interface ProductVariant {
   product: Product;
   size: Size;
   measurements: GetProductVariantMeasurement[];
+  photos: ProductPhoto[];
 }

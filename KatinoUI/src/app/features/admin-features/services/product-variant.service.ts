@@ -36,18 +36,14 @@ export class ProductVariantService {
     );
   }
 
-  public addProductVariant(
-    productVariant: AddProductVariantRequest
-  ): Observable<boolean> {
+  public addProductVariant(productVariant: FormData): Observable<boolean> {
     return this._http.post<boolean>(
       `${AppSettings.apiHost}/ProductVariant`,
       productVariant
     );
   }
 
-  public updateProductVariant(
-    productVariant: UpdateProductVariantRequest
-  ): Observable<boolean> {
+  public updateProductVariant(productVariant: FormData): Observable<boolean> {
     return this._http.put<boolean>(
       `${AppSettings.apiHost}/ProductVariant`,
       productVariant
