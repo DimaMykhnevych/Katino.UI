@@ -69,7 +69,8 @@
     },
     "navbar": {
         "menu": "Меню",
-        "availability": "Наявність"
+        "availability": "Наявність",
+        "orders": "Замовлення"
     },
     "inventory": {
         "availability": "Наявність",

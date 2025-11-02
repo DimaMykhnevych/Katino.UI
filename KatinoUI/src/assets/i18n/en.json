@@ -69,7 +69,8 @@
     },
     "navbar": {
         "menu": "Menu",
-        "availability": "Availability"
+        "availability": "Availability",
+        "orders": "Orders"
     },
     "inventory": {
         "availability": "Availability",

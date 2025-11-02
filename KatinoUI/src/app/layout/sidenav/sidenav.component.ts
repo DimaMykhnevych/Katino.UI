@@ -15,6 +15,7 @@ export class SidenavComponent implements OnInit {
   public sidenavWidth = 4;
   public userInfo: UserInfo = null as any;
   public inventoryPage: string[] = [Roles.Admin];
+  public ordersPage: string[] = [Roles.Admin];
   public isMobile = false;
   public isSidenavOpened = false;
 
@@ -31,19 +32,12 @@ export class SidenavComponent implements OnInit {
     this.checkScreenSize();
   }
 
-  private checkScreenSize(): void {
-    this.isMobile = window.innerWidth <= 768;
-    if (this.isMobile) {
-      this.sidenavWidth = 20; // Always expanded on mobile when open
-    } else {
-      this.sidenavWidth = 4; // Collapsed by default on desktop
-    }
-  }
-
   public showTab(tabName: string): boolean {
     switch (tabName) {
       case 'inventory':
         return this.inventoryPage.includes(this.userInfo.role || '');
+      case 'orders':
+        return this.ordersPage.includes(this.userInfo.role || '');
       default:
         return false;
     }
@@ -80,6 +74,15 @@ export class SidenavComponent implements OnInit {
     if (this.isMobile && sidenav.opened) {
       sidenav.close();
       this.isSidenavOpened = false;
+    }
+  }
+
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) {
+      this.sidenavWidth = 20; // Always expanded on mobile when open
+    } else {
+      this.sidenavWidth = 4; // Collapsed by default on desktop
     }
   }
 }

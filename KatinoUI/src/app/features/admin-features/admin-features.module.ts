@@ -13,6 +13,7 @@ import { AddEditCategoryDialogComponent } from './components/add-edit-category-d
 import { AddSizeDialogComponent } from './components/add-size-dialog/add-size-dialog.component';
 import { AddEditColorDialogComponent } from './components/add-edit-color-dialog/add-edit-color-dialog.component';
 import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
     AddEditCategoryDialogComponent,
     AddSizeDialogComponent,
     AddEditColorDialogComponent,
+    OrdersComponent,
   ],
   imports: [
     CommonModule,
