@@ -173,16 +173,7 @@
         </th>
         <td mat-cell *matCellDef="let variant">
           <div>
-            <span>{{
-              variant.quantityInStock -
-                variant.quantityDropSold -
-                variant.quantityRegularSold <
-              0
-                ? 0
-                : variant.quantityInStock -
-                  variant.quantityDropSold -
-                  variant.quantityRegularSold
-            }}</span>
+            <span>{{ variant.quantityInStock }}</span>
           </div>
         </td>
       </ng-container>

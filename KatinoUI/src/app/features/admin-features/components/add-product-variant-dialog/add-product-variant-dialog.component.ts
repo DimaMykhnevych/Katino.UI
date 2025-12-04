@@ -600,9 +600,14 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
   private checkStatusValidity(): void {
     if (
-      this.quantityDropSold?.value + this.quantityRegularSold?.value >=
-        this.quantityInStock?.value &&
+      this.quantityInStock?.value <= 0 &&
       this.status?.value === ProductStatus.inStock
+    ) {
+      this.status.markAsTouched();
+      this.status.setErrors({ invalidInStockStatus: true });
+    } else if (
+      this.quantityInStock?.value > 0 &&
+      this.status?.value === ProductStatus.onOrder
     ) {
       this.status.markAsTouched();
       this.status.setErrors({ invalidInStockStatus: true });
