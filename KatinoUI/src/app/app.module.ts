@@ -17,6 +17,7 @@ import { NavbarModule } from './layout/navbar/navbar.module';
 import { SidenavModule } from './layout/sidenav/sidenav.module';
 import { SpinnerModule } from './layout/spinner/spinner.module';
 import { DialogsModule } from './layout/dialogs/dialogs.module';
+import { CommonComponentsModule } from './features/common-components/common-components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { DialogsModule } from './layout/dialogs/dialogs.module';
     SidenavModule,
     SpinnerModule,
     DialogsModule,
+    CommonComponentsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

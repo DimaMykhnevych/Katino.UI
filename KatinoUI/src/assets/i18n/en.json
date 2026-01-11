@@ -70,7 +70,8 @@
     "navbar": {
         "menu": "Menu",
         "availability": "Availability",
-        "orders": "Orders"
+        "orders": "Orders",
+        "crm-settings": "CRM Settings"
     },
     "inventory": {
         "availability": "Availability",
@@ -147,5 +148,8 @@
     "dialogs": {
         "productVariantDeletionTitle": "Product Variant Deletion",
         "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?"
+    },
+    "common-components": {
+        "crmSettings": "CRM Settings"
     }    
 }

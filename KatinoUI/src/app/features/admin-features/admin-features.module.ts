@@ -14,6 +14,8 @@ import { AddSizeDialogComponent } from './components/add-size-dialog/add-size-di
 import { AddEditColorDialogComponent } from './components/add-edit-color-dialog/add-edit-color-dialog.component';
 import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
 import { OrdersComponent } from './components/orders/orders.component';
+import { CrmSettingsComponent } from './components/crm-settings/crm-settings.component';
+import { CommonComponentsModule } from 'src/app/features/common-components/common-components.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { OrdersComponent } from './components/orders/orders.component';
     AddSizeDialogComponent,
     AddEditColorDialogComponent,
     OrdersComponent,
+    CrmSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +37,7 @@ import { OrdersComponent } from './components/orders/orders.component';
     ReactiveFormsModule,
     SpinnerModule,
     DialogsModule,
+    CommonComponentsModule,
   ],
 })
 export class AdminFeaturesModule {}

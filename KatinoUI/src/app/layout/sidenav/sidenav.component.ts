@@ -16,6 +16,7 @@ export class SidenavComponent implements OnInit {
   public userInfo: UserInfo = null as any;
   public inventoryPage: string[] = [Roles.Admin];
   public ordersPage: string[] = [Roles.Admin];
+  public crmSettingsPage: string[] = [Roles.Admin];
   public isMobile = false;
   public isSidenavOpened = false;
 
@@ -38,6 +39,8 @@ export class SidenavComponent implements OnInit {
         return this.inventoryPage.includes(this.userInfo.role || '');
       case 'orders':
         return this.ordersPage.includes(this.userInfo.role || '');
+      case 'crm-settings':
+        return this.crmSettingsPage.includes(this.userInfo.role || '');
       default:
         return false;
     }

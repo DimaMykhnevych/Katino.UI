@@ -70,7 +70,8 @@
     "navbar": {
         "menu": "Меню",
         "availability": "Наявність",
-        "orders": "Замовлення"
+        "orders": "Замовлення",
+        "crm-settings": "Налаштування CRM"
     },
     "inventory": {
         "availability": "Наявність",
@@ -147,5 +148,8 @@
     "dialogs": {
         "productVariantDeletionTitle": "Видалення Варіанту Товару",
         "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?"
+    },
+    "common-components": {
+        "crmSettings": "Налаштування CRM"
     }
 }

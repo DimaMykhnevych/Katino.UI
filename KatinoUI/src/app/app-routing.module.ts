@@ -7,6 +7,7 @@ import { Roles } from './core/models/roles';
 import { ConfirmationScreenComponent } from './features/email-confirmation/confirmation-screen/confirmation-screen.component';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { OrdersComponent } from './features/admin-features/components/orders/orders.component';
+import { CrmSettingsComponent } from './features/admin-features/components/crm-settings/crm-settings.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,13 @@ const routes: Routes = [
       {
         path: 'orders',
         component: OrdersComponent,
+        data: {
+          roles: [Roles.Admin],
+        },
+      },
+      {
+        path: 'crm-settings',
+        component: CrmSettingsComponent,
         data: {
           roles: [Roles.Admin],
         },

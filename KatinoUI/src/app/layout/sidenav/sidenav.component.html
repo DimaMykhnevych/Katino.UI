@@ -74,6 +74,26 @@
           </div>
           <div class="nav-indicator" *ngIf="sidenavWidth <= 6"></div>
         </mat-list-item>
+
+        <mat-list-item
+          routerLink="/crm-settings"
+          routerLinkActive="active"
+          *ngIf="showTab('crm-settings')"
+          class="nav-item"
+          (click)="isMobile && closeMobileSidenav(sidenav)"
+        >
+          <div class="nav-item-content">
+            <div class="nav-icon">
+              <mat-icon>settings</mat-icon>
+            </div>
+            <div *ngIf="sidenavWidth > 6" class="nav-label">
+              <span class="nav-text">{{
+                "navbar.crm-settings" | translate
+              }}</span>
+            </div>
+          </div>
+          <div class="nav-indicator" *ngIf="sidenavWidth <= 6"></div>
+        </mat-list-item>
       </mat-nav-list>
 
       <div class="sidenav-footer" *ngIf="sidenavWidth > 6">
