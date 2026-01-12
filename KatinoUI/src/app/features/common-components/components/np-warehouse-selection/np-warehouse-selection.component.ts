@@ -7,7 +7,13 @@ import {
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { CrmUserSettings } from 'src/app/core/models/crm-user-settings';
 import { GetNpCitiesResponse } from 'src/app/core/models/nova-post/get-np-cities-response';
 import { NpCityResponse } from 'src/app/core/models/nova-post/np-city-response';
@@ -54,33 +60,11 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
   }
 
   public onCityInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const cityName = input.value;
     this.isCityOptionSelected = false;
-    this._novaPostService
-      .getNpCities(cityName)
-      .pipe(takeUntil(this._destroy$))
-      .subscribe((resp) => {
-        this.npCities = resp;
-      });
   }
 
   public onWarehouseInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const warehouseNumber = input.value;
     this.isWarehouseOptionSelected = false;
-
-    const searchRequest: SearchNpWarehouses = {
-      cityRef: this.npCity!.deliveryCity,
-      searchString: warehouseNumber,
-    };
-
-    this._novaPostService
-      .getNpWarehouses(searchRequest)
-      .pipe(takeUntil(this._destroy$))
-      .subscribe((resp) => {
-        this.npWarehouses = resp;
-      });
   }
 
   public onCityOptionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -142,6 +126,35 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
     this.form = this._builder.group({
       city: new FormControl(this.npCity?.present, [Validators.required]),
       warehouse: new FormControl(this.npWarehouse?.id, [Validators.required]),
+    });
+
+    this.subscribeOnInputChanges();
+  }
+
+  private subscribeOnInputChanges(): void {
+    this.city!.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this._destroy$),
+      switchMap((value: string) => this._novaPostService.getNpCities(value))
+    ).subscribe((data) => {
+      this.npCities = data;
+    });
+
+    this.warehouse!.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this._destroy$),
+      switchMap((value: string) => {
+        const searchRequest: SearchNpWarehouses = {
+          cityRef: this.npCity!.deliveryCity,
+          searchString: value,
+        };
+
+        return this._novaPostService.getNpWarehouses(searchRequest);
+      })
+    ).subscribe((data) => {
+      this.npWarehouses = data;
     });
   }
 

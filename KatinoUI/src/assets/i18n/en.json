@@ -25,7 +25,8 @@
         "cancel": "Cancel",
         "restore": "Restore",
         "copy": "Copy",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "city": "City"
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -151,5 +152,9 @@
     },
     "common-components": {
         "crmSettings": "CRM Settings"
+    },
+    "novaPost": {
+        "np": "Nova Post",
+        "departmentOrPost": "Department/Parcel Terminal"
     }    
 }
