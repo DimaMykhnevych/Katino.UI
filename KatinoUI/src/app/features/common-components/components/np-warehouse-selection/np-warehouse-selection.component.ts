@@ -1,12 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -15,27 +27,32 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import { CrmUserSettings } from 'src/app/core/models/crm-user-settings';
 import { GetNpCitiesResponse } from 'src/app/core/models/nova-post/get-np-cities-response';
 import { NpCityResponse } from 'src/app/core/models/nova-post/np-city-response';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { SearchNpWarehouses } from 'src/app/core/models/nova-post/search-np-warehouses';
-import { CrmSettingsService } from 'src/app/features/common-services/crm-settings.service';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
+
+export interface NpWarehouseSelectionValue {
+  city: NpCityResponse | null;
+  warehouse: NpWarehouse | null;
+}
 
 @Component({
   selector: 'app-np-warehouse-selection',
   templateUrl: './np-warehouse-selection.component.html',
   styleUrls: ['./np-warehouse-selection.component.scss'],
 })
-export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
+export class NpWarehouseSelectionComponent
+  implements OnInit, OnDestroy, OnChanges
+{
+  @Input() initialCity: NpCityResponse | null = null;
+  @Input() initialWarehouse: NpWarehouse | null = null;
+
+  @Output() formReady = new EventEmitter<FormGroup>();
+  @Output() valueChanged = new EventEmitter<NpWarehouseSelectionValue>();
+
   public form: FormGroup = this._builder.group({});
-
-  public npCity?: NpCityResponse;
-  public npWarehouse?: NpWarehouse;
-  public isRetrievingData: boolean = false;
-
-  public crmUserSettings?: CrmUserSettings;
   public npCities?: GetNpCitiesResponse;
   public npWarehouses: NpWarehouse[] = [];
 
@@ -46,13 +63,19 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
 
   constructor(
     private _builder: FormBuilder,
-    private _crmUserSettingsService: CrmSettingsService,
     private _novaPostService: NovaPostService
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.initializeForm();
-    this.getCrmSettings();
+    this.applyInitialValues();
+    this.subscribeOnInputChanges();
+
+    this.formReady.emit(this.form);
+
+    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this.valueChanged.emit(this.getValue());
+    });
   }
 
   public ngOnDestroy(): void {
@@ -60,41 +83,83 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  public onCityInput(event: Event): void {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.initialCity || changes.initialWarehouse) {
+      if (this.form) {
+        this.resetToInitial();
+      }
+    }
+  }
+
+  public getValue(): NpWarehouseSelectionValue {
+    return {
+      city: this.city?.value ?? null,
+      warehouse: this.warehouse?.value ?? null,
+    };
+  }
+
+  public resetToInitial(): void {
+    this.isCityOptionSelected = !!this.initialCity;
+    this.isWarehouseOptionSelected = !!this.initialWarehouse;
+
+    this.city?.setValue(this.initialCity, { emitEvent: false });
+
+    if (this.initialCity) {
+      this.warehouse?.enable({ emitEvent: false });
+      this.warehouse?.setValue(this.initialWarehouse, { emitEvent: false });
+    } else {
+      this.warehouse?.disable({ emitEvent: false });
+      this.warehouse?.setValue(null, { emitEvent: false });
+    }
+
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+  }
+
+  public onCityInput(): void {
     this.isCityOptionSelected = false;
-    this.npCity = undefined;
 
     this.resetWarehouse();
     this.warehouse?.disable({ emitEvent: false });
   }
 
-  public onWarehouseInput(event: Event): void {
+  public onWarehouseInput(): void {
     this.isWarehouseOptionSelected = false;
   }
 
   public onCityOptionSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedCity = event.option.value as NpCityResponse;
-    const prevCityRef = this.npCity?.deliveryCity;
+
+    const prevCityRef = (this.city?.value as NpCityResponse | null)
+      ?.deliveryCity;
 
     this.isCityOptionSelected = true;
-    this.npCity = selectedCity;
+    this.city?.setValue(selectedCity, { emitEvent: false });
 
     if (prevCityRef && prevCityRef !== selectedCity.deliveryCity) {
       this.resetWarehouse();
     }
 
     this.warehouse?.enable({ emitEvent: false });
+    this.form.markAsDirty();
   }
 
   public onCityBlur(): void {
     if (!this.isCityOptionSelected) {
-      this.npCity = undefined;
       this.city?.setValue(null);
       this.city?.markAsTouched();
 
       this.resetWarehouse();
       this.warehouse?.disable({ emitEvent: false });
     }
+  }
+
+  public onWarehouseOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.isWarehouseOptionSelected = true;
+    this.warehouse?.setValue(event.option.value as NpWarehouse, {
+      emitEvent: false,
+    });
+    this.form.markAsDirty();
   }
 
   public onWarehouseBlur(): void {
@@ -112,55 +177,36 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
     return warehouse && warehouse.description ? warehouse.description : '';
   }
 
-  public onWarehouseOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    this.isWarehouseOptionSelected = true;
-    this.npWarehouse = event.option.value;
-  }
-
-  private getCrmSettings(): void {
-    this.isRetrievingData = true;
-    this._crmUserSettingsService
-      .getCrmSettings()
-      .pipe(
-        catchError((error) => {
-          return this.onCatchError(error);
-        }),
-        takeUntil(this._destroy$)
-      )
-      .subscribe((resp: CrmUserSettings) => {
-        this.crmUserSettings = resp;
-        this.npCity = resp.npCity;
-        this.npWarehouse = resp.npWarehouse;
-
-        this.city?.setValue(this.npCity ?? null, { emitEvent: false });
-        if (this.npCity) {
-          this.warehouse?.enable({ emitEvent: false });
-          this.warehouse?.setValue(this.npWarehouse ?? null, {
-            emitEvent: false,
-          });
-        } else {
-          this.warehouse?.disable({ emitEvent: false });
-          this.warehouse?.setValue(null, { emitEvent: false });
-        }
-
-        this.isRetrievingData = false;
-      });
-  }
-
-  private onCatchError(error: any): Observable<any> {
-    this.isRetrievingData = false;
-    return of({});
-  }
-
   private initializeForm(): void {
+    const mustBeObject = this.mustBeObjectValidator();
+
     this.form = this._builder.group({
-      city: new FormControl(null, [Validators.required]),
+      city: new FormControl(null, [Validators.required, mustBeObject]),
       warehouse: new FormControl({ value: null, disabled: true }, [
         Validators.required,
+        mustBeObject,
       ]),
     });
+  }
 
-    this.subscribeOnInputChanges();
+  private mustBeObjectValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const v = control.value;
+      if (v == null) return null;
+      return typeof v === 'object' ? null : { mustSelectOption: true };
+    };
+  }
+
+  private applyInitialValues(): void {
+    this.resetToInitial();
+  }
+
+  private resetWarehouse(): void {
+    this.isWarehouseOptionSelected = false;
+    this.npWarehouses = [];
+    this.warehouse?.setValue(null, { emitEvent: false });
+    this.warehouse?.markAsPristine();
+    this.warehouse?.markAsUntouched();
   }
 
   private subscribeOnInputChanges(): void {
@@ -170,7 +216,15 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$),
       switchMap((value: string | NpCityResponse) => {
         const text = typeof value === 'string' ? value : value?.present ?? '';
-        return this._novaPostService.getNpCities(text);
+        if (!text)
+          return of({ addresses: [], totalCount: 0 } as GetNpCitiesResponse);
+        return this._novaPostService
+          .getNpCities(text)
+          .pipe(
+            catchError(() =>
+              of({ addresses: [], totalCount: 0 } as GetNpCitiesResponse)
+            )
+          );
       })
     ).subscribe((data) => {
       this.npCities = data;
@@ -180,36 +234,27 @@ export class NpWarehouseSelectionComponent implements OnInit, OnDestroy {
       debounceTime(300),
       distinctUntilChanged(),
       takeUntil(this._destroy$),
-      filter(() => !!this.npCity && !this.warehouse?.disabled),
+      filter(() => !!this.city?.value && !this.warehouse?.disabled),
       switchMap((value: string | NpWarehouse) => {
         const text =
           typeof value === 'string' ? value : value?.description ?? '';
+        const selectedCity = this.city?.value as NpCityResponse;
         const searchRequest: SearchNpWarehouses = {
-          cityRef: this.npCity!.deliveryCity,
+          cityRef: selectedCity.deliveryCity,
           searchString: text,
         };
-
-        return this._novaPostService.getNpWarehouses(searchRequest);
+        return this._novaPostService
+          .getNpWarehouses(searchRequest)
+          .pipe(catchError(() => of([] as NpWarehouse[])));
       })
     ).subscribe((data) => {
       this.npWarehouses = data;
     });
   }
 
-  private resetWarehouse(): void {
-    this.isWarehouseOptionSelected = false;
-    this.npWarehouse = undefined;
-    this.npWarehouses = [];
-
-    this.warehouse?.setValue(null, { emitEvent: false });
-    this.warehouse?.markAsUntouched();
-    this.warehouse?.markAsPristine();
-  }
-
   get city() {
     return this.form.get('city');
   }
-
   get warehouse() {
     return this.form.get('warehouse');
   }

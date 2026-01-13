@@ -9,7 +9,7 @@
           formControlName="city"
           [matAutocomplete]="autoCity"
           placeholder="{{ 'common.city' | translate }}"
-          (input)="onCityInput($event)"
+          (input)="onCityInput()"
           (blur)="onCityBlur()"
           required
         />
@@ -37,7 +37,7 @@
           formControlName="warehouse"
           [matAutocomplete]="autoWarehouse"
           placeholder="{{ 'novaPost.departmentOrPost' | translate }}"
-          (input)="onWarehouseInput($event)"
+          (input)="onWarehouseInput()"
           (blur)="onWarehouseBlur()"
           required
         />

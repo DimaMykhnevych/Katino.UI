@@ -26,7 +26,9 @@
         "restore": "Restore",
         "copy": "Copy",
         "loading": "Loading...",
-        "city": "City"
+        "city": "City",
+        "save": "Save",
+        "reset": "Reset"
     },
     "login": {
         "subtitle": "Log in to your account",
