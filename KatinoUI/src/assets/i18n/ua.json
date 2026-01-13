@@ -152,8 +152,9 @@
         "productVariantDeletionTitle": "Видалення Варіанту Товару",
         "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?"
     },
-    "common-components": {
-        "crmSettings": "Налаштування CRM"
+    "crmSettingsPage": {
+        "crmSettings": "Налаштування CRM",
+        "npSettingsHint": "Збережіть місто та відділення, з яких зазвичай відправляються замовлення"
     },
     "novaPost": {
         "np": "Нова Пошта",

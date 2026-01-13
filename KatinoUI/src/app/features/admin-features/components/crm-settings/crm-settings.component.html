@@ -4,14 +4,17 @@
       <div class="header-info">
         <h2 class="table-title">
           <mat-icon class="title-icon">settings</mat-icon>
-          {{ "common-components.crmSettings" | translate }}
+          {{ "crmSettingsPage.crmSettings" | translate }}
         </h2>
       </div>
     </div>
   </div>
 
   <div class="mat-elevation-z8 table-wrapper np-settings p-3">
-    <h2>{{ "novaPost.np" | translate }}</h2>
+    <h2 class="mb-1">{{ "novaPost.np" | translate }}</h2>
+    <p class="text-muted mb-3 np-subtitle">
+      {{ "crmSettingsPage.npSettingsHint" | translate }}
+    </p>
 
     <app-np-warehouse-selection
       [initialCity]="initialCity"
