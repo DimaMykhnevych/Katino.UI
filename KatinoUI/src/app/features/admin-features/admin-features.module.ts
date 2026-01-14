@@ -16,6 +16,7 @@ import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
 import { OrdersComponent } from './components/orders/orders.component';
 import { CrmSettingsComponent } from './components/crm-settings/crm-settings.component';
 import { CommonComponentsModule } from 'src/app/features/common-components/common-components.module';
+import { NpSyncHistoryComponent } from './components/np-sync-history/np-sync-history.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CommonComponentsModule } from 'src/app/features/common-components/commo
     AddEditColorDialogComponent,
     OrdersComponent,
     CrmSettingsComponent,
+    NpSyncHistoryComponent,
   ],
   imports: [
     CommonModule,

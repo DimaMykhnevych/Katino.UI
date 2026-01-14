@@ -154,7 +154,29 @@
     },
     "crmSettingsPage": {
         "crmSettings": "CRM Settings",
-        "npSettingsHint": "Save the city and warehouse from which orders are usually shipped"        
+        "npSettingsHint": "Save the city and warehouse from which orders are usually shipped",
+        "sync": {
+            "title": "Warehouse sync",
+            "subtitle": "History of the last {{limit}} runs",
+            "currentStatus": "Current status",
+            "trigger": "Trigger sync",
+            "empty": "Sync history is empty.",
+            "status": {
+                "notStarted": "Not started",
+                "inProgress": "In progress",
+                "completed": "Completed",
+                "failed": "Failed"
+            },
+            "table": {
+                "status": "Status",
+                "startedAt": "Started",
+                "completedAt": "Completed",
+                "apiRequested": "API records",
+                "dbInserted": "Inserted to DB",
+                "triggeredBy": "Triggered by",
+                "error": "Error"
+            }
+        }
     },
     "novaPost": {
         "np": "Nova Post",

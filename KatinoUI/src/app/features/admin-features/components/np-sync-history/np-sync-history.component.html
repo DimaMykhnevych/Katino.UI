@@ -1,0 +1,140 @@
+<div class="np-sync-header">
+  <div class="title-block">
+    <h2 class="mb-1">{{ "crmSettingsPage.sync.title" | translate }}</h2>
+    <div class="text-muted">
+      {{
+        "crmSettingsPage.sync.subtitle" | translate : { limit: HISTORY_LIMIT }
+      }}
+    </div>
+  </div>
+
+  <div class="actions-block">
+    <ng-container *ngIf="currentStatus?.isInProgress">
+      <div class="current-status">
+        <span class="label"
+          >{{ "crmSettingsPage.sync.currentStatus" | translate }}:</span
+        >
+        <span [class]="getStatusBadgeClass(currentStatus!.status)">
+          <mat-icon class="badge-icon">sync</mat-icon>
+          {{ getStatusTextKey(currentStatus!.status) | translate }}
+        </span>
+      </div>
+    </ng-container>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onTriggerSync()"
+      [disabled]="!currentStatus?.canTriggerSync || isTriggering"
+    >
+      <mat-icon>play_arrow</mat-icon>
+      {{ "crmSettingsPage.sync.trigger" | translate }}
+    </button>
+  </div>
+</div>
+
+<div class="table-wrapper-inner" *ngIf="!isLoading; else loadingTpl">
+  <div class="mat-table-container">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.status" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <span [class]="getStatusBadgeClass(row.status)">
+            <mat-icon class="badge-icon">
+              {{
+                row.status === SyncStatus.completed
+                  ? "check_circle"
+                  : row.status === SyncStatus.failed
+                  ? "error"
+                  : row.status === SyncStatus.inProgress
+                  ? "sync"
+                  : "schedule"
+              }}
+            </mat-icon>
+            {{ getStatusTextKey(row.status) | translate }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startedAt">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.startedAt" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.startedAt ? (row.startedAt | date : "short") : "—" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="completedAt">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.completedAt" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.completedAt ? (row.completedAt | date : "short") : "—" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apiRequestedRecords">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.apiRequested" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.apiRequestedRecords ?? "—" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dbInsertedRecords">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.dbInserted" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.dbInsertedRecords ?? "—" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="triggeredByUsername">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.triggeredBy" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <span class="user-chip" *ngIf="row.triggeredByUsername; else dashTpl">
+            <mat-icon class="user-icon">person</mat-icon>
+            {{ row.triggeredByUsername }}
+          </span>
+          <ng-template #dashTpl>—</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="errorMessage">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "crmSettingsPage.sync.table.error" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <span class="text-muted" *ngIf="!row.errorMessage">—</span>
+          <span class="error-text" *ngIf="row.errorMessage">{{
+            row.errorMessage
+          }}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <div class="empty-state text-muted" *ngIf="dataSource.data.length === 0">
+    {{ "crmSettingsPage.sync.empty" | translate }}
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading text-muted">
+    <mat-progress-spinner
+      diameter="28"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+    <span class="ms-2">{{ "common.loading" | translate }}</span>
+  </div>
+</ng-template>

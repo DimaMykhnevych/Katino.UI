@@ -2,7 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { convertToHttpParams } from 'src/app/core/http/request/http-params.util';
+import { CurrentSyncStatus } from 'src/app/core/models/nova-post/current-sync-status';
 import { GetNpCitiesResponse } from 'src/app/core/models/nova-post/get-np-cities-response';
+import { GetSyncRecords } from 'src/app/core/models/nova-post/get-sync-records';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { SearchNpWarehouses } from 'src/app/core/models/nova-post/search-np-warehouses';
 import { AppSettings } from 'src/app/core/settings';
@@ -31,6 +33,30 @@ export class NovaPostService {
       convertToHttpParams<SearchNpWarehouses>(request);
     return this._http.get<NpWarehouse[]>(
       `${AppSettings.apiHost}/NpWarehouse/search`,
+      {
+        params: httpParams,
+      }
+    );
+  }
+
+  public getCurrentSyncStatus(): Observable<CurrentSyncStatus> {
+    return this._http.get<CurrentSyncStatus>(
+      `${AppSettings.apiHost}/NovaPoshtaSync/status`
+    );
+  }
+
+  public triggerSync(): Observable<void> {
+    return this._http.post<void>(
+      `${AppSettings.apiHost}/NovaPoshtaSync/trigger`,
+      null
+    );
+  }
+
+  public getSyncHistory(limit: number): Observable<GetSyncRecords> {
+    let httpParams = new HttpParams();
+    httpParams = httpParams.append('limit', limit);
+    return this._http.get<GetSyncRecords>(
+      `${AppSettings.apiHost}/NovaPoshtaSync/history`,
       {
         params: httpParams,
       }
