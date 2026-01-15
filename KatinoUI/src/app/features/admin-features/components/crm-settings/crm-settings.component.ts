@@ -28,6 +28,7 @@ export class CrmSettingsComponent implements OnInit, OnDestroy {
   public settingsId: string | null = null;
 
   public isSubmitting = false;
+  public isNpSyncInProgress = false;
 
   private _destroy$ = new Subject<void>();
 
@@ -51,7 +52,8 @@ export class CrmSettingsComponent implements OnInit, OnDestroy {
       !!this.npForm &&
       this.npForm.valid &&
       !this.npForm.pristine &&
-      !this.isSubmitting
+      !this.isSubmitting &&
+      !this.isNpSyncInProgress
     );
   }
 
@@ -149,6 +151,10 @@ export class CrmSettingsComponent implements OnInit, OnDestroy {
 
   public onReset(): void {
     this.npWarehouseSelection?.resetToInitial();
+  }
+
+  public onSyncInProgressChanged(isInProgress: boolean): void {
+    this.isNpSyncInProgress = isInProgress;
   }
 
   private loadSettingsAfterSave(): void {

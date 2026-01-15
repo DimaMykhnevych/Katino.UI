@@ -175,7 +175,12 @@
                 "dbInserted": "Inserted to DB",
                 "triggeredBy": "Triggered by",
                 "error": "Error"
-            }
+            },
+            "toast": {
+                "title": "Nova Post",
+                "triggered": "Sync has been started.",
+                "triggerFailed": "Failed to start sync."
+            }            
         }
     },
     "novaPost": {

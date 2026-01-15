@@ -52,7 +52,7 @@
         mat-stroked-button
         color="warn"
         (click)="onDelete()"
-        [disabled]="isSubmitting"
+        [disabled]="isSubmitting || isNpSyncInProgress"
       >
         {{ "common.delete" | translate }}
       </button>
@@ -60,7 +60,9 @@
       <button
         mat-button
         (click)="onReset()"
-        [disabled]="!npForm || npForm.pristine || isSubmitting"
+        [disabled]="
+          !npForm || npForm.pristine || isSubmitting || isNpSyncInProgress
+        "
       >
         {{ "common.reset" | translate }}
       </button>
@@ -68,6 +70,8 @@
   </div>
 
   <div class="mat-elevation-z8 table-wrapper np-settings p-3 mt-3">
-    <app-np-sync-history></app-np-sync-history>
+    <app-np-sync-history
+      (syncInProgressChanged)="onSyncInProgressChanged($event)"
+    ></app-np-sync-history>
   </div>
 </div>
