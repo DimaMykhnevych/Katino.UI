@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProductVariantService } from '../../services/product-variant.service';
 import { GetProductVariant } from '../../models/get-product-variant';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductVariant } from 'src/app/core/models/product-variant';
@@ -82,7 +82,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private _translate: TranslateService,
     private _dialogService: DialogService,
     private _uiDialogService: UIDialogService,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
   ) {}
 
   public ngOnInit(): void {
@@ -181,7 +181,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
         catchError((error) => {
           return this.onCatchError(error);
         }),
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy$),
       )
       .subscribe((resp) => {
         this.retrievingLastAddedProductVariantInfo = false;
@@ -262,7 +262,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
       .pipe(
         catchError((error) => {
           return this.onCatchDeleteError();
-        })
+        }),
       )
       .subscribe((resp: boolean) => {
         this.onProductVariantDeletionCompleted(resp);
@@ -312,10 +312,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   private subscribeOnFormValueChanges(): void {
-    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.dataSource.data = [];
-      this.getProductVariantsWithSelectedFilters();
-    });
+    this.form.valueChanges
+      .pipe(takeUntil(this._destroy$), debounceTime(300))
+      .subscribe(() => {
+        this.dataSource.data = [];
+        this.getProductVariantsWithSelectedFilters();
+      });
   }
 
   private getProductVariantsWithSelectedFilters(): void {
@@ -344,7 +346,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
         catchError((error) => {
           return this.onCatchError(error);
         }),
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy$),
       )
       .subscribe((resp: GetProductVariant) => {
         this.productVariantResponse = resp;
@@ -369,10 +371,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
       ([productId, productVariants]) => ({
         product: productVariants[0].product,
         variants: productVariants.sort((a, b) =>
-          a.size.name.localeCompare(b.size.name)
+          a.size.name.localeCompare(b.size.name),
         ),
         variantCount: productVariants.length,
-      })
+      }),
     );
 
     // Create flat array with grouping info for table display
@@ -415,7 +417,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
         catchError((error) => {
           return this.onCatchError(error);
         }),
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy$),
       )
       .subscribe((resp) => {
         this.categoriesResponse = resp;

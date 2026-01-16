@@ -186,5 +186,10 @@
     "novaPost": {
         "np": "Nova Post",
         "departmentOrPost": "Department/Parcel Terminal"
+    },
+    "orders": {
+        "ordersHeader": "Orders",
+        "searchingOrders": "Searching orders ...",
+        "searchHelpText": "Internet doc number, Inst-link, receiver data"         
     }    
 }

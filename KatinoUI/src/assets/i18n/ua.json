@@ -186,5 +186,10 @@
     "novaPost": {
         "np": "Нова Пошта",
         "departmentOrPost": "Відділення/Поштомат"
+    },
+    "orders": {
+        "ordersHeader": "Замовлення",
+        "searchingOrders": "Пошук замовлень ...",
+        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача"
     }
 }
