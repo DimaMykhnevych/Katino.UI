@@ -1,10 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
-import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
+import { Observable, Subject, of } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil,
+} from 'rxjs/operators';
+
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
 import { GetOrderResponse } from 'src/app/core/models/order/get-order-response';
+import { Order } from 'src/app/core/models/order/order';
 import { OrderService } from 'src/app/features/common-services/order.service';
+import { OrderDetailsDialogComponent } from '../order-details-dialog/order-details-dialog.component';
+import { OrderStatus } from 'src/app/core/enums/order-status';
+import { CustomTranslateService } from 'src/app/core/services/custom-translate.service';
+import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
+import { DialogService } from 'src/app/features/common-services/dialog.service';
 
 @Component({
   selector: 'app-orders',
@@ -17,19 +31,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   public ordersResponse?: GetOrderResponse;
 
-  private _destroy$: Subject<void> = new Subject<void>();
+  public dataSource = new MatTableDataSource<Order>([]);
+  public displayedColumns: string[] = [
+    'created',
+    'ttn',
+    'recipient',
+    'delivery',
+    'status',
+    'cost',
+  ];
+
+  public pageIndex = 0;
+  public pageSize = 20;
+  public pageSizeOptions = [10, 20, 50, 100];
+
+  private _destroy$ = new Subject<void>();
 
   constructor(
     private _builder: FormBuilder,
     private _orderService: OrderService,
+    private _dialogService: DialogService,
+    private _customTranslate: CustomTranslateService,
   ) {}
 
   public ngOnInit(): void {
     this.initializeForm();
     this.subscribeOnFormValueChanges();
 
-    // TODO pageSize is taken from mat-table
-    this.getOrders({ page: 1, pageSize: 20, search: '' });
+    this.fetchOrders();
   }
 
   public ngOnDestroy(): void {
@@ -37,45 +66,72 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
+  public onPageChanged(e: PageEvent): void {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.fetchOrders();
+  }
+
+  public openDetails(order: Order): void {
+    this._dialogService.openOrderDetailsDialog(order);
+  }
+
+  public getOrderStatusTextKey(s: OrderStatus): string {
+    return this._customTranslate.getOrderStatusTextKey(s);
+  }
+
+  public getOrderStatusBadgeClass(s: OrderStatus): string {
+    return StyleClassHelper.getOrderStatusBadgeClass(s);
+  }
+
+  private fetchOrders(): void {
+    const request: GetOrderRequest = {
+      page: this.pageIndex + 1,
+      pageSize: this.pageSize,
+      search: (this.form.value.orderSearchString || '').trim(),
+    };
+
+    this.getOrders(request);
+  }
+
   private getOrders(request: GetOrderRequest): void {
     this.isRetrievingData = true;
+
     this._orderService
       .getOrders(request)
       .pipe(
-        catchError((error) => {
-          return this.onCatchError(error);
-        }),
+        catchError((error) => this.onCatchError(error)),
         takeUntil(this._destroy$),
       )
       .subscribe((resp: GetOrderResponse) => {
         this.ordersResponse = resp;
+        this.dataSource.data = resp?.orders ?? [];
         this.isRetrievingData = false;
       });
   }
 
   private onCatchError(error: any): Observable<any> {
     this.isRetrievingData = false;
-    return of({});
+    this.ordersResponse = { orders: [], resultsAmount: 0 };
+    this.dataSource.data = [];
+    return of({ orders: [], resultsAmount: 0 });
   }
 
   private initializeForm(): void {
     this.form = this._builder.group({
-      orderSearchString: new FormControl(),
+      orderSearchString: new FormControl(''),
     });
   }
 
   private subscribeOnFormValueChanges(): void {
-    this.form.valueChanges
-      .pipe(takeUntil(this._destroy$), debounceTime(300))
-      .subscribe(() => {
-        // this.dataSource.data = [];
-        // TODO pageSize is taken from mat-table
-        this.getOrders({
-          page: 1,
-          pageSize: 20,
-          search: this.form.value.orderSearchString,
-        });
-      });
+    this.orderSearchString!.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this._destroy$),
+    ).subscribe(() => {
+      this.pageIndex = 0;
+      this.fetchOrders();
+    });
   }
 
   get orderSearchString() {

@@ -1,7 +1,6 @@
 import { DeliveryType } from '../../enums/delivery-type';
 import { OrderInternetDocStatus } from '../../enums/order-internet-doc-status';
-import { OrderManualStatus } from '../../enums/order-manual-status';
-import { OrderReadinessStatus } from '../../enums/order-readiness-status';
+import { OrderStatus } from '../../enums/order-status';
 import { PayerType } from '../../enums/payer-type';
 import { PaymentMethod } from '../../enums/payment-method';
 import { SaleType } from '../../enums/sale-type';
@@ -35,18 +34,17 @@ export interface Order {
   internetDocumentCreationAttempted: boolean;
   internetDocumentRef: string;
   internetDocumentIntDocNumber: string;
-  orderReadinessStatus: OrderReadinessStatus;
+  orderStatus: OrderStatus;
   orderInternetDocStatus: OrderInternetDocStatus;
-  orderManualStatus: OrderManualStatus;
 
   orderItems: OrderItem[];
   orderNpOptionsSeats: OrderNpOptionsSeat[];
 
   senderNpWarehouse: NpWarehouse;
-  rcipientNpWarehouse: NpWarehouse;
+  recipientNpWarehouse?: NpWarehouse;
   senderNpCity: NpCityResponse;
-  recipientNpCity: NpCityResponse;
+  recipientNpCity?: NpCityResponse;
   senderContactPerson: NpContactPerson;
   orderRecipient: OrderRecipient;
-  addressInfo: OrderAddressInfo;
+  addressInfo?: OrderAddressInfo;
 }

@@ -1,0 +1,32 @@
+export enum OrderStatus {
+  none = 0,
+
+  inProgress = 1,
+  readyToShip = 2,
+  packed = 3,
+
+  created = 4,
+  deleted = 5,
+  notFound = 6,
+  inTheCityInterregional = 7,
+  onTheWayToCity = 8,
+  onTheWayToDepartment = 9,
+  arrived = 10,
+  arrivedPostomat = 11,
+  received = 12,
+  receivedRemittancePending = 13,
+  receivedRemittanceCompleted = 14,
+  npCompletingOrder = 15,
+  inTheCityWithinTheCity = 16,
+  onTheWayToReceiver = 17,
+  rejectionBySender = 18,
+  rejection = 19,
+  addressChanged = 20,
+  storageStopped = 21,
+  receivedAndReturnCreated = 22,
+  receiverNotAnswering = 23,
+  deliveryDateChangedByReceiver = 24,
+
+  refusal = 200,
+  exchange = 201,
+}

@@ -190,6 +190,135 @@
     "orders": {
         "ordersHeader": "Замовлення",
         "searchingOrders": "Пошук замовлень ...",
-        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача"
+        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача",        
+        "table": {
+            "created": "Створено",
+            "ttn": "ТТН",
+            "recipient": "Отримувач",
+            "delivery": "Доставка",
+            "saleType": "Продаж",
+            "status": "Статус",
+            "manualStatus": "Власний статус",
+            "cost": "Сума",
+            "afterpayment": "Післяплата"
+        },
+        "sections": {
+            "paymentAndStatuses": "Оплата та статуси",
+            "delivery": "Доставка",
+            "seats": "Місця"
+        },
+        "labels": {
+            "deliveryType": "Тип доставки",
+            "city": "Місто",
+            "warehouse": "Відділення",
+            "address": "Адреса",
+            "note": "Примітка",
+            "custom": "Індивідуально",
+            "payerType": "Платник",
+            "paymentMethod": "Спосіб оплати",
+            "saleType": "Тип продажу",
+            "npStatus": "Статус НП",
+            "orderDescription": "Опис"            
+        },
+        "deliveryType": {
+            "warehouseOrPost": "Відділення/Поштомат",
+            "address": "Адресна доставка"
+        },
+        "payerType": {
+            "sender": "Відправник",
+            "recipient": "Отримувач",
+            "thirdPerson": "Третя особа"
+        },
+        "paymentMethod": {
+            "cash": "Готівка",
+            "nonCash": "Безготівково"
+        },        
+        "details": {
+            "title": "Деталі замовлення",
+            "main": "Основне",
+            "created": "Створено",
+            "sendUntil": "Відправити до",
+            "cost": "Сума",
+            "recipient": "Отримувач",
+            "name": "ПІБ",
+            "phone": "Телефон",
+            "items": "Товари",
+            "qty": "К-сть",
+            "toProduce": "Пошити"
+        },
+        "readiness": {
+            "inProgress": "В роботі",
+            "readyToShip": "Готово до відправки"
+        },
+        "itemStatus": {
+            "forSewing": "Пошити",
+            "ready": "Готово"
+        },
+        "saleType": {
+            "retail": "Роздріб",
+            "drop": "Дроп",
+            "wholesale": "Опт"
+        },
+        "manualStatus": {
+            "none": "Немає",
+            "refusal": "Відмова",
+            "exchange": "Обмін"
+        },
+        "npStatus": {
+            "notProcessed": "Не оброблено",
+            "created": "Створено",
+            "deleted": "Видалено",
+            "notFound": "Не знайдено",
+            "inTheCityInterregional": "У місті (міжміське)",
+            "onTheWayToCity": "В дорозі до міста",
+            "onTheWayToDepartment": "В дорозі до відділення",
+            "arrived": "Прибуло у відділення",
+            "arrivedPostomat": "Прибуло у поштомат",
+            "received": "Отримано",
+            "receivedRemittancePending": "Отримано, очікується переказ",
+            "receivedRemittanceCompleted": "Отримано, переказ завершено",
+            "npCompletingOrder": "НП комплектує відправлення",
+            "inTheCityWithinTheCity": "У місті (в межах міста)",
+            "onTheWayToReceiver": "На шляху до одержувача",
+            "rejectionBySender": "Відмова відправника",
+            "rejection": "Відмова",
+            "addressChanged": "Адресу змінено",
+            "storageStopped": "Зберігання припинено",
+            "receivedAndReturnCreated": "Отримано та створено повернення",
+            "receiverNotAnswering": "Отримувач не відповідає",
+            "deliveryDateChangedByReceiver": "Отримувач змінив дату доставки"
+        },
+        "orderStatus": {
+            "none": "Немає",
+
+            "inProgress": "В роботі",
+            "readyToShip": "Готово до відправки",
+            "packed": "Запаковано",
+
+            "created": "Створено",
+            "deleted": "Видалено",
+            "notFound": "Не знайдено",
+            "inTheCityInterregional": "У місті (міжміське)",
+            "onTheWayToCity": "В дорозі до міста",
+            "onTheWayToDepartment": "В дорозі до відділення",
+            "arrived": "Прибуло",
+            "arrivedPostomat": "Прибуло у поштомат",
+            "received": "Отримано",
+            "receivedRemittancePending": "Отримано, очікується переказ",
+            "receivedRemittanceCompleted": "Отримано, переказ завершено",
+            "npCompletingOrder": "НП завершує оформлення",
+            "inTheCityWithinTheCity": "У місті (в межах міста)",
+            "onTheWayToReceiver": "Кур’єр в дорозі",
+            "rejectionBySender": "Відмова відправника",
+            "rejection": "Відмова",
+            "addressChanged": "Адресу змінено",
+            "storageStopped": "Зберігання припинено",
+            "receivedAndReturnCreated": "Отримано та створено повернення",
+            "receiverNotAnswering": "Отримувач не відповідає",
+            "deliveryDateChangedByReceiver": "Змінено дату доставки",
+
+            "refusal": "Відмова (ручна)",
+            "exchange": "Обмін (ручний)"
+        }   
     }
 }

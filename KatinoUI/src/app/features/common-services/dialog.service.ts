@@ -9,6 +9,8 @@ import { AddEditCategoryDialogComponent } from '../admin-features/components/add
 import { AddSizeDialogComponent } from '../admin-features/components/add-size-dialog/add-size-dialog.component';
 import { AddEditColorData } from '../admin-features/models/add-edit-color-data';
 import { AddEditColorDialogComponent } from '../admin-features/components/add-edit-color-dialog/add-edit-color-dialog.component';
+import { Order } from 'src/app/core/models/order/order';
+import { OrderDetailsDialogComponent } from '../admin-features/components/order-details-dialog/order-details-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +19,7 @@ export class DialogService {
   constructor(private dialog: MatDialog) {}
 
   public openAddEditProductVariantDialog(
-    data: AddEditProductVariantData
+    data: AddEditProductVariantData,
   ): MatDialogRef<AddProductVariantDialogComponent> {
     return this.dialog.open(AddProductVariantDialogComponent, {
       width: '800px',
@@ -27,7 +29,7 @@ export class DialogService {
   }
 
   public openAddEditProductDialog(
-    data: AddEditProductData
+    data: AddEditProductData,
   ): MatDialogRef<AddEditProductDialogComponent> {
     return this.dialog.open(AddEditProductDialogComponent, {
       width: '750px',
@@ -37,7 +39,7 @@ export class DialogService {
   }
 
   public openAddEditCategoryDialog(
-    data: AddEditCategoryData
+    data: AddEditCategoryData,
   ): MatDialogRef<AddEditCategoryDialogComponent> {
     return this.dialog.open(AddEditCategoryDialogComponent, {
       width: '300px',
@@ -54,11 +56,22 @@ export class DialogService {
   }
 
   public openAddEditColorDialog(
-    data: AddEditColorData
+    data: AddEditColorData,
   ): MatDialogRef<AddEditColorDialogComponent> {
     return this.dialog.open(AddEditColorDialogComponent, {
       width: '300px',
       disableClose: true,
+      data: data,
+    });
+  }
+
+  public openOrderDetailsDialog(
+    data: Order,
+  ): MatDialogRef<OrderDetailsDialogComponent> {
+    return this.dialog.open(OrderDetailsDialogComponent, {
+      width: '850px',
+      disableClose: false,
+      autoFocus: false,
       data: data,
     });
   }

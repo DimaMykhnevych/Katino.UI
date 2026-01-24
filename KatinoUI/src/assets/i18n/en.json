@@ -190,6 +190,135 @@
     "orders": {
         "ordersHeader": "Orders",
         "searchingOrders": "Searching orders ...",
-        "searchHelpText": "Internet doc number, Inst-link, receiver data"         
-    }    
+        "searchHelpText": "Internet doc number, Inst-link, receiver data",        
+        "table": {
+            "created": "Created",
+            "ttn": "TTN",
+            "recipient": "Recipient",
+            "delivery": "Delivery",
+            "saleType": "Sale type",
+            "status": "Status",
+            "manualStatus": "Manual status",            
+            "cost": "Total",
+            "afterpayment": "COD"
+        },
+        "sections": {
+            "paymentAndStatuses": "Payment & statuses",
+            "delivery": "Delivery",
+            "seats": "Seats"
+        },
+        "labels": {
+            "deliveryType": "Delivery type",
+            "city": "City",
+            "warehouse": "Warehouse",
+            "address": "Address",
+            "note": "Note",
+            "custom": "Custom",
+            "payerType": "Payer",
+            "paymentMethod": "Payment method",
+            "saleType": "Sale type",
+            "npStatus": "Nova Post status",
+            "orderDescription": "Description"            
+        },
+        "deliveryType": {
+            "warehouseOrPost": "Warehouse/Postomat",
+            "address": "Address delivery"
+        },
+        "payerType": {
+            "sender": "Sender",
+            "recipient": "Recipient",
+            "thirdPerson": "Third party"
+        },
+        "paymentMethod": {
+            "cash": "Cash",
+            "nonCash": "Non-cash"
+        },        
+        "details": {
+            "title": "Order details",
+            "main": "Main",
+            "created": "Created",
+            "sendUntil": "Send until",
+            "cost": "Total",
+            "recipient": "Recipient",
+            "name": "Name",
+            "phone": "Phone",
+            "items": "Items",
+            "qty": "Qty",
+            "toProduce": "To sew"
+        },
+        "readiness": {
+            "inProgress": "In progress",
+            "readyToShip": "Ready to ship"
+        },
+        "itemStatus": {
+            "forSewing": "For sewing",
+            "ready": "Ready"
+        },
+        "saleType": {
+            "retail": "Retail",
+            "drop": "Drop",
+            "wholesale": "Wholesale"
+        },
+        "manualStatus": {
+            "none": "None",
+            "refusal": "Refusal",
+            "exchange": "Exchange"
+        },
+        "npStatus": {
+            "notProcessed": "Not processed",
+            "created": "Created",
+            "deleted": "Deleted",
+            "notFound": "Not found",
+            "inTheCityInterregional": "In city (interregional)",
+            "onTheWayToCity": "On the way to city",
+            "onTheWayToDepartment": "On the way to warehouse",
+            "arrived": "Arrived",
+            "arrivedPostomat": "Arrived to postomat",
+            "received": "Received",
+            "receivedRemittancePending": "Received, remittance pending",
+            "receivedRemittanceCompleted": "Received, remittance completed",
+            "npCompletingOrder": "NP completing order",
+            "inTheCityWithinTheCity": "In city (within city)",
+            "onTheWayToReceiver": "On the way to receiver",
+            "rejectionBySender": "Rejected by sender",
+            "rejection": "Rejected",
+            "addressChanged": "Address changed",
+            "storageStopped": "Storage stopped",
+            "receivedAndReturnCreated": "Received and return created",
+            "receiverNotAnswering": "Receiver not answering",
+            "deliveryDateChangedByReceiver": "Delivery date changed by receiver"
+        },
+        "orderStatus": {
+            "none": "None",
+
+            "inProgress": "In progress",
+            "readyToShip": "Ready to ship",
+            "packed": "Packed",
+
+            "created": "Created",
+            "deleted": "Deleted",
+            "notFound": "Not found",
+            "inTheCityInterregional": "In city (interregional)",
+            "onTheWayToCity": "On the way to city",
+            "onTheWayToDepartment": "On the way to warehouse",
+            "arrived": "Arrived",
+            "arrivedPostomat": "Arrived to postomat",
+            "received": "Received",
+            "receivedRemittancePending": "Received, remittance pending",
+            "receivedRemittanceCompleted": "Received, remittance completed",
+            "npCompletingOrder": "NP completing order",
+            "inTheCityWithinTheCity": "In city (within city)",
+            "onTheWayToReceiver": "Courier on the way",
+            "rejectionBySender": "Rejected by sender",
+            "rejection": "Rejected",
+            "addressChanged": "Address changed",
+            "storageStopped": "Storage stopped",
+            "receivedAndReturnCreated": "Received & return created",
+            "receiverNotAnswering": "Receiver not answering",
+            "deliveryDateChangedByReceiver": "Delivery date changed",
+
+            "refusal": "Manual refusal",
+            "exchange": "Manual exchange"
+            }          
+    }
 }

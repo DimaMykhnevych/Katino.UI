@@ -3,11 +3,9 @@
     <div class="header-content">
       <div class="header-info">
         <h2 class="table-title">
-          <mat-icon class="title-icon"
-            ><span class="material-symbols-outlined">
-              order_approve
-            </span></mat-icon
-          >
+          <mat-icon class="title-icon">
+            <span class="material-symbols-outlined">order_approve</span>
+          </mat-icon>
           {{ "orders.ordersHeader" | translate }}
         </h2>
       </div>
@@ -31,6 +29,7 @@
         </div>
       </form>
     </div>
+
     <div class="info-row mt-3" *ngIf="!isRetrievingData">
       <div
         class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3"
@@ -43,12 +42,141 @@
 
         <div class="total-items-text text-center">
           {{ "common.totalItems" | translate }}:
-          {{ ordersResponse?.resultsAmount }}
+          {{ ordersResponse?.resultsAmount || 0 }}
         </div>
       </div>
     </div>
   </div>
+
   <div class="mat-elevation-z8 table-wrapper">
-    <!-- TODO here should be <table mat-table [dataSource]="dataSource" class="variants-table"></table> -->
+    <div class="mat-table-container">
+      <table mat-table [dataSource]="dataSource" class="w-100 orders-table">
+        <!-- Created -->
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.created" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            {{ o.creationDateTime | date: "short" }}
+          </td>
+        </ng-container>
+
+        <!-- TTN -->
+        <ng-container matColumnDef="ttn">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.ttn" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            <div class="cell-stack">
+              <span class="ttn">{{
+                o.internetDocumentIntDocNumber || "—"
+              }}</span>
+              <span class="text-muted small d-md-none">
+                {{ o.creationDateTime | date: "short" }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Recipient -->
+        <ng-container matColumnDef="recipient">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.recipient" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            <div class="cell-stack">
+              <div class="fw-600">
+                {{ o.orderRecipient?.npContactPerson?.lastName }}
+                {{ o.orderRecipient?.npContactPerson?.firstName }}
+              </div>
+              <div class="text-muted small">
+                {{ o.orderRecipient?.npContactPerson?.phones || "—" }}
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Delivery -->
+        <ng-container matColumnDef="delivery">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.delivery" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            <div class="cell-stack">
+              <div class="fw-600">
+                {{
+                  o.recipientNpCity?.present ||
+                    o.addressInfo?.recipientCity ||
+                    "—"
+                }}
+              </div>
+              <div class="text-muted small">
+                <ng-container *ngIf="o.deliveryType === 0; else addressTpl">
+                  {{ o.rcipientNpWarehouse?.description || "—" }}
+                </ng-container>
+                <ng-template #addressTpl>
+                  {{ o.addressInfo?.recipientAddressName || "" }}
+                  {{ o.addressInfo?.recipientHouse || "" }}
+                  {{
+                    o.addressInfo?.recipientFlat
+                      ? "/" + o.addressInfo.recipientFlat
+                      : ""
+                  }}
+                </ng-template>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Readiness -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.status" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            <div class="cell-stack">
+              <span
+                class="badge"
+                [ngClass]="getOrderStatusBadgeClass(o.orderStatus)"
+              >
+                {{ getOrderStatusTextKey(o.orderStatus) | translate }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Cost -->
+        <ng-container matColumnDef="cost">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "orders.table.cost" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let o">
+            <div class="cell-stack">
+              <div class="fw-600">{{ o.cost | number: "1.0-0" }}</div>
+              <div class="text-muted small" *ngIf="o.afterpaymentOnGoodsCost">
+                {{ "orders.table.afterpayment" | translate }}:
+                {{ o.afterpaymentOnGoodsCost | number: "1.0-0" }}
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="row-clickable"
+          (click)="openDetails(row)"
+        ></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="ordersResponse?.resultsAmount || 0"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChanged($event)"
+    ></mat-paginator>
   </div>
 </div>

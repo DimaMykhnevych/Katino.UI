@@ -1,0 +1,256 @@
+<h2 mat-dialog-title class="dialog-title">
+  <div class="title-left">
+    <div class="title-text">
+      {{ "orders.details.title" | translate }}
+      <span
+        class="badge ms-2"
+        [ngClass]="getOrderStatusBadgeClass(order.orderStatus)"
+      >
+        {{ getOrderStatusTextKey(order.orderStatus) | translate }}
+      </span>
+    </div>
+
+    <div class="ttn-row">
+      <span class="ttn">{{ order.internetDocumentIntDocNumber || "—" }}</span>
+      <button
+        mat-icon-button
+        class="icon-btn"
+        (click)="copy(order.internetDocumentIntDocNumber)"
+        [disabled]="!order.internetDocumentIntDocNumber"
+        aria-label="Copy TTN"
+      >
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <button mat-icon-button class="icon-btn" (click)="close()" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <!-- MAIN -->
+  <div class="section">
+    <div class="section-title">{{ "orders.details.main" | translate }}</div>
+
+    <div class="kv">
+      <div class="k">{{ "orders.details.created" | translate }}</div>
+      <div class="v">{{ order.creationDateTime | date: "medium" }}</div>
+
+      <div class="k">{{ "orders.details.sendUntil" | translate }}</div>
+      <div class="v">{{ order.sendUntilDate | date: "mediumDate" }}</div>
+
+      <div class="k">{{ "orders.details.cost" | translate }}</div>
+      <div class="v">
+        {{ order.cost | number: "1.0-0" }}
+        <span class="text-muted" *ngIf="order.afterpaymentOnGoodsCost">
+          ({{ "orders.table.afterpayment" | translate }}:
+          {{ order.afterpaymentOnGoodsCost | number: "1.0-0" }})
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT & STATUSES -->
+  <div class="section">
+    <div class="section-title">
+      {{ "orders.sections.paymentAndStatuses" | translate }}
+    </div>
+
+    <div class="kv">
+      <div class="k">{{ "orders.labels.payerType" | translate }}</div>
+      <div class="v">
+        <span class="badge badge--neutral">
+          {{ getPayerTypeTextKey(order.payerType) | translate }}
+        </span>
+      </div>
+
+      <div class="k">{{ "orders.labels.paymentMethod" | translate }}</div>
+      <div class="v">
+        <span class="badge badge--neutral">
+          {{ getPaymentMethodTextKey(order.paymentMethod) | translate }}
+        </span>
+      </div>
+
+      <div class="k">{{ "orders.labels.saleType" | translate }}</div>
+      <div class="v">
+        <span class="badge" [ngClass]="getSaleTypeBadgeClass(order.saleType)">
+          {{ getSaleTypeTextKey(order.saleType) | translate }}
+        </span>
+      </div>
+
+      <div class="k">{{ "orders.labels.npStatus" | translate }}</div>
+      <div class="v">
+        <span class="badge badge--neutral badge--subtle">
+          {{ getNpStatusTextKey(order.orderInternetDocStatus) | translate }}
+        </span>
+      </div>
+
+      <div class="k">{{ "orders.labels.orderDescription" | translate }}</div>
+      <div class="v">
+        <span *ngIf="order.description; else noDesc">{{
+          order.description
+        }}</span>
+        <ng-template #noDesc>—</ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECIPIENT -->
+  <div class="section">
+    <div class="section-title">
+      {{ "orders.details.recipient" | translate }}
+    </div>
+
+    <div class="kv">
+      <div class="k">{{ "orders.details.name" | translate }}</div>
+      <div class="v">
+        {{ order.orderRecipient.npContactPerson.lastName }}
+        {{ order.orderRecipient.npContactPerson.firstName }}
+        {{ order.orderRecipient.npContactPerson.middleName }}
+      </div>
+
+      <div class="k">{{ "orders.details.phone" | translate }}</div>
+      <div class="v">
+        {{ order.orderRecipient.npContactPerson.phones || "—" }}
+      </div>
+
+      <div class="k">Instagram</div>
+      <div class="v">
+        <a
+          *ngIf="order.orderRecipient.instUrl"
+          [href]="order.orderRecipient.instUrl"
+          target="_blank"
+          rel="noopener"
+        >
+          {{ order.orderRecipient.instUrl }}
+        </a>
+        <span *ngIf="!order.orderRecipient.instUrl">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVERY -->
+  <div class="section">
+    <div class="section-title">
+      {{ "orders.sections.delivery" | translate }}
+    </div>
+
+    <div class="kv">
+      <div class="k">{{ "orders.labels.deliveryType" | translate }}</div>
+      <div class="v">
+        <span class="badge badge--neutral">
+          {{
+            order.deliveryType === 0
+              ? ("orders.deliveryType.warehouseOrPost" | translate)
+              : ("orders.deliveryType.address" | translate)
+          }}
+        </span>
+      </div>
+
+      <div class="k">{{ "orders.labels.city" | translate }}</div>
+      <div class="v">
+        {{
+          order.recipientNpCity?.present ||
+            order.addressInfo?.recipientCity ||
+            "-"
+        }}
+      </div>
+
+      <ng-container *ngIf="order.deliveryType === 0; else addressBlock">
+        <div class="k">{{ "orders.labels.warehouse" | translate }}</div>
+        <div class="v">
+          {{ order.recipientNpWarehouse?.description || "—" }}
+        </div>
+      </ng-container>
+
+      <ng-template #addressBlock>
+        <div class="k">{{ "orders.labels.address" | translate }}</div>
+        <div class="v">
+          {{ order.addressInfo!.recipientAddressName || "" }}
+          {{ order.addressInfo!.recipientHouse || "" }}
+          {{
+            order.addressInfo!.recipientFlat
+              ? "/" + order.addressInfo!.recipientFlat
+              : ""
+          }}
+        </div>
+
+        <div class="k">{{ "orders.labels.note" | translate }}</div>
+        <div class="v">
+          {{ order.addressInfo!.recipientAddressNote || "—" }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- ITEMS -->
+  <div class="section">
+    <div class="section-title">{{ "orders.details.items" | translate }}</div>
+
+    <div class="items">
+      <div class="item" *ngFor="let it of order.orderItems; trackBy: trackById">
+        <div class="item-top">
+          <div class="item-title">
+            {{ it.productVariant.product.name }}
+            <span
+              class="text-muted"
+              *ngIf="it.productVariant.product.category.name"
+            >
+              ({{ it.productVariant.product.category.name }})
+            </span>
+          </div>
+
+          <span class="badge" [ngClass]="getItemBadgeClass(it.orderItemStatus)">
+            {{ getItemStatusTextKey(it.orderItemStatus) | translate }}
+          </span>
+        </div>
+
+        <div class="item-sub text-muted">
+          {{ it.productVariant.article }} • {{ it.productVariant.color.name }} •
+          {{ it.productVariant.size.name }}
+        </div>
+
+        <div class="item-badges">
+          <span class="badge badge--neutral">
+            {{ "orders.details.qty" | translate }}: {{ it.quantity }}
+          </span>
+
+          <span class="badge badge--progress" *ngIf="it.quantityToProduce > 0">
+            {{ "orders.details.toProduce" | translate }}:
+            {{ it.quantityToProduce }}
+          </span>
+
+          <span class="badge badge--purple" *ngIf="it.isCustomTailoring">
+            {{ "orders.labels.custom" | translate }}
+          </span>
+        </div>
+
+        <div class="custom-note" *ngIf="it.isCustomTailoring && it.comment">
+          <mat-icon>design_services</mat-icon>
+          <span>{{ it.comment }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEATS -->
+  <div class="section" *ngIf="order.orderNpOptionsSeats.length">
+    <div class="section-title">{{ "orders.sections.seats" | translate }}</div>
+
+    <div class="seats">
+      <div
+        class="seat"
+        *ngFor="let s of order.orderNpOptionsSeats; trackBy: trackById"
+      >
+        <div class="text-muted small">
+          {{ s.volumetricLength }}×{{ s.volumetricWidth }}×{{
+            s.volumetricHeight
+          }}
+          • {{ s.weight }}kg
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

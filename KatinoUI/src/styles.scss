@@ -3,3 +3,8 @@
 // *{border: 1px solid red;}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.order-details-dialog-panel .mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
