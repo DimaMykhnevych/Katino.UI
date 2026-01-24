@@ -124,6 +124,153 @@
 .badge--blue { background: rgba(2, 132, 199, 0.14); }
 .badge--fail { background: rgba(211, 47, 47, 0.18); }
 
+.items-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.item-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.item-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.item-title {
+  color: #0f172a;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-qty {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.72);
+  white-space: nowrap;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.custom-comment {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 12px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(0,0,0,0.06);
+  color: rgba(0,0,0,0.75);
+}
+
+.pill--custom {
+  background: rgba(156, 39, 176, 0.12);
+}
+
+.pill-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.items-more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 12px;
+}
+
+.more-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.more-text {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.more-hint {
+  white-space: nowrap;
+}
+
+.item-divider {
+  height: 1px;
+  width: 100%;
+  margin: 6px 0 2px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.212),
+    rgba(0, 0, 0, 0.103)
+  );
+}
+
+.deadline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+
+.deadline--soon {
+  background: rgba(245, 158, 11, 0.16); /* amber */
+  border-color: rgba(245, 158, 11, 0.28);
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.deadline--overdue {
+  background: rgba(220, 38, 38, 0.14); /* red */
+  border-color: rgba(220, 38, 38, 0.26);
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.ttn-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ttn-warning {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+
+  mat-icon {
+    color: #dc2626;
+  }
+}
+
+
 
 @media (max-width: 768px) {
   .main .table-header {
@@ -151,18 +298,31 @@
     }
   }
 
+  .item-title {
+    white-space: normal;
+    line-height: 1.15;
+  }
+
+  .custom-comment {
+    white-space: normal;
+  }
+
+  .more-hint {
+    display: none;
+  }
+
   .orders-table {
     min-width: 0;
   }
 
-  .mat-column-created,
+  .mat-column-sendUntil,
   .mat-column-delivery,
   .mat-column-cost {
     display: none;
   }
 
-  .mat-column-ttn { width: 34%; }
-  .mat-column-recipient { width: 46%; }
+  .mat-column-items { width: 55%; }
+  .mat-column-ttn { width: 25%; }
   .mat-column-status { width: 20%; }
 
   .ttn {

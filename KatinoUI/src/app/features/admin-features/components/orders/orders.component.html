@@ -51,13 +51,15 @@
   <div class="mat-elevation-z8 table-wrapper">
     <div class="mat-table-container">
       <table mat-table [dataSource]="dataSource" class="w-100 orders-table">
-        <!-- Created -->
-        <ng-container matColumnDef="created">
+        <!-- Send until -->
+        <ng-container matColumnDef="sendUntil">
           <th mat-header-cell *matHeaderCellDef>
-            {{ "orders.table.created" | translate }}
+            {{ "orders.table.sendUntil" | translate }}
           </th>
           <td mat-cell *matCellDef="let o">
-            {{ o.creationDateTime | date: "short" }}
+            <span class="deadline" [ngClass]="getDeadlineClass(o)">
+              {{ o.sendUntilDate | date: "shortDate" }}
+            </span>
           </td>
         </ng-container>
 
@@ -68,29 +70,77 @@
           </th>
           <td mat-cell *matCellDef="let o">
             <div class="cell-stack">
-              <span class="ttn">{{
-                o.internetDocumentIntDocNumber || "—"
-              }}</span>
+              <div class="ttn-row">
+                <span class="ttn">{{
+                  o.internetDocumentIntDocNumber || "—"
+                }}</span>
+
+                <button
+                  *ngIf="shouldShowTtnWarning(o)"
+                  mat-icon-button
+                  class="ttn-warning"
+                  type="button"
+                  [matTooltip]="'orders.table.ttnNotCreated' | translate"
+                  matTooltipPosition="above"
+                  (click)="$event.stopPropagation()"
+                  aria-label="TTN not created"
+                >
+                  <mat-icon>error</mat-icon>
+                </button>
+              </div>
+
               <span class="text-muted small d-md-none">
-                {{ o.creationDateTime | date: "short" }}
+                {{ "orders.table.sendUntilShort" | translate }}:
+                <span class="deadline" [ngClass]="getDeadlineClass(o)">
+                  {{ o.sendUntilDate | date: "shortDate" }}
+                </span>
               </span>
             </div>
           </td>
         </ng-container>
 
-        <!-- Recipient -->
-        <ng-container matColumnDef="recipient">
+        <!-- Items -->
+        <ng-container matColumnDef="items">
           <th mat-header-cell *matHeaderCellDef>
-            {{ "orders.table.recipient" | translate }}
+            {{ "orders.table.items" | translate }}
           </th>
+
           <td mat-cell *matCellDef="let o">
-            <div class="cell-stack">
-              <div class="fw-600">
-                {{ o.orderRecipient?.npContactPerson?.lastName }}
-                {{ o.orderRecipient?.npContactPerson?.firstName }}
+            <div class="items-preview" *ngIf="getItemsPreview(o) as p">
+              <div
+                class="item-line"
+                *ngFor="let it of p.preview; let last = last"
+              >
+                <div class="item-main">
+                  <span class="item-title">{{ getItemTitle(it) }}</span>
+                  <span class="item-qty">× {{ getItemQtyText(it) }}</span>
+                </div>
+
+                <div class="item-meta">
+                  <span class="pill pill--custom" *ngIf="it.isCustomTailoring">
+                    <mat-icon class="pill-icon">design_services</mat-icon>
+                    {{ "orders.table.custom" | translate }}
+                  </span>
+
+                  <span
+                    class="custom-comment"
+                    *ngIf="it.isCustomTailoring && it.comment"
+                  >
+                    “{{ getCustomCommentShort(it.comment) }}”
+                  </span>
+                </div>
+
+                <!-- divider -->
+                <div class="item-divider" *ngIf="!last"></div>
               </div>
-              <div class="text-muted small">
-                {{ o.orderRecipient?.npContactPerson?.phones || "—" }}
+
+              <!-- more -->
+              <div class="items-more" *ngIf="p.rest > 0">
+                <mat-icon class="more-icon">more_horiz</mat-icon>
+                <span class="more-text">+{{ p.rest }}</span>
+                <span class="more-hint">
+                  {{ "orders.table.openToSeeAll" | translate }}
+                </span>
               </div>
             </div>
           </td>
@@ -103,7 +153,7 @@
           </th>
           <td mat-cell *matCellDef="let o">
             <div class="cell-stack">
-              <div class="fw-600">
+              <div>
                 {{
                   o.recipientNpCity?.present ||
                     o.addressInfo?.recipientCity ||
@@ -169,6 +219,10 @@
           (click)="openDetails(row)"
         ></tr>
       </table>
+    </div>
+
+    <div *ngIf="isRetrievingData">
+      <app-spinner [diameter]="50"></app-spinner>
     </div>
 
     <mat-paginator

@@ -14,11 +14,12 @@ import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
 import { GetOrderResponse } from 'src/app/core/models/order/get-order-response';
 import { Order } from 'src/app/core/models/order/order';
 import { OrderService } from 'src/app/features/common-services/order.service';
-import { OrderDetailsDialogComponent } from '../order-details-dialog/order-details-dialog.component';
 import { OrderStatus } from 'src/app/core/enums/order-status';
 import { CustomTranslateService } from 'src/app/core/services/custom-translate.service';
 import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
+import { OrderItem } from 'src/app/core/models/order/order-item';
+import { OrderConstants } from 'src/app/core/constants/order-constants';
 
 @Component({
   selector: 'app-orders',
@@ -33,9 +34,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   public dataSource = new MatTableDataSource<Order>([]);
   public displayedColumns: string[] = [
-    'created',
+    'sendUntil',
     'ttn',
-    'recipient',
+    'items',
     'delivery',
     'status',
     'cost',
@@ -84,6 +85,73 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return StyleClassHelper.getOrderStatusBadgeClass(s);
   }
 
+  public getItemsPreview(o: Order) {
+    const items = (o.orderItems ?? []).filter(Boolean);
+    const preview = items.slice(0, 2);
+    const rest = Math.max(0, items.length - preview.length);
+    return { preview, rest, total: items.length };
+  }
+
+  public getItemTitle(it: OrderItem): string {
+    const productName = it?.productVariant?.product?.name || '';
+    const color = it?.productVariant?.color?.name || '';
+    const size = it?.productVariant?.size?.name || '';
+    const parts = [productName, color, size].filter(Boolean);
+    return parts.length ? parts.join(' • ') : '—';
+  }
+
+  public getItemQtyText(it: any): string {
+    const toProduce = it?.quantityToProduce ?? 0;
+    const qty = it?.quantity ?? 0;
+
+    if (toProduce > 0) return `${toProduce}`;
+    return `${qty}`;
+  }
+
+  public getCustomCommentShort(comment?: string): string {
+    if (!comment) return '';
+    const trimmed = comment.trim();
+    if (trimmed.length <= 40) return trimmed;
+    return trimmed.slice(0, 40) + '…';
+  }
+
+  public getDeadlineClass(o: Order): string {
+    if (!o?.sendUntilDate || !o?.creationDateTime) return '';
+    const statusesToHighlight = [
+      OrderStatus.inProgress,
+      OrderStatus.readyToShip,
+      OrderStatus.packed,
+    ];
+    if (!statusesToHighlight.includes(o.orderStatus)) {
+      return '';
+    }
+
+    const now = new Date();
+    const created = new Date(o.creationDateTime);
+    const sendUntil = new Date(o.sendUntilDate);
+
+    const createdDaysAgo = this.diffDays(created, now);
+    if (
+      createdDaysAgo > OrderConstants.DEADLINE_HIGHLIGHT_FOR_NEW_ORDERS_DAYS
+    ) {
+      return '';
+    }
+
+    const untilDaysFromNow = this.diffDays(now, sendUntil);
+    if (untilDaysFromNow < 0) return 'deadline--overdue';
+
+    if (untilDaysFromNow <= OrderConstants.DEADLINE_SOON_DAYS)
+      return 'deadline--soon';
+
+    return '';
+  }
+
+  public shouldShowTtnWarning(o: Order): boolean {
+    if (!o?.internetDocumentCreationAttempted) return false;
+    const ttn = (o?.internetDocumentIntDocNumber || '').trim();
+    return ttn.length === 0;
+  }
+
   private fetchOrders(): void {
     const request: GetOrderRequest = {
       page: this.pageIndex + 1,
@@ -108,6 +176,20 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.dataSource.data = resp?.orders ?? [];
         this.isRetrievingData = false;
       });
+  }
+
+  private diffDays(a: Date, b: Date): number {
+    const aDate = new Date(
+      a.getFullYear(),
+      a.getMonth(),
+      a.getDate(),
+    ).getTime();
+    const bDate = new Date(
+      b.getFullYear(),
+      b.getMonth(),
+      b.getDate(),
+    ).getTime();
+    return Math.round((bDate - aDate) / (1000 * 60 * 60 * 24));
   }
 
   private onCatchError(error: any): Observable<any> {

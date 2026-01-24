@@ -200,7 +200,13 @@
             "status": "Статус",
             "manualStatus": "Власний статус",
             "cost": "Сума",
-            "afterpayment": "Післяплата"
+            "afterpayment": "Післяплата",
+            "items": "Товари",
+            "custom": "Індивідуально",
+            "openToSeeAll": "Відкрийте, щоб побачити всі",
+            "sendUntil": "Відправити до",
+            "sendUntilShort": "До",
+            "ttnNotCreated": "ТТН не була створена"            
         },
         "sections": {
             "paymentAndStatuses": "Оплата та статуси",

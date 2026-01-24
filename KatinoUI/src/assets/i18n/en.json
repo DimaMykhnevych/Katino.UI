@@ -200,7 +200,13 @@
             "status": "Status",
             "manualStatus": "Manual status",            
             "cost": "Total",
-            "afterpayment": "COD"
+            "afterpayment": "COD",
+            "items": "Items",
+            "custom": "Custom",
+            "openToSeeAll": "Open to see all",
+            "sendUntil": "Send until",
+            "sendUntilShort": "Due",
+            "ttnNotCreated": "Internet doc was not created"
         },
         "sections": {
             "paymentAndStatuses": "Payment & statuses",
