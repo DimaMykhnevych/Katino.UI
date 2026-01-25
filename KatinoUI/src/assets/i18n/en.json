@@ -332,6 +332,10 @@
         "toastr": {
             "statusUpdated": "Status updated",
             "statusUpdateFailed": "Failed to update status"
-        }                
+        },
+        "filters": {
+            "statuses": "Statuses",
+            "allStatuses": "All statuses"
+        }                 
     }
 }

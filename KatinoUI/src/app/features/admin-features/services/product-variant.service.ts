@@ -5,8 +5,6 @@ import { GetProductVariant } from '../models/get-product-variant';
 import { AppSettings } from 'src/app/core/settings';
 import { GetProductVariantRequest } from '../models/get-product-variant-request';
 import { convertToHttpParams } from 'src/app/core/http/request/http-params.util';
-import { AddProductVariantRequest } from '../models/add-product-variant-request';
-import { UpdateProductVariantRequest } from '../models/update-product-variant-request';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,7 @@ export class ProductVariantService {
   constructor(private _http: HttpClient) {}
 
   public getProductVariants(
-    request: GetProductVariantRequest
+    request: GetProductVariantRequest,
   ): Observable<GetProductVariant> {
     const httpParams: HttpParams =
       convertToHttpParams<GetProductVariantRequest>(request);
@@ -23,7 +21,7 @@ export class ProductVariantService {
       `${AppSettings.apiHost}/ProductVariant`,
       {
         params: httpParams,
-      }
+      },
     );
   }
 
@@ -32,27 +30,27 @@ export class ProductVariantService {
       `${AppSettings.apiHost}/ProductVariant/article/generate`,
       {
         responseType: 'text',
-      }
+      },
     );
   }
 
   public addProductVariant(productVariant: FormData): Observable<boolean> {
     return this._http.post<boolean>(
       `${AppSettings.apiHost}/ProductVariant`,
-      productVariant
+      productVariant,
     );
   }
 
   public updateProductVariant(productVariant: FormData): Observable<boolean> {
     return this._http.put<boolean>(
       `${AppSettings.apiHost}/ProductVariant`,
-      productVariant
+      productVariant,
     );
   }
 
   public deleteProductVariant(productVariantId: string): Observable<boolean> {
     return this._http.delete<boolean>(
-      `${AppSettings.apiHost}/ProductVariant/${productVariantId}`
+      `${AppSettings.apiHost}/ProductVariant/${productVariantId}`,
     );
   }
 }

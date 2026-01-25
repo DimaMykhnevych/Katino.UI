@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   finalize,
   takeUntil,
+  auditTime,
 } from 'rxjs/operators';
 
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
@@ -25,6 +26,8 @@ import { ToastrService } from 'ngx-toastr';
 import { SetManualOrderStatus } from 'src/app/core/models/order/set-manual-order-status';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { DefaultOptions } from 'src/app/core/constants/default-options';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 @Component({
   selector: 'app-orders',
@@ -33,6 +36,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
+  public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
+  public translatedAllOption$?: Observable<string>;
 
   public form: FormGroup = this._builder.group({});
   public isRetrievingData = false;
@@ -58,6 +63,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public pageSize = 20;
   public pageSizeOptions = [10, 20, 50, 100];
 
+  public allOrderStatuses: OrderStatus[] = Object.values(OrderStatus).filter(
+    (v) => typeof v === 'number',
+  ) as OrderStatus[];
+
+  public selectedStatuses: (OrderStatus | string)[] = [this.ALL_STATUSES_VALUE];
+
   private _destroy$ = new Subject<void>();
 
   constructor(
@@ -71,6 +82,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.initializeForm();
+    this.translatedAllOption$ = this._translate.stream(
+      'orders.filters.allStatuses',
+    );
     this.subscribeOnFormValueChanges();
 
     this.fetchOrders();
@@ -236,11 +250,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onAllStatusesToggled(e: MatOptionSelectionChange): void {
+    if (!e.isUserInput) return;
+
+    if (e.source.selected) {
+      this.orderStatuses!.setValue([this.ALL_STATUSES_VALUE], {
+        emitEvent: true,
+      });
+    } else {
+      this.orderStatuses!.setValue([], { emitEvent: true });
+    }
+  }
+
   private fetchOrders(): void {
+    const values = (this.orderStatuses!.value ?? []) as (
+      | OrderStatus
+      | string
+    )[];
+    this.fetchOrdersWithStatuses(values);
+  }
+
+  private fetchOrdersWithStatuses(values: (OrderStatus | string)[]): void {
+    const isAll = values.includes(this.ALL_STATUSES_VALUE);
+
     const request: GetOrderRequest = {
       page: this.pageIndex + 1,
       pageSize: this.pageSize,
       search: (this.form.value.orderSearchString || '').trim(),
+      orderStatuses: isAll ? [] : (values as OrderStatus[]),
     };
 
     this.getOrders(request);
@@ -276,6 +313,30 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return Math.round((bDate - aDate) / (1000 * 60 * 60 * 24));
   }
 
+  private applyAllStatusesRules(values: (OrderStatus | string)[]): void {
+    const ctrl = this.form.get('orderStatuses')!;
+    const hasAll = values.includes(this.ALL_STATUSES_VALUE);
+
+    if (hasAll && values.length > 1) {
+      const withoutAll = values.filter((v) => v !== this.ALL_STATUSES_VALUE);
+      ctrl.setValue(withoutAll, { emitEvent: false });
+      return;
+    }
+
+    const onlyStatuses = values as OrderStatus[];
+    const unique = Array.from(new Set(onlyStatuses));
+
+    if (!hasAll && unique.length === this.allOrderStatuses.length) {
+      ctrl.setValue([this.ALL_STATUSES_VALUE], { emitEvent: false });
+      return;
+    }
+
+    if (!hasAll && unique.length === 0) {
+      ctrl.setValue([this.ALL_STATUSES_VALUE], { emitEvent: false });
+      return;
+    }
+  }
+
   private onCatchError(error: any): Observable<any> {
     this.isRetrievingData = false;
     this.ordersResponse = { orders: [], resultsAmount: 0 };
@@ -286,6 +347,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     this.form = this._builder.group({
       orderSearchString: new FormControl(''),
+      orderStatuses: new FormControl([this.ALL_STATUSES_VALUE]),
     });
   }
 
@@ -298,9 +360,28 @@ export class OrdersComponent implements OnInit, OnDestroy {
       this.pageIndex = 0;
       this.fetchOrders();
     });
+
+    this.orderStatuses!.valueChanges.pipe(
+      auditTime(0),
+      takeUntil(this._destroy$),
+    ).subscribe(() => {
+      const ctrl = this.orderStatuses!;
+      const values = (ctrl.value ?? []) as (OrderStatus | string)[];
+
+      this.applyAllStatusesRules(values);
+
+      const finalValues = (ctrl.value ?? []) as (OrderStatus | string)[];
+
+      this.pageIndex = 0;
+      this.fetchOrdersWithStatuses(finalValues);
+    });
   }
 
   get orderSearchString() {
     return this.form.get('orderSearchString');
+  }
+
+  get orderStatuses() {
+    return this.form.get('orderStatuses');
   }
 }

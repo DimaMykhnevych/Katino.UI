@@ -26,6 +26,29 @@
             />
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
+
+          <mat-form-field
+            class="form-control status-field"
+            appearance="outline"
+          >
+            <mat-label>{{ "orders.filters.statuses" | translate }}</mat-label>
+
+            <mat-select formControlName="orderStatuses" multiple>
+              <ng-container *ngIf="translatedAllOption$ | async as allLabel">
+                <mat-option
+                  [value]="ALL_STATUSES_VALUE"
+                  (onSelectionChange)="onAllStatusesToggled($event)"
+                >
+                  {{ allLabel }}
+                </mat-option></ng-container
+              >
+
+              <mat-divider></mat-divider>
+              <mat-option *ngFor="let s of allOrderStatuses" [value]="s">
+                {{ getOrderStatusTextKey(s) | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </form>
     </div>

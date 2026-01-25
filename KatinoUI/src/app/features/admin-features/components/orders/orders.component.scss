@@ -51,6 +51,24 @@
           .form-control {
             flex: 1;
             min-width: 200px;
+
+              ::ng-deep {
+              .mat-form-field-outline {
+                color: rgba(148, 163, 184, 0.3);
+              }
+              
+              .mat-form-field-outline-thick {
+                color: #06b6d4;
+              }
+              
+              .mat-form-field-label {
+                color: #64748b;
+              }
+              
+              .mat-select-arrow {
+                color: #64748b;
+              }
+            }
           }
         }
       }
@@ -302,6 +320,9 @@
   to { transform: rotate(360deg); }
 }
 
+.status-field {
+  min-width: 260px;
+}
 
 
 
@@ -382,6 +403,10 @@
 
   th.mat-header-cell, td.mat-cell {
     padding: 8px 10px;
+  }
+
+  .status-field {
+    min-width: 100%;
   }
 }
 
