@@ -18,6 +18,11 @@ import { SidenavModule } from './layout/sidenav/sidenav.module';
 import { SpinnerModule } from './layout/spinner/spinner.module';
 import { DialogsModule } from './layout/dialogs/dialogs.module';
 import { CommonComponentsModule } from './features/common-components/common-components.module';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeUk from '@angular/common/locales/uk';
+
+registerLocaleData(localeUk);
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,7 +50,7 @@ import { CommonComponentsModule } from './features/common-components/common-comp
     DialogsModule,
     CommonComponentsModule,
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'uk' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
