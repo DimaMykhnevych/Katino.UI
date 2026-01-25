@@ -325,6 +325,13 @@
 
             "refusal": "Manual refusal",
             "exchange": "Manual exchange"
-            }          
+        },
+        "status": {
+            "noManualOptions": "No available manual statuses"
+        },
+        "toastr": {
+            "statusUpdated": "Status updated",
+            "statusUpdateFailed": "Failed to update status"
+        }                
     }
 }

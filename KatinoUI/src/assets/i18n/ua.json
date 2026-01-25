@@ -325,6 +325,13 @@
 
             "refusal": "Відмова (ручна)",
             "exchange": "Обмін (ручний)"
-        }   
+        },
+        "status": {
+            "noManualOptions": "Немає доступних ручних статусів"
+        },
+        "toastr": {
+            "statusUpdated": "Статус оновлено",
+            "statusUpdateFailed": "Не вдалося оновити статус"
+        }        
     }
 }

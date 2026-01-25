@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
@@ -7,6 +7,7 @@ import {
   catchError,
   debounceTime,
   distinctUntilChanged,
+  finalize,
   takeUntil,
 } from 'rxjs/operators';
 
@@ -20,6 +21,10 @@ import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
 import { OrderItem } from 'src/app/core/models/order/order-item';
 import { OrderConstants } from 'src/app/core/constants/order-constants';
+import { ToastrService } from 'ngx-toastr';
+import { SetManualOrderStatus } from 'src/app/core/models/order/set-manual-order-status';
+import { TranslateService } from '@ngx-translate/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-orders',
@@ -27,8 +32,15 @@ import { OrderConstants } from 'src/app/core/constants/order-constants';
   styleUrls: ['./orders.component.scss'],
 })
 export class OrdersComponent implements OnInit, OnDestroy {
+  @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
+
   public form: FormGroup = this._builder.group({});
   public isRetrievingData = false;
+
+  public statusLoading = new Set<string>();
+  public statusSaving = new Set<string>();
+  public currentMenuOrder?: Order;
+  public currentManualOptions: OrderStatus[] = [];
 
   public ordersResponse?: GetOrderResponse;
 
@@ -53,6 +65,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _orderService: OrderService,
     private _dialogService: DialogService,
     private _customTranslate: CustomTranslateService,
+    private _toastr: ToastrService,
+    private _translate: TranslateService,
   ) {}
 
   public ngOnInit(): void {
@@ -150,6 +164,76 @@ export class OrdersComponent implements OnInit, OnDestroy {
     if (!o?.internetDocumentCreationAttempted) return false;
     const ttn = (o?.internetDocumentIntDocNumber || '').trim();
     return ttn.length === 0;
+  }
+
+  public onStatusBadgeClick(o: Order, event: MouseEvent): void {
+    event.stopPropagation();
+
+    if (this.statusSaving.has(o.id)) return;
+
+    this.currentMenuOrder = o;
+    this.currentManualOptions = [];
+
+    this.statusLoading.add(o.id);
+
+    this._orderService
+      .getNextManualStatus(o.orderStatus)
+      .pipe(
+        catchError(() => of([] as OrderStatus[])),
+        finalize(() => this.statusLoading.delete(o.id)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((opts) => {
+        this.currentManualOptions = opts ?? [];
+      });
+  }
+
+  public hasManualOptionsForCurrent(): boolean {
+    return (this.currentManualOptions?.length ?? 0) > 0;
+  }
+
+  public setManualStatus(
+    o: Order,
+    newStatus: OrderStatus,
+    event: MouseEvent,
+  ): void {
+    event.stopPropagation();
+
+    if (this.statusSaving.has(o.id)) return;
+
+    const req: SetManualOrderStatus = {
+      orderId: o.id,
+      orderManualStatus: newStatus,
+    };
+
+    this.statusSaving.add(o.id);
+
+    this._orderService
+      .setManualStatus(req)
+      .pipe(
+        catchError(() => of(false)),
+        finalize(() => this.statusSaving.delete(o.id)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((ok) => {
+        this._statusMenuTrigger?.closeMenu();
+
+        if (!ok) {
+          this._toastr.error(
+            this._translate.instant('orders.toastr.statusUpdateFailed'),
+          );
+          return;
+        }
+
+        o.orderStatus = newStatus;
+        this.dataSource.data = [...this.dataSource.data];
+
+        this._toastr.success(
+          this._translate.instant('orders.toastr.statusUpdated'),
+          undefined,
+          { timeOut: 500 },
+        );
+      });
   }
 
   private fetchOrders(): void {
