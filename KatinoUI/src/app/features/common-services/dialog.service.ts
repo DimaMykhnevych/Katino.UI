@@ -11,6 +11,8 @@ import { AddEditColorData } from '../admin-features/models/add-edit-color-data';
 import { AddEditColorDialogComponent } from '../admin-features/components/add-edit-color-dialog/add-edit-color-dialog.component';
 import { Order } from 'src/app/core/models/order/order';
 import { OrderDetailsDialogComponent } from '../admin-features/components/order-details-dialog/order-details-dialog.component';
+import { AddEditOrderDialogComponent } from '../admin-features/components/add-edit-order-dialog/add-edit-order-dialog.component';
+import { AddEditOrderData } from '../admin-features/models/order/add-edit-order-data';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +74,16 @@ export class DialogService {
       width: '850px',
       disableClose: false,
       autoFocus: false,
+      data: data,
+    });
+  }
+
+  public openAddEditOrderDialog(
+    data: AddEditOrderData,
+  ): MatDialogRef<AddEditOrderDialogComponent> {
+    return this.dialog.open(AddEditOrderDialogComponent, {
+      width: '800px',
+      disableClose: true,
       data: data,
     });
   }

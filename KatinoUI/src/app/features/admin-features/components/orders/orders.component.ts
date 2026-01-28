@@ -28,6 +28,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DefaultOptions } from 'src/app/core/constants/default-options';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { AddEditOrderData } from '../../models/order/add-edit-order-data';
 
 @Component({
   selector: 'app-orders',
@@ -93,6 +94,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  public onAddOrderClick(): void {
+    const data: AddEditOrderData = {
+      order: null,
+      isAdding: true,
+    };
+    const dialogRef = this._dialogService.openAddEditOrderDialog(data);
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchOrders();
+    });
   }
 
   public onPageChanged(e: PageEvent): void {
