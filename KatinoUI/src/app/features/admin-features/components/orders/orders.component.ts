@@ -58,6 +58,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     'delivery',
     'status',
     'cost',
+    'actions',
   ];
 
   public pageIndex = 0;
@@ -103,8 +104,26 @@ export class OrdersComponent implements OnInit, OnDestroy {
     };
     const dialogRef = this._dialogService.openAddEditOrderDialog(data);
     dialogRef.afterClosed().subscribe(() => {
+      this.pageIndex = 0;
       this.fetchOrders();
     });
+  }
+
+  public onEditOrderClick(order: Order): void {
+    const data: AddEditOrderData = {
+      order: order,
+      isAdding: false,
+    };
+
+    const dialogRef = this._dialogService.openAddEditOrderDialog(data);
+    dialogRef.afterClosed().subscribe(() => {
+      this.pageIndex = 0;
+      this.fetchOrders();
+    });
+  }
+
+  public onDeleteOrderClick(order: Order): void {
+    // TODO implement
   }
 
   public onPageChanged(e: PageEvent): void {
@@ -259,6 +278,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
           undefined,
           { timeOut: 500 },
         );
+
+        if (
+          newStatus === OrderStatus.refusal ||
+          newStatus === OrderStatus.exchange
+        ) {
+          this.fetchOrders();
+        }
       });
   }
 

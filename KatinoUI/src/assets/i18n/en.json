@@ -211,7 +211,8 @@
         "sections": {
             "paymentAndStatuses": "Payment & statuses",
             "delivery": "Delivery",
-            "seats": "Seats"
+            "seats": "Seats",
+            "recipient": "Recipient"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -224,11 +225,15 @@
             "paymentMethod": "Payment method",
             "saleType": "Sale type",
             "npStatus": "Nova Post status",
-            "orderDescription": "Description"            
+            "orderDescription": "Description",
+            "recipientPhone": "Recipient phone",
+            "recipientLastName": "Last name",
+            "recipientFirstName": "First name",
+            "recipientMiddleName": "Middle name"                          
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
-            "address": "Address delivery"
+            "address": "Address"
         },
         "payerType": {
             "sender": "Sender",
@@ -336,6 +341,18 @@
         "filters": {
             "statuses": "Statuses",
             "allStatuses": "All statuses"
+        },
+        "addingOrder": {
+            "dialogTitle": "Adding Order"
+        },
+        "updatingOrder": {
+            "dialogTitle": "Updating Order"
+        },
+        "hints": {
+            "searchingPhones": "Searching..."
+        },
+        "validation": {
+            "phoneFormat": "Phone must be in format 380660000000"
         }                 
     }
 }

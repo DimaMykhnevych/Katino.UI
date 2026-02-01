@@ -211,7 +211,8 @@
         "sections": {
             "paymentAndStatuses": "Оплата та статуси",
             "delivery": "Доставка",
-            "seats": "Місця"
+            "seats": "Місця",
+            "recipient": "Отримувач"
         },
         "labels": {
             "deliveryType": "Тип доставки",
@@ -224,11 +225,15 @@
             "paymentMethod": "Спосіб оплати",
             "saleType": "Тип продажу",
             "npStatus": "Статус НП",
-            "orderDescription": "Опис"            
+            "orderDescription": "Опис",
+            "recipientPhone": "Телефон отримувача",
+            "recipientLastName": "Прізвище",
+            "recipientFirstName": "Ім’я",
+            "recipientMiddleName": "По батькові"            
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
-            "address": "Адресна доставка"
+            "address": "Адресна"
         },
         "payerType": {
             "sender": "Відправник",
@@ -336,6 +341,18 @@
         "filters": {
             "statuses": "Статуси",
             "allStatuses": "Усі статуси"
+        },
+        "addingOrder": {
+            "dialogTitle": "Додавання Замовлення"
+        },
+        "updatingOrder": {
+            "dialogTitle": "Оновлення Замовлення"
+        },
+        "hints": {
+            "searchingPhones": "Пошук..."
+        },
+        "validation": {
+            "phoneFormat": "Телефон має бути у форматі 380660000000"
         }        
     }
 }

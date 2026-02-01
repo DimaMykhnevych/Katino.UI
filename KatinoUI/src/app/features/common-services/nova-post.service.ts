@@ -5,6 +5,7 @@ import { convertToHttpParams } from 'src/app/core/http/request/http-params.util'
 import { CurrentSyncStatus } from 'src/app/core/models/nova-post/current-sync-status';
 import { GetNpCitiesResponse } from 'src/app/core/models/nova-post/get-np-cities-response';
 import { GetSyncRecords } from 'src/app/core/models/nova-post/get-sync-records';
+import { NpContactPerson } from 'src/app/core/models/nova-post/np-contact-person';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { SearchNpWarehouses } from 'src/app/core/models/nova-post/search-np-warehouses';
 import { AppSettings } from 'src/app/core/settings';
@@ -22,12 +23,23 @@ export class NovaPostService {
       `${AppSettings.apiHost}/NovaPost/cities/search`,
       {
         params: httpParams,
-      }
+      },
+    );
+  }
+
+  public getNpContactPersons(phone: string): Observable<NpContactPerson[]> {
+    let httpParams = new HttpParams();
+    httpParams = httpParams.append('phone', phone);
+    return this._http.get<NpContactPerson[]>(
+      `${AppSettings.apiHost}/NovaPost/contact-persons`,
+      {
+        params: httpParams,
+      },
     );
   }
 
   public getNpWarehouses(
-    request: SearchNpWarehouses
+    request: SearchNpWarehouses,
   ): Observable<NpWarehouse[]> {
     const httpParams: HttpParams =
       convertToHttpParams<SearchNpWarehouses>(request);
@@ -35,20 +47,20 @@ export class NovaPostService {
       `${AppSettings.apiHost}/NpWarehouse/search`,
       {
         params: httpParams,
-      }
+      },
     );
   }
 
   public getCurrentSyncStatus(): Observable<CurrentSyncStatus> {
     return this._http.get<CurrentSyncStatus>(
-      `${AppSettings.apiHost}/NovaPoshtaSync/status`
+      `${AppSettings.apiHost}/NovaPoshtaSync/status`,
     );
   }
 
   public triggerSync(): Observable<void> {
     return this._http.post<void>(
       `${AppSettings.apiHost}/NovaPoshtaSync/trigger`,
-      null
+      null,
     );
   }
 
@@ -59,7 +71,7 @@ export class NovaPostService {
       `${AppSettings.apiHost}/NovaPoshtaSync/history`,
       {
         params: httpParams,
-      }
+      },
     );
   }
 }

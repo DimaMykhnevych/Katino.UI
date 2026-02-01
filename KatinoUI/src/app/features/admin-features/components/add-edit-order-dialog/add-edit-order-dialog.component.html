@@ -1,5 +1,175 @@
-<h1 mat-dialog-title>Adding order</h1>
-<div mat-dialog-content></div>
+<h1 mat-dialog-title>
+  <div *ngIf="data.isAdding">
+    {{ "orders.addingOrder.dialogTitle" | translate }}
+  </div>
+  <div *ngIf="!data.isAdding">
+    {{ "orders.updatingOrder.dialogTitle" | translate }}
+  </div>
+</h1>
+<div mat-dialog-content class="main">
+  <ng-container
+    ><form [formGroup]="form">
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="section">
+            <div class="section-title">
+              {{ "orders.sections.delivery" | translate }}
+            </div>
+
+            <div class="kv">
+              <div class="k d-flex align-items-center">
+                {{ "orders.labels.deliveryType" | translate }}
+              </div>
+              <div class="v">
+                <mat-radio-group
+                  aria-label="Select an option"
+                  formControlName="deliveryType"
+                  required
+                  color="primary"
+                >
+                  <mat-radio-button
+                    *ngFor="let opt of deliveryTypeOptions"
+                    [value]="opt.value"
+                    class="p-1"
+                  >
+                    {{ opt.labelKey | translate }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="section">
+            <div class="section-title">
+              {{ "orders.sections.recipient" | translate }}
+            </div>
+
+            <div class="row">
+              <!-- Phone -->
+              <div class="col-12 col-md-6">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.recipientPhone" | translate
+                  }}</mat-label>
+
+                  <input
+                    matInput
+                    formControlName="recipientPhones"
+                    [matAutocomplete]="autoPhones"
+                    placeholder="380660000000"
+                    autocomplete="off"
+                    required
+                  />
+
+                  <mat-autocomplete
+                    #autoPhones="matAutocomplete"
+                    autoActiveFirstOption
+                    (optionSelected)="onPhoneOptionSelected($event)"
+                  >
+                    <mat-option *ngFor="let p of phoneSuggestions" [value]="p">
+                      <div class="option-two-lines">
+                        <div class="option-primary">{{ p.phones }}</div>
+                        <div class="option-secondary">
+                          {{ p.lastName }} {{ p.firstName }} {{ p.middleName }}
+                        </div>
+                      </div>
+                    </mat-option>
+                  </mat-autocomplete>
+
+                  <mat-hint *ngIf="isSearchingPhones">
+                    {{ "orders.hints.searchingPhones" | translate }}
+                  </mat-hint>
+
+                  <mat-error
+                    *ngIf="
+                      recipientPhones?.touched &&
+                      recipientPhones?.hasError('required')
+                    "
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      recipientPhones?.touched &&
+                      recipientPhones?.hasError('pattern')
+                    "
+                  >
+                    {{ "orders.validation.phoneFormat" | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Last name -->
+              <div class="col-12 col-md-6">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.recipientLastName" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="recipientLastName"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      recipientLastName?.touched &&
+                      recipientLastName?.hasError('required')
+                    "
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- First name -->
+              <div class="col-12 col-md-6">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.recipientFirstName" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="recipientFirstName"
+                    required
+                  />
+                  <mat-error
+                    *ngIf="
+                      recipientFirstName?.touched &&
+                      recipientFirstName?.hasError('required')
+                    "
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Middle name -->
+              <div class="col-12 col-md-6">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.recipientMiddleName" | translate
+                  }}</mat-label>
+                  <input matInput formControlName="recipientMiddleName" />
+                  <mat-error
+                    *ngIf="
+                      recipientMiddleName?.touched &&
+                      recipientMiddleName?.hasError('required')
+                    "
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form></ng-container
+  >
+</div>
 <div mat-dialog-actions>
   <button mat-stroked-button color="warn" mat-dialog-close="false">
     {{ "common.close" | translate }}

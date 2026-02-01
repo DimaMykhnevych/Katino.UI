@@ -1,4 +1,4 @@
 export enum DeliveryType {
-  wrehouseOrPost,
+  warehouseOrPost,
   address,
 }
