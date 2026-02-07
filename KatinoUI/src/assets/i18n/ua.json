@@ -212,7 +212,8 @@
             "paymentAndStatuses": "Оплата та статуси",
             "delivery": "Доставка",
             "seats": "Місця",
-            "recipient": "Отримувач"
+            "recipient": "Отримувач",
+            "deliveryAddress": "Адреса доставки"
         },
         "labels": {
             "deliveryType": "Тип доставки",
@@ -354,6 +355,15 @@
         },
         "validation": {
             "phoneFormat": "Телефон має бути у форматі 380660000000"
-        }        
+        },
+        "address": {
+            "city": "Місто",
+            "addressName": "Вулиця",
+            "house": "Будинок",
+            "flat": "Квартира",
+            "note": "Примітка",
+            "warehouseHint": "Виберіть місто та відділення/поштомат",
+            "warehouseRequired": "Оберіть місто та відділення / поштомат"
+        }
     }
 }

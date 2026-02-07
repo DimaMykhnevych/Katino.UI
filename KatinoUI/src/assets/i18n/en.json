@@ -212,7 +212,8 @@
             "paymentAndStatuses": "Payment & statuses",
             "delivery": "Delivery",
             "seats": "Seats",
-            "recipient": "Recipient"
+            "recipient": "Recipient",
+            "deliveryAddress": "Delivery address"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -354,6 +355,15 @@
         },
         "validation": {
             "phoneFormat": "Phone must be in format 380660000000"
-        }                 
+        },
+        "address": {
+            "city": "City",
+            "addressName": "Street",
+            "house": "House",
+            "flat": "Flat",
+            "note": "Note",
+            "warehouseHint": "Select city and warehouse/postomat",
+            "warehouseRequired": "Select city and warehouse / postomat"            
+        }
     }
 }

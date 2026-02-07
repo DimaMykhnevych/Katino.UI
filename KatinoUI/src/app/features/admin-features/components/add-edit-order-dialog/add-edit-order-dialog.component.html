@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row">
         <div class="col-12">
           <div class="section">
             <div class="section-title">
@@ -181,14 +181,129 @@
           </div>
         </div>
       </div>
-    </form></ng-container
-  >
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="section">
+            <div class="section-title">
+              {{ "orders.sections.deliveryAddress" | translate }}
+            </div>
+
+            <ng-container
+              *ngIf="
+                deliveryType?.value === DeliveryType.address;
+                else warehouseTpl
+              "
+            >
+              <div class="row" [formGroup]="addressInfoGroup">
+                <div class="col-12 col-md-6">
+                  <mat-form-field class="order-form-input" appearance="outline">
+                    <mat-label>{{
+                      "orders.address.city" | translate
+                    }}</mat-label>
+                    <input matInput formControlName="recipientCity" required />
+                    <mat-error
+                      *ngIf="
+                        addressInfoGroup.get('recipientCity')?.touched &&
+                        addressInfoGroup
+                          .get('recipientCity')
+                          ?.hasError('required')
+                      "
+                    >
+                      {{ "validation.requiredField" | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <mat-form-field class="order-form-input" appearance="outline">
+                    <mat-label>{{
+                      "orders.address.addressName" | translate
+                    }}</mat-label>
+                    <input
+                      matInput
+                      formControlName="recipientAddressName"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        addressInfoGroup.get('recipientAddressName')?.touched &&
+                        addressInfoGroup
+                          .get('recipientAddressName')
+                          ?.hasError('required')
+                      "
+                    >
+                      {{ "validation.requiredField" | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <mat-form-field class="order-form-input" appearance="outline">
+                    <mat-label>{{
+                      "orders.address.house" | translate
+                    }}</mat-label>
+                    <input matInput formControlName="recipientHouse" required />
+                    <mat-error
+                      *ngIf="
+                        addressInfoGroup.get('recipientHouse')?.touched &&
+                        addressInfoGroup
+                          .get('recipientHouse')
+                          ?.hasError('required')
+                      "
+                    >
+                      {{ "validation.requiredField" | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <mat-form-field class="order-form-input" appearance="outline">
+                    <mat-label>{{
+                      "orders.address.flat" | translate
+                    }}</mat-label>
+                    <input matInput formControlName="recipientFlat" required />
+                    <mat-error
+                      *ngIf="
+                        addressInfoGroup.get('recipientFlat')?.touched &&
+                        addressInfoGroup
+                          .get('recipientFlat')
+                          ?.hasError('required')
+                      "
+                    >
+                      {{ "validation.requiredField" | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-12">
+                  <mat-form-field class="order-form-input" appearance="outline">
+                    <mat-label>{{
+                      "orders.address.note" | translate
+                    }}</mat-label>
+                    <input matInput formControlName="recipientAddressNote" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Warehouse/Postomat delivery -->
+            <ng-template #warehouseTpl>
+              <app-np-warehouse-selection
+                [initialCity]="initialRecipientCity"
+                [initialWarehouse]="initialRecipientWarehouse"
+                (valueChanged)="onRecipientWarehouseChanged($event)"
+              ></app-np-warehouse-selection>
+            </ng-template>
+          </div>
+        </div>
+      </div></form
+  ></ng-container>
 </div>
 <div mat-dialog-actions>
   <button mat-stroked-button color="warn" mat-dialog-close="false">
     {{ "common.close" | translate }}
   </button>
-  <button type="submit" mat-button>
+  <button type="submit" mat-button (click)="onAddEditOrderClick()">
     {{ "common.add" | translate }}
   </button>
 </div>

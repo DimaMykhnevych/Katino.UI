@@ -30,5 +30,5 @@ export interface AddOrder {
   recipientNpCity?: NpCityResponse;
   senderContactPerson: NpContactPerson;
   orderRecipient: AddOrderRecipient;
-  addressInfo: AddOrderAddressInfo;
+  addressInfo: AddOrderAddressInfo | null;
 }
