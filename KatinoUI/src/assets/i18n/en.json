@@ -229,7 +229,8 @@
             "recipientPhone": "Recipient phone",
             "recipientLastName": "Last name",
             "recipientFirstName": "First name",
-            "recipientMiddleName": "Middle name"                          
+            "recipientMiddleName": "Middle name",
+            "instUrl": "Link / username (Instagram / Telegram)"                   
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",

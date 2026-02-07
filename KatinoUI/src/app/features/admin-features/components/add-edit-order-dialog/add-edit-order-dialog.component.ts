@@ -166,6 +166,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         this.data?.order?.orderRecipient?.npContactPerson?.middleName,
         middleNameValidators,
       ),
+      instUrl: new FormControl(
+        this.data?.order?.orderRecipient?.instUrl ?? '',
+        [Validators.required],
+      ),
     });
   }
 
@@ -183,5 +187,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get recipientMiddleName() {
     return this.form.get('recipientMiddleName');
+  }
+  get instUrl() {
+    return this.form.get('instUrl');
   }
 }

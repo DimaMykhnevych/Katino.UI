@@ -229,7 +229,8 @@
             "recipientPhone": "Телефон отримувача",
             "recipientLastName": "Прізвище",
             "recipientFirstName": "Ім’я",
-            "recipientMiddleName": "По батькові"            
+            "recipientMiddleName": "По батькові",
+            "instUrl": "Посилання / нік (Instagram / Telegram)"        
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
