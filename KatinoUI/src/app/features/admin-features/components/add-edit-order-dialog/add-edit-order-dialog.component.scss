@@ -53,6 +53,25 @@
     }
 }
 
+.qty-input {
+  max-width: 40px;
+  text-align: right;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  background: white;
+
+  &:focus {
+    outline: none;
+    border-color: #06b6d4;
+  }
+
+  &.invalid {
+    border-color: #ef4444;
+    background: #fef2f2;
+  }
+}
+
+
 
 ::ng-deep  .mat-autocomplete-panel .mat-option {
   height: auto !important;

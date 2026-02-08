@@ -383,7 +383,11 @@
                         type="number"
                         formControlName="quantity"
                         min="1"
-                        style="max-width: 80px"
+                        class="qty-input"
+                        [class.invalid]="
+                          item.get('quantity')?.invalid &&
+                          item.get('quantity')?.touched
+                        "
                       />
                     </td>
 
