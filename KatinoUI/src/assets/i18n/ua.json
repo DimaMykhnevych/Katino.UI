@@ -213,7 +213,8 @@
             "delivery": "Доставка",
             "seats": "Місця",
             "recipient": "Отримувач",
-            "deliveryAddress": "Адреса доставки"
+            "deliveryAddress": "Адреса доставки",
+            "items": "Товари в замовленні"
         },
         "labels": {
             "deliveryType": "Тип доставки",
@@ -231,7 +232,8 @@
             "recipientLastName": "Прізвище",
             "recipientFirstName": "Ім’я",
             "recipientMiddleName": "По батькові",
-            "instUrl": "Посилання / нік (Instagram / Telegram)"        
+            "instUrl": "Посилання / нік (Instagram / Telegram)",
+            "addProduct": "Додати товар"     
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
@@ -364,6 +366,12 @@
             "note": "Примітка",
             "warehouseHint": "Виберіть місто та відділення/поштомат",
             "warehouseRequired": "Оберіть місто та відділення / поштомат"
+        },
+        "items": {
+            "product": "Товар",
+            "custom": "Індив.",
+            "comment": "Коментар",
+            "qty": "Кількість"
         }
     }
 }

@@ -3,6 +3,7 @@ import { AddEditOrderData } from '../../models/order/add-edit-order-data';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -28,6 +29,8 @@ import { AddOrder } from 'src/app/core/models/order/add-order/add-order';
 import { AddOrderAddressInfo } from 'src/app/core/models/order/add-order/add-order-address-info';
 import { NpCityResponse } from 'src/app/core/models/nova-post/np-city-response';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
+import { ProductVariant } from 'src/app/core/models/product-variant';
+import { ProductVariantService } from '../../services/product-variant.service';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -54,6 +57,9 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   };
   public initialRecipientCity: NpCityResponse | null = null;
   public initialRecipientWarehouse: NpWarehouse | null = null;
+  public productSearchCtrl = new FormControl('');
+  public productVariants: ProductVariant[] = [];
+  public isSearchingProducts = false;
 
   public deliveryTypeOptions: DeliveryTypeOption[] = Object.values(DeliveryType)
     .filter((v) => typeof v === 'number')
@@ -69,6 +75,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) data: AddEditOrderData,
     private _builder: FormBuilder,
     private _npService: NovaPostService,
+    private _productVariantService: ProductVariantService,
   ) {
     this.data = data;
   }
@@ -76,8 +83,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.initializeForm();
     this.applyInitialRecipientWarehouse();
+    this.populateOrderItemsFromExistingOrder();
     this.subscribeOnRecipientPhoneChanges();
     this.subscribeOnDeliveryTypeChanges();
+    this.subscribeOnProductSearch();
   }
 
   public ngOnDestroy(): void {
@@ -113,6 +122,24 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
   public onRecipientWarehouseChanged(v: NpWarehouseSelectionValue): void {
     this.recipientNpSelection = v;
+  }
+
+  public displayProductVariant = (pv: ProductVariant): string =>
+    pv ? `${pv.product.name} • ${pv.color.name} • ${pv.size.name}` : '';
+
+  public onProductSelected(pv: ProductVariant): void {
+    this.orderItems.push(
+      this._builder.group({
+        productVariantId: [pv.id, Validators.required],
+        productVariant: [pv],
+        isCustomTailoring: [false],
+        comment: [''],
+        quantity: [1, [Validators.required, Validators.min(1)]],
+      }),
+    );
+
+    this.productSearchCtrl.setValue('');
+    this.productVariants = [];
   }
 
   public onAddEditOrderClick(): void {
@@ -156,7 +183,13 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       afterpaymentOnGoodsCost:
         this.form.value.afterpaymentOnGoodsCost ?? undefined,
 
-      orderItems: [], // TODO
+      orderItems: this.orderItems.controls.map((c) => ({
+        productVariantId: c.value.productVariantId,
+        isCustomTailoring: c.value.isCustomTailoring,
+        comment: c.value.comment,
+        quantity: c.value.quantity,
+      })),
+
       orderNpOptionsSeats: [], // TODO
 
       senderNpCity: this.form.value.senderNpCity, // TODO
@@ -237,6 +270,30 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+  private subscribeOnProductSearch(): void {
+    this.productSearchCtrl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((v) => typeof v === 'string' && v.length >= 2),
+        tap(() => (this.isSearchingProducts = true)),
+        switchMap((value: string) =>
+          this._productVariantService
+            .getProductVariants({
+              productName: value,
+            })
+            .pipe(
+              catchError(() => of({ productVariants: [], resultsAmount: 0 })),
+            ),
+        ),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((resp) => {
+        this.productVariants = resp.productVariants;
+        this.isSearchingProducts = false;
+      });
+  }
+
   private initializeForm(): void {
     const currentDeliveryType: DeliveryType =
       this.data?.order?.deliveryType ?? DeliveryType.warehouseOrPost;
@@ -284,6 +341,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           this.data?.order?.addressInfo?.recipientFlat ?? '',
         ),
       }),
+      orderItems: this._builder.array([]),
     });
 
     this.applyDeliveryTypeValidators(this.deliveryType!.value);
@@ -300,6 +358,31 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       city: this.initialRecipientCity,
       warehouse: this.initialRecipientWarehouse,
     };
+  }
+
+  private populateOrderItemsFromExistingOrder(): void {
+    if (!this.data?.order?.orderItems?.length) {
+      return;
+    }
+
+    while (this.orderItems.length) {
+      this.orderItems.removeAt(0);
+    }
+
+    for (const oi of this.data.order.orderItems) {
+      this.orderItems.push(
+        this._builder.group({
+          productVariantId: [oi.productVariantId, Validators.required],
+          productVariant: [oi.productVariant],
+          isCustomTailoring: [oi.isCustomTailoring],
+          comment: [oi.comment ?? ''],
+          quantity: [
+            oi.quantity ?? 1,
+            [Validators.required, Validators.min(1)],
+          ],
+        }),
+      );
+    }
   }
 
   private applyDeliveryTypeValidators(dt: DeliveryType): void {
@@ -363,5 +446,13 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get addressInfoGroup(): FormGroup {
     return this.form.get('addressInfo') as FormGroup;
+  }
+
+  get orderItems(): FormArray {
+    return this.form.get('orderItems') as FormArray;
+  }
+
+  get orderItemGroups(): FormGroup[] {
+    return this.orderItems.controls as FormGroup[];
   }
 }

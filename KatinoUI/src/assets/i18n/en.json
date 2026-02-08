@@ -213,7 +213,8 @@
             "delivery": "Delivery",
             "seats": "Seats",
             "recipient": "Recipient",
-            "deliveryAddress": "Delivery address"
+            "deliveryAddress": "Delivery address",
+            "items": "Order products"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -231,7 +232,8 @@
             "recipientLastName": "Last name",
             "recipientFirstName": "First name",
             "recipientMiddleName": "Middle name",
-            "instUrl": "Link / username (Instagram / Telegram)"                   
+            "instUrl": "Link / username (Instagram / Telegram)",
+            "addProduct": "Add product"               
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
@@ -364,6 +366,12 @@
             "note": "Note",
             "warehouseHint": "Select city and warehouse/postomat",
             "warehouseRequired": "Select city and warehouse / postomat"            
-        }
+        },
+        "items": {
+            "product": "Product",
+            "custom": "Custom",
+            "comment": "Comment",
+            "qty": "Quantity"
+        }        
     }
 }
