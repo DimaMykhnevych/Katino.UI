@@ -407,6 +407,107 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="section">
+            <div class="section-title">
+              {{ "orders.sections.pricing" | translate }}
+            </div>
+
+            <!-- Sale type -->
+            <div class="kv mb-2">
+              <div class="k d-flex align-items-center">
+                {{ "orders.labels.saleType" | translate }}
+              </div>
+              <div class="v">
+                <mat-radio-group formControlName="saleType" color="primary">
+                  <mat-radio-button [value]="SaleType.retail" class="p-1">
+                    {{ "orders.saleType.retail" | translate }}
+                  </mat-radio-button>
+                  <mat-radio-button [value]="SaleType.drop" class="p-1">
+                    {{ "orders.saleType.drop" | translate }}
+                  </mat-radio-button>
+                  <mat-radio-button [value]="SaleType.wholesale" class="p-1">
+                    {{ "orders.saleType.wholesale" | translate }}
+                  </mat-radio-button>
+                </mat-radio-group>
+
+                <div class="text-muted small" *ngIf="!data.isAdding">
+                  {{ "orders.hints.saleTypeLocked" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Total cost + prepayment -->
+            <div class="row g-2 align-items-end">
+              <div class="col-12">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.totalCost" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="1"
+                    formControlName="cost"
+                  />
+                  <mat-error
+                    *ngIf="cost?.touched && cost?.hasError('required')"
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="cost?.touched && cost?.hasError('min')">
+                    {{ "validation.mustBeGreaterThanZero" | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-12">
+                <mat-checkbox formControlName="isPrepayment" color="primary">
+                  {{ "orders.labels.prepayment" | translate }}
+                </mat-checkbox>
+              </div>
+
+              <div class="col-12" *ngIf="isPrepayment?.value === true">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{
+                    "orders.labels.afterpayment" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="1"
+                    formControlName="afterpaymentOnGoodsCost"
+                  />
+                  <mat-error
+                    *ngIf="
+                      afterpaymentOnGoodsCost?.touched &&
+                      afterpaymentOnGoodsCost?.hasError('required')
+                    "
+                  >
+                    {{ "validation.requiredField" | translate }}
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      afterpaymentOnGoodsCost?.touched &&
+                      afterpaymentOnGoodsCost?.hasError('min')
+                    "
+                  >
+                    {{ "validation.mustBeGreaterThanZero" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <div class="text-muted small">
+                  {{
+                    "orders.hints.afterpaymentDefault"
+                      | translate: { amount: PREPAYMENT_AMOUNT }
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </form></ng-container
   >
 </div>

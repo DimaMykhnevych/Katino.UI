@@ -31,6 +31,7 @@ import { NpCityResponse } from 'src/app/core/models/nova-post/np-city-response';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { ProductVariant } from 'src/app/core/models/product-variant';
 import { ProductVariantService } from '../../services/product-variant.service';
+import { SaleType } from 'src/app/core/enums/sale-type';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -43,6 +44,7 @@ export interface DeliveryTypeOption {
   styleUrls: ['./add-edit-order-dialog.component.scss'],
 })
 export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
+  public readonly PREPAYMENT_AMOUNT = 200;
   public form: FormGroup = this._builder.group({});
 
   public data: AddEditOrderData;
@@ -60,6 +62,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public productSearchCtrl = new FormControl('');
   public productVariants: ProductVariant[] = [];
   public isSearchingProducts = false;
+  public SaleType = SaleType;
 
   public deliveryTypeOptions: DeliveryTypeOption[] = Object.values(DeliveryType)
     .filter((v) => typeof v === 'number')
@@ -69,6 +72,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     }));
 
   private _destroy$ = new Subject<void>();
+  private _costManuallyEdited = false;
+  private _afterpaymentManuallyEdited = false;
   private readonly PHONE_PATTERN = /^380\d{9}$/;
 
   constructor(
@@ -87,6 +92,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.subscribeOnRecipientPhoneChanges();
     this.subscribeOnDeliveryTypeChanges();
     this.subscribeOnProductSearch();
+    this.subscribeOnPricingChanges();
   }
 
   public ngOnDestroy(): void {
@@ -172,16 +178,20 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
       payerType: this.form.value.payerType ?? 0, // TODO
       paymentMethod: this.form.value.paymentMethod ?? 0, // TODO
-      saleType: this.form.value.saleType ?? 0, // TODO
+      saleType: (this.saleType?.enabled
+        ? this.saleType.value
+        : this.data?.order?.saleType) as SaleType,
 
       sendUntilDate: this.form.value.sendUntilDate ?? new Date(), // TODO
       weight: this.form.value.weight ?? 0, // TODO
       deliveryType: dt,
       seatsAmount: this.form.value.seatsAmount ?? 1, // TODO
       description: this.form.value.description ?? '',
-      cost: this.form.value.cost ?? 0,
+      cost: Number(this.cost?.value ?? 0),
       afterpaymentOnGoodsCost:
-        this.form.value.afterpaymentOnGoodsCost ?? undefined,
+        this.isPrepayment?.value === true
+          ? Number(this.afterpaymentOnGoodsCost?.value ?? 0)
+          : undefined,
 
       orderItems: this.orderItems.controls.map((c) => ({
         productVariantId: c.value.productVariantId,
@@ -294,6 +304,51 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       });
   }
 
+  private subscribeOnPricingChanges(): void {
+    this.cost!.valueChanges.pipe(
+      takeUntil(this._destroy$),
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      if (this.cost?.dirty) {
+        this._costManuallyEdited = true;
+      }
+
+      this.recalculateAfterpaymentIfNeeded(false);
+    });
+
+    this.afterpaymentOnGoodsCost!.valueChanges.pipe(
+      takeUntil(this._destroy$),
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      if (this.afterpaymentOnGoodsCost?.dirty)
+        this._afterpaymentManuallyEdited = true;
+    });
+
+    this.saleType!.valueChanges.pipe(
+      takeUntil(this._destroy$),
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      this.recalculateCostIfNeeded(false);
+      this.recalculateAfterpaymentIfNeeded(false);
+    });
+
+    this.isPrepayment!.valueChanges.pipe(
+      takeUntil(this._destroy$),
+      distinctUntilChanged(),
+    ).subscribe((v: boolean) => {
+      this._afterpaymentManuallyEdited = false;
+      this.applyPrepaymentValidators(v);
+      this.recalculateAfterpaymentIfNeeded(true);
+    });
+
+    this.orderItems.valueChanges
+      .pipe(takeUntil(this._destroy$), debounceTime(150))
+      .subscribe(() => {
+        this.recalculateCostIfNeeded(false);
+        this.recalculateAfterpaymentIfNeeded(false);
+      });
+  }
+
   private initializeForm(): void {
     const currentDeliveryType: DeliveryType =
       this.data?.order?.deliveryType ?? DeliveryType.warehouseOrPost;
@@ -342,7 +397,26 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         ),
       }),
       orderItems: this._builder.array([]),
+      saleType: new FormControl(this.data?.order?.saleType ?? SaleType.retail, [
+        Validators.required,
+      ]),
+      cost: new FormControl(this.data?.order?.cost ?? 0, [
+        Validators.required,
+        Validators.min(1),
+      ]),
+      isPrepayment: new FormControl(
+        !!this.data?.order?.afterpaymentOnGoodsCost,
+      ),
+      afterpaymentOnGoodsCost: new FormControl(
+        this.data?.order?.afterpaymentOnGoodsCost ?? null,
+      ),
     });
+
+    if (!this.data?.isAdding) {
+      this.saleType?.disable({ emitEvent: false });
+    }
+
+    this.applyPrepaymentValidators(this.isPrepayment?.value === true);
 
     this.applyDeliveryTypeValidators(this.deliveryType!.value);
   }
@@ -383,6 +457,87 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         }),
       );
     }
+  }
+
+  private getUnitPriceBySaleType(
+    pv: ProductVariant,
+    saleType: SaleType,
+  ): number {
+    const p = pv?.product;
+    if (!p) return 0;
+
+    switch (saleType) {
+      case SaleType.drop:
+        return Number(p.dropPrice ?? 0);
+      case SaleType.wholesale:
+        return Number(p.wholesalePrice ?? 0);
+      case SaleType.retail:
+      default:
+        return Number(p.price ?? 0);
+    }
+  }
+
+  private computeAutoCost(): number {
+    const saleType = (
+      this.saleType?.enabled
+        ? this.saleType.value
+        : (this.data?.order?.saleType ?? SaleType.retail)
+    ) as SaleType;
+
+    let total = 0;
+
+    for (const ctrl of this.orderItems.controls as FormGroup[]) {
+      const qty = Number(ctrl.get('quantity')?.value ?? 0);
+      const pv = ctrl.get('productVariant')?.value;
+
+      if (!pv || qty <= 0) continue;
+
+      total += this.getUnitPriceBySaleType(pv, saleType) * qty;
+    }
+
+    return Math.round(total);
+  }
+
+  private recalculateCostIfNeeded(force: boolean): void {
+    if (!force && this._costManuallyEdited) {
+      return;
+    }
+
+    const autoCost = this.computeAutoCost();
+
+    this.cost?.setValue(autoCost, { emitEvent: false });
+    this.cost?.markAsPristine();
+  }
+
+  private applyPrepaymentValidators(isPrepayment: boolean): void {
+    const ctrl = this.afterpaymentOnGoodsCost!;
+
+    if (isPrepayment) {
+      ctrl.setValidators([Validators.required, Validators.min(1)]);
+    } else {
+      ctrl.clearValidators();
+      ctrl.setValue(null, { emitEvent: false });
+      ctrl.markAsPristine();
+      this._afterpaymentManuallyEdited = false;
+    }
+
+    ctrl.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private recalculateAfterpaymentIfNeeded(force: boolean): void {
+    if (this.isPrepayment?.value !== true) {
+      return;
+    }
+
+    if (!force && this._afterpaymentManuallyEdited) {
+      return;
+    }
+
+    const cost = Number(this.cost?.value ?? 0);
+    const v = Math.max(cost - this.PREPAYMENT_AMOUNT, 0);
+
+    this.afterpaymentOnGoodsCost?.setValue(v, { emitEvent: false });
+    this.afterpaymentOnGoodsCost?.markAsPristine();
   }
 
   private applyDeliveryTypeValidators(dt: DeliveryType): void {
@@ -454,5 +609,18 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
   get orderItemGroups(): FormGroup[] {
     return this.orderItems.controls as FormGroup[];
+  }
+
+  get saleType() {
+    return this.form.get('saleType');
+  }
+  get cost() {
+    return this.form.get('cost');
+  }
+  get isPrepayment() {
+    return this.form.get('isPrepayment');
+  }
+  get afterpaymentOnGoodsCost() {
+    return this.form.get('afterpaymentOnGoodsCost');
   }
 }

@@ -42,7 +42,8 @@
         "maxPhotosReached": "Maximum {{max}} photos allowed",
         "invalidImageFormat": "Invalid image format. Allowed: JPG, PNG, GIF, WEBP",
         "fileTooLarge": "File size must be less than {{max}}",
-        "failedLoadingImagePreview": "Failed to load image preview"
+        "failedLoadingImagePreview": "Failed to load image preview",
+        "mustBeGreaterThanZero": "Value must be greater than zero"
     },    
     "emailConfirmation": {
         "emailConfirmation": "Email Confirmation",
@@ -214,7 +215,8 @@
             "seats": "Seats",
             "recipient": "Recipient",
             "deliveryAddress": "Delivery address",
-            "items": "Order products"
+            "items": "Order products",
+            "pricing": "Pricing"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -233,7 +235,10 @@
             "recipientFirstName": "First name",
             "recipientMiddleName": "Middle name",
             "instUrl": "Link / username (Instagram / Telegram)",
-            "addProduct": "Add product"               
+            "addProduct": "Add product",
+            "totalCost": "Total cost",
+            "prepayment": "Prepayment",
+            "afterpayment": "Afterpayment amount"                 
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
@@ -353,7 +358,9 @@
             "dialogTitle": "Updating Order"
         },
         "hints": {
-            "searchingPhones": "Searching..."
+            "searchingPhones": "Searching...",
+            "saleTypeLocked": "Sale type cannot be changed while editing",
+            "afterpaymentDefault": "Default: total cost − {{amount}}"
         },
         "validation": {
             "phoneFormat": "Phone must be in format 380660000000"

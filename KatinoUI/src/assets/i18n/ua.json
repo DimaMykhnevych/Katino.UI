@@ -42,7 +42,8 @@
         "maxPhotosReached": "Дозволено максимум {{max}} фото",
         "invalidImageFormat": "Невірний формат фото. Дозволені формати: JPG, PNG, GIF, WEBP",
         "fileTooLarge": "Розмір файлу повинен бути менший ніж {{max}}",
-        "failedLoadingImagePreview": "Помилка при завантаженні фото"         
+        "failedLoadingImagePreview": "Помилка при завантаженні фото",
+        "mustBeGreaterThanZero": "Значення повинно бути більше нуля"        
     },    
     "emailConfirmation": {
         "emailConfirmation": "Підтвердження електронною поштою",
@@ -214,7 +215,8 @@
             "seats": "Місця",
             "recipient": "Отримувач",
             "deliveryAddress": "Адреса доставки",
-            "items": "Товари в замовленні"
+            "items": "Товари в замовленні",
+            "pricing": "Ціни"
         },
         "labels": {
             "deliveryType": "Тип доставки",
@@ -233,7 +235,10 @@
             "recipientFirstName": "Ім’я",
             "recipientMiddleName": "По батькові",
             "instUrl": "Посилання / нік (Instagram / Telegram)",
-            "addProduct": "Додати товар"     
+            "addProduct": "Додати товар",
+            "totalCost": "Загальна вартість",
+            "prepayment": "Передоплата",
+            "afterpayment": "Сума післяплати"      
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
@@ -353,7 +358,9 @@
             "dialogTitle": "Оновлення Замовлення"
         },
         "hints": {
-            "searchingPhones": "Пошук..."
+            "searchingPhones": "Пошук...",
+            "saleTypeLocked": "Тип продажу не можна змінювати під час редагування",
+            "afterpaymentDefault": "За замовчуванням: загальна вартість − {{amount}}"
         },
         "validation": {
             "phoneFormat": "Телефон має бути у форматі 380660000000"
