@@ -32,6 +32,8 @@ import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { ProductVariant } from 'src/app/core/models/product-variant';
 import { ProductVariantService } from '../../services/product-variant.service';
 import { SaleType } from 'src/app/core/enums/sale-type';
+import { PayerType } from 'src/app/core/enums/payer-type';
+import { PaymentMethod } from 'src/app/core/enums/payment-method';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -46,6 +48,7 @@ export interface DeliveryTypeOption {
 export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public readonly PREPAYMENT_AMOUNT = 200;
   public form: FormGroup = this._builder.group({});
+  public seatWeightOptions = [2, 4, 10];
 
   public data: AddEditOrderData;
   public isUpdatingData: boolean = false;
@@ -75,6 +78,14 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   private _costManuallyEdited = false;
   private _afterpaymentManuallyEdited = false;
   private readonly PHONE_PATTERN = /^380\d{9}$/;
+  private readonly SEAT_DEFAULTS: Record<
+    number,
+    { l: number; w: number; h: number }
+  > = {
+    2: { l: 33, w: 23, h: 10 },
+    4: { l: 40, w: 20, h: 20 },
+    10: { l: 50, w: 50, h: 16 },
+  };
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data: AddEditOrderData,
@@ -176,17 +187,17 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           ? (this.recipientNpSelection.warehouse?.id ?? undefined)
           : undefined,
 
-      payerType: this.form.value.payerType ?? 0, // TODO
-      paymentMethod: this.form.value.paymentMethod ?? 0, // TODO
+      payerType: PayerType.recipient,
+      paymentMethod: PaymentMethod.cash,
       saleType: (this.saleType?.enabled
         ? this.saleType.value
         : this.data?.order?.saleType) as SaleType,
 
       sendUntilDate: this.form.value.sendUntilDate ?? new Date(), // TODO
-      weight: this.form.value.weight ?? 0, // TODO
+      weight: Number(this.seatGroup.get('weight')?.value ?? 2),
       deliveryType: dt,
-      seatsAmount: this.form.value.seatsAmount ?? 1, // TODO
-      description: this.form.value.description ?? '',
+      seatsAmount: 1,
+      description: this.form.value.description ?? '', // TODO
       cost: Number(this.cost?.value ?? 0),
       afterpaymentOnGoodsCost:
         this.isPrepayment?.value === true
@@ -200,7 +211,22 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         quantity: c.value.quantity,
       })),
 
-      orderNpOptionsSeats: [], // TODO
+      orderNpOptionsSeats: [
+        {
+          npOptionsSeat: {
+            volumetricWidth: Number(
+              this.seatGroup.get('volumetricWidth')?.value ?? 0,
+            ),
+            volumetricLength: Number(
+              this.seatGroup.get('volumetricLength')?.value ?? 0,
+            ),
+            volumetricHeight: Number(
+              this.seatGroup.get('volumetricHeight')?.value ?? 0,
+            ),
+            weight: Number(this.seatGroup.get('weight')?.value ?? 0),
+          },
+        },
+      ],
 
       senderNpCity: this.form.value.senderNpCity, // TODO
       recipientNpCity:
@@ -357,6 +383,22 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         ? []
         : [Validators.required];
 
+    const existingSeat = this.data?.order?.orderNpOptionsSeats?.[0];
+
+    const initialSeatWeight = existingSeat?.weight ?? 2;
+    const initialSeatLength =
+      existingSeat?.volumetricLength ??
+      this.SEAT_DEFAULTS[initialSeatWeight]?.l ??
+      33;
+    const initialSeatWidth =
+      existingSeat?.volumetricWidth ??
+      this.SEAT_DEFAULTS[initialSeatWeight]?.w ??
+      23;
+    const initialSeatHeight =
+      existingSeat?.volumetricHeight ??
+      this.SEAT_DEFAULTS[initialSeatWeight]?.h ??
+      10;
+
     this.form = this._builder.group({
       deliveryType: new FormControl(currentDeliveryType, [Validators.required]),
       recipientPhones: new FormControl(
@@ -410,6 +452,21 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       afterpaymentOnGoodsCost: new FormControl(
         this.data?.order?.afterpaymentOnGoodsCost ?? null,
       ),
+      seat: this._builder.group({
+        weight: new FormControl(initialSeatWeight, [Validators.required]),
+        volumetricLength: new FormControl(initialSeatLength, [
+          Validators.required,
+          Validators.min(1),
+        ]),
+        volumetricWidth: new FormControl(initialSeatWidth, [
+          Validators.required,
+          Validators.min(1),
+        ]),
+        volumetricHeight: new FormControl(initialSeatHeight, [
+          Validators.required,
+          Validators.min(1),
+        ]),
+      }),
     });
 
     if (!this.data?.isAdding) {
@@ -419,6 +476,35 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.applyPrepaymentValidators(this.isPrepayment?.value === true);
 
     this.applyDeliveryTypeValidators(this.deliveryType!.value);
+
+    if (this.data?.isAdding) {
+      this.applySeatDefaults(this.seatGroup.get('weight')!.value);
+    }
+    this.subscribeOnSeatWeightChanges();
+  }
+
+  private subscribeOnSeatWeightChanges(): void {
+    this.seatGroup
+      .get('weight')!
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this._destroy$))
+      .subscribe((w: number) => this.applySeatDefaults(Number(w)));
+  }
+
+  private applySeatDefaults(weight: number): void {
+    const preset = this.SEAT_DEFAULTS[weight] ?? this.SEAT_DEFAULTS[2];
+
+    this.seatGroup.patchValue(
+      {
+        volumetricLength: preset.l,
+        volumetricWidth: preset.w,
+        volumetricHeight: preset.h,
+      },
+      { emitEvent: false },
+    );
+
+    this.seatGroup.get('volumetricLength')?.markAsPristine();
+    this.seatGroup.get('volumetricWidth')?.markAsPristine();
+    this.seatGroup.get('volumetricHeight')?.markAsPristine();
   }
 
   private applyInitialRecipientWarehouse(): void {
@@ -622,5 +708,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get afterpaymentOnGoodsCost() {
     return this.form.get('afterpaymentOnGoodsCost');
+  }
+  get seatGroup(): FormGroup {
+    return this.form.get('seat') as FormGroup;
   }
 }

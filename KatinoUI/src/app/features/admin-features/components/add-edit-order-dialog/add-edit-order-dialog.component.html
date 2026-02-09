@@ -508,8 +508,72 @@
           </div>
         </div>
       </div>
-    </form></ng-container
-  >
+      <div class="row">
+        <div class="col-12">
+          <div class="section">
+            <div class="section-title">
+              {{ "orders.sections.seat" | translate }}
+            </div>
+
+            <div class="row" [formGroup]="seatGroup">
+              <!-- Weight -->
+              <div class="col-12 col-md-3">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{ "orders.seat.weight" | translate }}</mat-label>
+                  <mat-select formControlName="weight" required>
+                    <mat-option *ngFor="let w of seatWeightOptions" [value]="w">
+                      {{ w }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- Length -->
+              <div class="col-12 col-md-3">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{ "orders.seat.length" | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="1"
+                    formControlName="volumetricLength"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+
+              <!-- Width -->
+              <div class="col-12 col-md-3">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{ "orders.seat.width" | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="1"
+                    formControlName="volumetricWidth"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+
+              <!-- Height -->
+              <div class="col-12 col-md-3">
+                <mat-form-field class="order-form-input" appearance="outline">
+                  <mat-label>{{ "orders.seat.height" | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="1"
+                    formControlName="volumetricHeight"
+                    required
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></form
+  ></ng-container>
 </div>
 <div mat-dialog-actions>
   <button mat-stroked-button color="warn" mat-dialog-close="false">

@@ -216,7 +216,8 @@
             "recipient": "Recipient",
             "deliveryAddress": "Delivery address",
             "items": "Order products",
-            "pricing": "Pricing"
+            "pricing": "Pricing",
+            "seat": "Package (dimensions)"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -379,6 +380,12 @@
             "custom": "Custom",
             "comment": "Comment",
             "qty": "Quantity"
+        },
+        "seat": {
+            "weight": "Weight",
+            "length": "Length",
+            "width": "Width",
+            "height": "Height"
         }        
     }
 }
