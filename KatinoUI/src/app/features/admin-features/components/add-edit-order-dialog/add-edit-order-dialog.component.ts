@@ -34,6 +34,7 @@ import { ProductVariantService } from '../../services/product-variant.service';
 import { SaleType } from 'src/app/core/enums/sale-type';
 import { PayerType } from 'src/app/core/enums/payer-type';
 import { PaymentMethod } from 'src/app/core/enums/payment-method';
+import { FormValidators } from 'src/app/core/validators/form-validators';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -78,6 +79,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   private _costManuallyEdited = false;
   private _afterpaymentManuallyEdited = false;
   private readonly PHONE_PATTERN = /^380\d{9}$/;
+  private readonly DEFAULT_DESCRIPTION = 'Одяг KATINO';
   private readonly SEAT_DEFAULTS: Record<
     number,
     { l: number; w: number; h: number }
@@ -193,11 +195,11 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         ? this.saleType.value
         : this.data?.order?.saleType) as SaleType,
 
-      sendUntilDate: this.form.value.sendUntilDate ?? new Date(), // TODO
+      sendUntilDate: this.form.value.sendUntilDate,
       weight: Number(this.seatGroup.get('weight')?.value ?? 2),
       deliveryType: dt,
       seatsAmount: 1,
-      description: this.form.value.description ?? '', // TODO
+      description: this.form.value.description ?? '',
       cost: Number(this.cost?.value ?? 0),
       afterpaymentOnGoodsCost:
         this.isPrepayment?.value === true
@@ -467,6 +469,13 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           Validators.min(1),
         ]),
       }),
+      sendUntilDate: new FormControl(this.data?.order?.sendUntilDate ?? null, [
+        Validators.required,
+        FormValidators.notInPastDateValidator(),
+      ]),
+      description: new FormControl(
+        this.data?.order?.description ?? this.DEFAULT_DESCRIPTION,
+      ),
     });
 
     if (!this.data?.isAdding) {
@@ -711,5 +720,12 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get seatGroup(): FormGroup {
     return this.form.get('seat') as FormGroup;
+  }
+
+  get sendUntilDate() {
+    return this.form.get('sendUntilDate');
+  }
+  get description() {
+    return this.form.get('description');
   }
 }

@@ -217,7 +217,8 @@
             "deliveryAddress": "Адреса доставки",
             "items": "Товари в замовленні",
             "pricing": "Ціни",
-            "seat": "Місце (габарити)"
+            "seat": "Місце (габарити)",
+            "orderInfo": "Додаткова інформація"
         },
         "labels": {
             "deliveryType": "Тип доставки",
@@ -239,7 +240,9 @@
             "addProduct": "Додати товар",
             "totalCost": "Загальна вартість",
             "prepayment": "Передоплата",
-            "afterpayment": "Сума післяплати"      
+            "afterpayment": "Сума післяплати",
+            "sendUntilDate": "Відправити до",
+            "description": "Опис"  
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
@@ -364,7 +367,9 @@
             "afterpaymentDefault": "За замовчуванням: загальна вартість − {{amount}}"
         },
         "validation": {
-            "phoneFormat": "Телефон має бути у форматі 380660000000"
+            "phoneFormat": "Телефон має бути у форматі 380660000000",
+            "sendUntilDateNotPast": "Дата не може бути в минулому",
+            "invalidDate": "Некоректна дата"
         },
         "address": {
             "city": "Місто",

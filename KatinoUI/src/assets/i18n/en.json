@@ -217,7 +217,8 @@
             "deliveryAddress": "Delivery address",
             "items": "Order products",
             "pricing": "Pricing",
-            "seat": "Package (dimensions)"
+            "seat": "Package (dimensions)",
+            "orderInfo": "Additional information"
         },
         "labels": {
             "deliveryType": "Delivery type",
@@ -239,7 +240,9 @@
             "addProduct": "Add product",
             "totalCost": "Total cost",
             "prepayment": "Prepayment",
-            "afterpayment": "Afterpayment amount"                 
+            "afterpayment": "Afterpayment amount",
+            "sendUntilDate": "Send until",
+            "description": "Description"            
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
@@ -364,7 +367,9 @@
             "afterpaymentDefault": "Default: total cost − {{amount}}"
         },
         "validation": {
-            "phoneFormat": "Phone must be in format 380660000000"
+            "phoneFormat": "Phone must be in format 380660000000",
+            "sendUntilDateNotPast": "Date cannot be in the past",
+            "invalidDate": "Invalid date"            
         },
         "address": {
             "city": "City",
