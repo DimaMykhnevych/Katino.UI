@@ -27,6 +27,12 @@ export class NovaPostService {
     );
   }
 
+  public getSenderContactPersons(): Observable<NpContactPerson[]> {
+    return this._http.get<NpContactPerson[]>(
+      `${AppSettings.apiHost}/NovaPost/sender/contact-persons`,
+    );
+  }
+
   public getNpContactPersons(phone: string): Observable<NpContactPerson[]> {
     let httpParams = new HttpParams();
     httpParams = httpParams.append('phone', phone);
