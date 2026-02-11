@@ -103,9 +103,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
       isAdding: true,
     };
     const dialogRef = this._dialogService.openAddEditOrderDialog(data);
-    dialogRef.afterClosed().subscribe(() => {
-      this.pageIndex = 0;
-      this.fetchOrders();
+    dialogRef.afterClosed().subscribe((changed: boolean) => {
+      if (changed) {
+        this.pageIndex = 0;
+        this.fetchOrders();
+      }
     });
   }
 
@@ -116,9 +118,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
     };
 
     const dialogRef = this._dialogService.openAddEditOrderDialog(data);
-    dialogRef.afterClosed().subscribe(() => {
-      this.pageIndex = 0;
-      this.fetchOrders();
+    dialogRef.afterClosed().subscribe((changed: boolean) => {
+      if (changed) {
+        this.pageIndex = 0;
+        this.fetchOrders();
+      }
     });
   }
 

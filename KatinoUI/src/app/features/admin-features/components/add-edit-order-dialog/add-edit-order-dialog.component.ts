@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AddEditOrderData } from '../../models/order/add-edit-order-data';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   AbstractControl,
   FormArray,
@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { DeliveryType } from 'src/app/core/enums/delivery-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Subject, of } from 'rxjs';
+import { EMPTY, Subject, of } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -19,6 +19,7 @@ import {
   filter,
   finalize,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs/operators';
@@ -35,6 +36,13 @@ import { SaleType } from 'src/app/core/enums/sale-type';
 import { PayerType } from 'src/app/core/enums/payer-type';
 import { PaymentMethod } from 'src/app/core/enums/payment-method';
 import { FormValidators } from 'src/app/core/validators/form-validators';
+import { CrmSettingsService } from 'src/app/features/common-services/crm-settings.service';
+import { OrderService } from 'src/app/features/common-services/order.service';
+import { ToastrService } from 'ngx-toastr';
+import { ProductStatus } from 'src/app/core/enums/product-status';
+import { TranslateService } from '@ngx-translate/core';
+import { CrmUserSettings } from 'src/app/core/models/crm-user-settings';
+import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -94,6 +102,11 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     private _builder: FormBuilder,
     private _npService: NovaPostService,
     private _productVariantService: ProductVariantService,
+    private _crmSettingsService: CrmSettingsService,
+    private _orderService: OrderService,
+    private _toastr: ToastrService,
+    private _dialogRef: MatDialogRef<AddEditOrderDialogComponent>,
+    private _translate: TranslateService,
   ) {
     this.data = data;
   }
@@ -161,11 +174,126 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.productVariants = [];
   }
 
-  public onAddEditOrderClick(): void {
-    const model = this.buildAddOrderModel();
+  public isFormValid(): boolean {
+    if (!this.form) return false;
+    if (this.form.invalid) return false;
+    if (!this.orderItems || this.orderItems.length === 0) return false;
+    if (this.deliveryType?.value === DeliveryType.warehouseOrPost) {
+      if (
+        !this.recipientNpSelection?.city ||
+        !this.recipientNpSelection?.warehouse
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
-  private buildAddOrderModel(): AddOrder {
+  public onAddEditOrderClick(): void {
+    if (!this.isFormValid() || this.isUpdatingData) return;
+
+    if (this.hasDiscontinuedItems()) {
+      this._toastr.error(
+        this.data?.isAdding
+          ? this._t('orders.toastr.discontinuedErrorAdd')
+          : this._t('orders.toastr.discontinuedErrorUpdate'),
+      );
+      return;
+    }
+
+    this.isUpdatingData = true;
+
+    this._crmSettingsService
+      .getCrmSettings()
+      .pipe(
+        take(1),
+        switchMap((settings: CrmUserSettings) => {
+          const hasSettings =
+            !!settings?.npCity &&
+            !!settings?.npWarehouse &&
+            !!settings?.npWarehouse?.id;
+
+          if (!hasSettings) {
+            this._toastr.warning(this._t('orders.toastr.settingsRequired'));
+            return EMPTY;
+          }
+
+          return this._npService.getSenderContactPersons().pipe(
+            take(1),
+            switchMap((persons: NpContactPerson[]) => {
+              if (!persons || persons.length === 0) {
+                this._toastr.error(
+                  this._t('orders.toastr.senderContactMissing'),
+                );
+                return EMPTY;
+              }
+
+              const senderContactPerson = persons[0];
+
+              if (this.data?.isAdding) {
+                const model = this.buildAddOrderModel(
+                  settings,
+                  senderContactPerson,
+                );
+                return this._orderService.addOrder(model);
+              }
+
+              const model = this.buildUpdateOrderModel(
+                settings,
+                senderContactPerson,
+              );
+              return this._orderService.updateOrder(model);
+            }),
+          );
+        }),
+        catchError(() => {
+          this._toastr.error(this._t('common.somethingWentWrong'));
+          return EMPTY;
+        }),
+        finalize(() => (this.isUpdatingData = false)),
+      )
+      .subscribe((res: any) => {
+        const isAdd = !!this.data?.isAdding;
+
+        const orderOk = isAdd
+          ? res?.orderAddedSuccessfully
+          : res?.orderUpdatedSuccessfully;
+        const docOk = isAdd
+          ? res?.npInternetDocCreatedSuccessfully
+          : res?.npInternetDocUpdatedSuccessfully;
+
+        if (!orderOk) {
+          this._toastr.error(this._t('orders.toastr.saveFailed'));
+          return;
+        }
+
+        if (docOk === false) {
+          this._toastr.warning(
+            isAdd
+              ? this._t('orders.toastr.docNotCreated')
+              : this._t('orders.toastr.docNotUpdated'),
+          );
+        } else {
+          this._toastr.success(this._t('orders.toastr.saveSuccess'));
+        }
+
+        this._dialogRef.close(true);
+      });
+  }
+
+  private hasDiscontinuedItems(): boolean {
+    const groups = this.orderItems.controls as FormGroup[];
+    return groups.some((g) => {
+      const pv = g.get('productVariant')?.value;
+      return pv?.status === ProductStatus.discontinued;
+    });
+  }
+
+  private buildAddOrderModel(
+    settings: CrmUserSettings,
+    senderContactPerson: NpContactPerson,
+  ): AddOrder {
     const dt = this.deliveryType!.value as DeliveryType;
 
     const addressInfo = (this.addressInfoGroup.value ??
@@ -183,7 +311,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         : null;
 
     const model: AddOrder = {
-      senderNpWarehouseId: '', // TODO
+      senderNpWarehouseId: settings.npWarehouse.id,
       recipientNpWarehouseId:
         dt === DeliveryType.warehouseOrPost
           ? (this.recipientNpSelection.warehouse?.id ?? undefined)
@@ -230,12 +358,12 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         },
       ],
 
-      senderNpCity: this.form.value.senderNpCity, // TODO
+      senderNpCity: settings.npCity,
       recipientNpCity:
         dt === DeliveryType.warehouseOrPost
           ? (this.recipientNpSelection.city ?? undefined)
           : undefined,
-      senderContactPerson: this.form.value.senderContactPerson, // TODO
+      senderContactPerson: senderContactPerson,
 
       orderRecipient: {
         instUrl: this.instUrl?.value,
@@ -251,6 +379,97 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     };
 
     return model;
+  }
+
+  private buildUpdateOrderModel(
+    settings: CrmUserSettings,
+    senderContactPerson: NpContactPerson,
+  ): UpdateOrder {
+    const dt = this.deliveryType!.value as DeliveryType;
+
+    const existingOrder = this.data?.order!;
+    const existingAddressId = existingOrder?.addressInfo?.id ?? null;
+
+    return {
+      id: existingOrder.id,
+
+      senderNpWarehouseId: settings.npWarehouse.id,
+      recipientNpWarehouseId:
+        dt === DeliveryType.warehouseOrPost
+          ? (this.recipientNpSelection.warehouse?.id ?? undefined)
+          : undefined,
+
+      payerType: PayerType.recipient,
+      paymentMethod: PaymentMethod.cash,
+      saleType: existingOrder.saleType,
+
+      sendUntilDate: this.form.value.sendUntilDate,
+      weight: Number(this.seatGroup.get('weight')?.value ?? 2),
+      deliveryType: dt,
+      seatsAmount: 1,
+      description: this.form.value.description ?? '',
+      cost: Number(this.cost?.value ?? 0),
+      afterpaymentOnGoodsCost:
+        this.isPrepayment?.value === true
+          ? Number(this.afterpaymentOnGoodsCost?.value ?? 0)
+          : undefined,
+
+      orderItems: (this.orderItems.controls as FormGroup[]).map((g) => ({
+        id: g.value.id,
+        isCustomTailoring: !!g.value.isCustomTailoring,
+        comment: g.value.comment ?? '',
+        quantity: Number(g.value.quantity ?? 0),
+        productVariantId: g.value.productVariantId,
+      })),
+
+      orderNpOptionsSeats: [
+        {
+          npOptionsSeat: {
+            volumetricWidth: Number(
+              this.seatGroup.get('volumetricWidth')?.value ?? 0,
+            ),
+            volumetricLength: Number(
+              this.seatGroup.get('volumetricLength')?.value ?? 0,
+            ),
+            volumetricHeight: Number(
+              this.seatGroup.get('volumetricHeight')?.value ?? 0,
+            ),
+            weight: Number(this.seatGroup.get('weight')?.value ?? 0),
+          },
+        },
+      ],
+
+      senderNpCity: settings.npCity,
+      recipientNpCity:
+        dt === DeliveryType.warehouseOrPost
+          ? (this.recipientNpSelection.city ?? undefined)
+          : undefined,
+      senderContactPerson: senderContactPerson,
+
+      orderRecipient: {
+        instUrl: this.form.value.instUrl,
+        npContactPerson: {
+          lastName: this.form.value.recipientLastName,
+          firstName: this.form.value.recipientFirstName,
+          middleName: this.form.value.recipientMiddleName,
+          phones: this.form.value.recipientPhones,
+        },
+      },
+
+      addressInfo:
+        dt === DeliveryType.address
+          ? {
+              id: existingAddressId!,
+              recipientAddressNote:
+                this.addressInfoGroup.value.recipientAddressNote ?? '',
+              recipientCity: this.addressInfoGroup.value.recipientCity ?? '',
+              recipientAddressName:
+                this.addressInfoGroup.value.recipientAddressName ?? '',
+              recipientHouse: this.addressInfoGroup.value.recipientHouse ?? '',
+              recipientFlat: this.addressInfoGroup.value.recipientFlat ?? '',
+            }
+          : null,
+    };
   }
 
   private subscribeOnRecipientPhoneChanges(): void {
@@ -541,6 +760,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     for (const oi of this.data.order.orderItems) {
       this.orderItems.push(
         this._builder.group({
+          id: [oi.id],
           productVariantId: [oi.productVariantId, Validators.required],
           productVariant: [oi.productVariant],
           isCustomTailoring: [oi.isCustomTailoring],
@@ -674,6 +894,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     house.updateValueAndValidity({ emitEvent: false });
     flat.updateValueAndValidity({ emitEvent: false });
     note.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private _t(key: string): string {
+    return this._translate.instant(key);
   }
 
   get deliveryType() {

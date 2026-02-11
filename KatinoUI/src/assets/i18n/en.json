@@ -28,7 +28,8 @@
         "loading": "Loading...",
         "city": "City",
         "save": "Save",
-        "reset": "Reset"
+        "reset": "Reset",
+        "somethingWentWrong": "Something went wrong..."
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -349,7 +350,15 @@
         },
         "toastr": {
             "statusUpdated": "Status updated",
-            "statusUpdateFailed": "Failed to update status"
+            "statusUpdateFailed": "Failed to update status",
+            "settingsRequired": "Please fill in CRM settings first (sender city and warehouse).",
+            "senderContactMissing": "Sender contact person was not found.",
+            "discontinuedErrorAdd": "Cannot create order: discontinued product exists in items.",
+            "discontinuedErrorUpdate": "Cannot update order: discontinued product exists in items.",
+            "saveFailed": "Failed to save the order.",
+            "saveSuccess": "Order saved successfully.",
+            "docNotCreated": "Order saved, but the TTN was not created.",
+            "docNotUpdated": "Order updated, but the TTN was not updated."            
         },
         "filters": {
             "statuses": "Statuses",

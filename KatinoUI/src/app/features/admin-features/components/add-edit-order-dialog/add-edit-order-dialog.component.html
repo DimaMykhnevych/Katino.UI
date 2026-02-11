@@ -644,10 +644,35 @@
   ></ng-container>
 </div>
 <div mat-dialog-actions>
-  <button mat-stroked-button color="warn" mat-dialog-close="false">
+  <button
+    mat-stroked-button
+    color="warn"
+    [mat-dialog-close]="false"
+    [disabled]="isUpdatingData"
+  >
     {{ "common.close" | translate }}
   </button>
-  <button type="submit" mat-button (click)="onAddEditOrderClick()">
-    {{ "common.add" | translate }}
+  <button
+    type="submit"
+    mat-button
+    [disabled]="!isFormValid() || isUpdatingData"
+    (click)="onAddEditOrderClick()"
+  >
+    <ng-container *ngIf="!isUpdatingData">
+      <span *ngIf="data.isAdding">{{ "common.add" | translate }}</span>
+      <span *ngIf="!data.isAdding">{{
+        "common.update" | translate
+      }}</span></ng-container
+    >
+
+    <div *ngIf="isUpdatingData" class="spinner-container">
+      <mat-spinner diameter="20" color="accent"></mat-spinner>
+      <span *ngIf="data.isAdding" class="loading-text">{{
+        "common.addingButtonText" | translate
+      }}</span>
+      <span *ngIf="!data.isAdding" class="loading-text">{{
+        "common.updatingButtonText" | translate
+      }}</span>
+    </div>
   </button>
 </div>
