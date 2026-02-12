@@ -147,12 +147,18 @@
         "productVariantUpdatedError": "An error occurred during updating product variant",
         "productVariantAdded": "Product variant was successfully added",
         "productVariantUpdated": "Product variant was successfully updated",
-        "productVariantDeletedError": "n error occurred during deleting product variant",
-        "productVariantDeleted": "Product variant was successfully deleted"
+        "productVariantDeletedError": "An error occurred during deleting product variant",
+        "productVariantDeleted": "Product variant was successfully deleted",
+        "orderDeletedUnknownError": "An unknown error occurred during deleting order",
+        "orderDeletionFailed": "An error occurred during deleting order",
+        "docNotDeleted": "Order has been deleted, however an error occurred during TTN deletion",
+        "orderDeleteSuccess": "Order and TTN have been deleted successfully"
     },
     "dialogs": {
         "productVariantDeletionTitle": "Product Variant Deletion",
-        "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?"
+        "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?",
+        "orderDeletionTitle": "Order Deletion",
+        "orderDeletionContent": "Are you sure you want to delete order from {{orderDate}}?\n Order items:\n {{orderInfo}} ?"
     },
     "crmSettingsPage": {
         "crmSettings": "CRM Settings",

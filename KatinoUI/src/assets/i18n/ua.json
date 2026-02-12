@@ -148,11 +148,17 @@
         "productVariantAdded": "Варіант товару успішно збережено",
         "productVariantUpdated": "Варіант товару успішно оновлено",
         "productVariantDeletedError": "Виникла помилка під час видалення варіанту товару",
-        "productVariantDeleted": "Варіант товару успішно видалено"
+        "productVariantDeleted": "Варіант товару успішно видалено",
+        "orderDeletedUnknownError": "Виникла невідома помилка під час видалення замовлення",
+        "orderDeletionFailed": "Виникла помилка під час видалення замовлення",
+        "docNotDeleted": "Замовлення видалено, але під час видалення ТТН сталася помилка",
+        "orderDeleteSuccess": "Замовлення та ТТН видалено"
     },
     "dialogs": {
         "productVariantDeletionTitle": "Видалення Варіанту Товару",
-        "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?"
+        "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?",
+        "orderDeletionTitle": "Видалення Замовлення",
+        "orderDeletionContent": "Ви впевненні, що бажаєте видалити заомвлення від {{orderDate}}?\n Склад замовлення:\n {{orderInfo}} ?"
     },
     "crmSettingsPage": {
         "crmSettings": "Налаштування CRM",

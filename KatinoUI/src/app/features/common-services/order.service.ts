@@ -11,6 +11,7 @@ import { AppSettings } from 'src/app/core/settings';
 import { OrderCreationResult } from '../../core/models/order/add-order/order-creation-result';
 import { OrderUpdateResult } from 'src/app/core/models/order/update-order/order-update-result';
 import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order';
+import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-delete-result';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,12 @@ export class OrderService {
     return this._http.put<OrderUpdateResult>(
       `${AppSettings.apiHost}/Order`,
       order,
+    );
+  }
+
+  public deleteOrder(id: string): Observable<OrderDeleteResult> {
+    return this._http.delete<OrderDeleteResult>(
+      `${AppSettings.apiHost}/Order/${id}`,
     );
   }
 }

@@ -2,6 +2,10 @@
   padding: 0;
 }
 
+.dialog-content {
+  white-space: pre-line;
+}
+
 .dialog-header {
   display: flex;
   align-items: center;

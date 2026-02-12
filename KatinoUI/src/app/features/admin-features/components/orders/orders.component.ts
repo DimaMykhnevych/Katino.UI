@@ -29,6 +29,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { DefaultOptions } from 'src/app/core/constants/default-options';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { AddEditOrderData } from '../../models/order/add-edit-order-data';
+import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
+import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-delete-result';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orders',
@@ -80,6 +83,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _customTranslate: CustomTranslateService,
     private _toastr: ToastrService,
     private _translate: TranslateService,
+    private _uiDialogService: UIDialogService,
+    private datePipe: DatePipe,
   ) {}
 
   public ngOnInit(): void {
@@ -127,7 +132,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   public onDeleteOrderClick(order: Order): void {
-    // TODO implement
+    const orderItemsRows = order.orderItems.map(
+      (oi) =>
+        `${oi.productVariant.product.name} • ${oi.productVariant.color.name} • ${oi.productVariant.size.name}`,
+    );
+    const orderItemsText = orderItemsRows.join('\n');
+    const formattedDate = this.datePipe.transform(
+      order.creationDateTime,
+      'shortDate',
+    );
+
+    const dialogRef = this._uiDialogService.openConfirmationDialog({
+      titleKey: 'dialogs.orderDeletionTitle',
+      contentKey: 'dialogs.orderDeletionContent',
+      contentParams: {
+        orderDate: formattedDate,
+        orderInfo: orderItemsText,
+      },
+      confirmButtonTextKey: 'common.delete',
+      cancelButtonTextKey: 'common.cancel',
+      type: 'danger',
+      icon: 'delete_outline',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: string) => {
+      if (confirmed === 'true') {
+        this.onOrderDelete(order);
+      }
+    });
   }
 
   public onPageChanged(e: PageEvent): void {
@@ -341,6 +373,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
       });
   }
 
+  private onOrderDelete(order: Order): void {
+    this._orderService
+      .deleteOrder(order.id)
+      .pipe(
+        catchError((error) => {
+          return this.onCatchDeleteError();
+        }),
+      )
+      .subscribe((resp: OrderDeleteResult) => {
+        this.onOrderDeletionCompleted(resp);
+      });
+  }
+
+  private onOrderDeletionCompleted(resp: OrderDeleteResult) {
+    if (!resp.orderDeletedSuccessfully) {
+      this.showError(this._translate.instant('toastrs.orderDeletionFailed'));
+    } else if (!resp.npInternetDocDeletedSuccessfully) {
+      this._toastr.warning(this._translate.instant('toastrs.docNotDeleted'));
+    } else {
+      this._toastr.success(
+        this._translate.instant('toastrs.orderDeleteSuccess'),
+      );
+    }
+
+    this.pageIndex = 0;
+    this.fetchOrders();
+  }
+
   private diffDays(a: Date, b: Date): number {
     const aDate = new Date(
       a.getFullYear(),
@@ -379,11 +439,25 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
+  private showError(text: string): void {
+    this._toastr.error(`${text}`);
+  }
+
   private onCatchError(error: any): Observable<any> {
     this.isRetrievingData = false;
     this.ordersResponse = { orders: [], resultsAmount: 0 };
     this.dataSource.data = [];
     return of({ orders: [], resultsAmount: 0 });
+  }
+
+  private onCatchDeleteError(): Observable<any> {
+    this._translate
+      .get('toastrs.orderDeletedUnknownError')
+      .subscribe((resp: string) => {
+        this.showError(resp);
+      });
+
+    return of({});
   }
 
   private initializeForm(): void {
