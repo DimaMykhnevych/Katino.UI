@@ -323,7 +323,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         ? this.saleType.value
         : this.data?.order?.saleType) as SaleType,
 
-      sendUntilDate: this.form.value.sendUntilDate,
+      sendUntilDate: this.asLocalNoon(this.form.value.sendUntilDate),
       weight: Number(this.seatGroup.get('weight')?.value ?? 2),
       deliveryType: dt,
       seatsAmount: 1,
@@ -898,6 +898,12 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
   private _t(key: string): string {
     return this._translate.instant(key);
+  }
+
+  private asLocalNoon(d: Date): Date {
+    const x = new Date(d);
+    x.setHours(12, 0, 0, 0);
+    return x;
   }
 
   get deliveryType() {
