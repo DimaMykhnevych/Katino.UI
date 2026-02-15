@@ -411,6 +411,27 @@
         }        
     },
     "sewingQueue": {
-        "sewingQueueHeader": "Sewing Queue"
+        "sewingQueueHeader": "Sewing queue",
+        "emptyTitle": "No sewing tasks",
+        "emptySubtitle": "There are no items in the queue right now. Please check again later.",
+        "table": {
+            "product": "Product",
+            "toProduce": "To sew",
+            "custom": "Type",
+            "actual": "Done",
+            "actions": ""
+        },
+        "labels": {
+            "custom": "Custom",
+            "regular": "Regular"
+        },
+        "placeholders": {
+            "actual": "0"
+        },
+        "toastr": {
+            "submitted": "Report saved",
+            "submitFailed": "Failed to save report",
+            "tooMuchCustom": "For custom items you cannot submit more than required"
+        }
     }
 }

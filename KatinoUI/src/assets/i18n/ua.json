@@ -411,6 +411,27 @@
         }
     },
     "sewingQueue": {
-        "sewingQueueHeader": "Черга На Шиття"
+        "sewingQueueHeader": "Черга на шиття",
+        "emptyTitle": "Немає задач на шиття",
+        "emptySubtitle": "Зараз немає позицій у черзі. Спробуйте оновити сторінку пізніше.",
+        "table": {
+            "product": "Товар",
+            "toProduce": "Потрібно",
+            "custom": "Тип",
+            "actual": "Пошито",
+            "actions": ""
+        },
+        "labels": {
+            "custom": "По параметрах",
+            "regular": "Звичайний"
+        },
+        "placeholders": {
+            "actual": "0"
+        },
+        "toastr": {
+            "submitted": "Звіт збережено",
+            "submitFailed": "Не вдалося зберегти звіт",
+            "tooMuchCustom": "Для виробу по параметрах не можна вказати більше, ніж потрібно пошити"
+        }
     }
 }
