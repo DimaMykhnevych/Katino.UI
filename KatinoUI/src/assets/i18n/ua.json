@@ -409,5 +409,8 @@
             "width": "Ширина",
             "height": "Висота"
         }
+    },
+    "sewingQueue": {
+        "sewingQueueHeader": "Черга На Шиття"
     }
 }

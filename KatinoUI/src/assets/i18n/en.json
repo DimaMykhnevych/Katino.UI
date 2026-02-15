@@ -409,5 +409,8 @@
             "width": "Width",
             "height": "Height"
         }        
+    },
+    "sewingQueue": {
+        "sewingQueueHeader": "Sewing Queue"
     }
 }
