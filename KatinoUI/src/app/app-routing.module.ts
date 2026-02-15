@@ -8,6 +8,7 @@ import { ConfirmationScreenComponent } from './features/email-confirmation/confi
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { OrdersComponent } from './features/admin-features/components/orders/orders.component';
 import { CrmSettingsComponent } from './features/admin-features/components/crm-settings/crm-settings.component';
+import { SewingQueueComponent } from './features/admin-features/components/sewing-queue/sewing-queue.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,13 @@ const routes: Routes = [
         component: CrmSettingsComponent,
         data: {
           roles: [Roles.Admin],
+        },
+      },
+      {
+        path: 'sewing-queue',
+        component: SewingQueueComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Sewer],
         },
       },
     ],

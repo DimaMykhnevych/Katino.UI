@@ -70,13 +70,15 @@
     },
     "roles": {
         "admin": "Admin",
-        "user": "User"
+        "user": "User",
+        "sewer": "Sewer"
     },
     "navbar": {
         "menu": "Menu",
         "availability": "Availability",
         "orders": "Orders",
-        "crm-settings": "CRM Settings"
+        "crm-settings": "CRM Settings",
+        "sewing-queue": "Sewing Queue"
     },
     "inventory": {
         "availability": "Availability",

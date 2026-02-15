@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
     private _authService: AuthService,
     private router: Router,
     private _userService: CurrentUserService,
-    private _translate: TranslateService
+    private _translate: TranslateService,
   ) {}
 
   public get currentLanguage(): string | null {
@@ -46,6 +46,8 @@ export class NavbarComponent implements OnInit {
     switch (this.userRole) {
       case Roles.Admin:
         return this._translate.instant('roles.admin');
+      case Roles.Sewer:
+        return this._translate.instant('roles.sewer');
       default:
         return this._translate.instant('roles.user');
     }
@@ -55,6 +57,8 @@ export class NavbarComponent implements OnInit {
     switch (this.userRole) {
       case Roles.Admin:
         return RouteConstants.navbarBrandClickAdmin;
+      case Roles.Sewer:
+        return RouteConstants.navbarBrandClickSewer;
       default:
         return '#';
     }

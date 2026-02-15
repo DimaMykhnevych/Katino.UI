@@ -70,13 +70,15 @@
     },
     "roles": {
         "admin": "Адміністратор",
-        "user": "Користувач"
+        "user": "Користувач",
+        "sewer": "Швачка"
     },
     "navbar": {
         "menu": "Меню",
         "availability": "Наявність",
         "orders": "Замовлення",
-        "crm-settings": "Налаштування CRM"
+        "crm-settings": "Налаштування CRM",
+        "sewing-queue": "Черга На Шиття"
     },
     "inventory": {
         "availability": "Наявність",

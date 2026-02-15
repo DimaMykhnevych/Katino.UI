@@ -19,6 +19,7 @@ import { CommonComponentsModule } from 'src/app/features/common-components/commo
 import { NpSyncHistoryComponent } from './components/np-sync-history/np-sync-history.component';
 import { OrderDetailsDialogComponent } from './components/order-details-dialog/order-details-dialog.component';
 import { AddEditOrderDialogComponent } from './components/add-edit-order-dialog/add-edit-order-dialog.component';
+import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AddEditOrderDialogComponent } from './components/add-edit-order-dialog/
     NpSyncHistoryComponent,
     OrderDetailsDialogComponent,
     AddEditOrderDialogComponent,
+    SewingQueueComponent,
   ],
   imports: [
     CommonModule,

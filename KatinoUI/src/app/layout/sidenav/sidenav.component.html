@@ -76,6 +76,26 @@
         </mat-list-item>
 
         <mat-list-item
+          routerLink="/sewing-queue"
+          routerLinkActive="active"
+          *ngIf="showTab('sewing-queue')"
+          class="nav-item"
+          (click)="isMobile && closeMobileSidenav(sidenav)"
+        >
+          <div class="nav-item-content">
+            <div class="nav-icon">
+              <mat-icon>checkroom</mat-icon>
+            </div>
+            <div *ngIf="sidenavWidth > 6" class="nav-label">
+              <span class="nav-text">{{
+                "navbar.sewing-queue" | translate
+              }}</span>
+            </div>
+          </div>
+          <div class="nav-indicator" *ngIf="sidenavWidth <= 6"></div>
+        </mat-list-item>
+
+        <mat-list-item
           routerLink="/crm-settings"
           routerLinkActive="active"
           *ngIf="showTab('crm-settings')"

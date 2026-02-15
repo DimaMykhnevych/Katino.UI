@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     private _builder: FormBuilder,
     private _auth: AuthService,
     private _router: Router,
-    private _currentUserService: CurrentUserService
+    private _currentUserService: CurrentUserService,
   ) {}
 
   public ngOnInit(): void {
@@ -39,9 +39,15 @@ export class LoginComponent implements OnInit {
     if (this._auth.isAuthenticated()) {
       const isCurrentUserAdmin =
         this._currentUserService.userInfo.role === Roles.Admin;
+      const isCurrentUserSewer =
+        this._currentUserService.userInfo.role === Roles.Sewer;
       if (isCurrentUserAdmin) {
         this._router.navigate([
           RouteConstants.alreadySignedInAdminWhenOnLoginPage,
+        ]);
+      } else if (isCurrentUserSewer) {
+        this._router.navigate([
+          RouteConstants.alreadySignedInSewerWhenOnLoginPage,
         ]);
       } else {
         this._router.navigate([
@@ -85,6 +91,9 @@ export class LoginComponent implements OnInit {
     switch (userInfo.role) {
       case Roles.Admin:
         this._router.navigate([RouteConstants.successLoginAdmin]);
+        break;
+      case Roles.Sewer:
+        this._router.navigate([RouteConstants.successLoginSewer]);
         break;
       default:
         this._router.navigate([RouteConstants.successLoginUser]);
