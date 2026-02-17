@@ -189,4 +189,94 @@
       </table>
     </div>
   </div>
+
+  <!-- GROUPED CARDS -->
+  <div class="mat-elevation-z8 table-wrapper p-3 mt-3 grouped-wrapper">
+    <div class="grouped-header">
+      <div>
+        <div class="grouped-title">
+          {{ "sewingQueue.grouped.title" | translate }}
+        </div>
+        <div class="grouped-subtitle">
+          {{ "sewingQueue.grouped.subtitle" | translate }}
+        </div>
+      </div>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="loadGrouped()"
+        [disabled]="isGroupedLoading"
+      >
+        <mat-icon>refresh</mat-icon>
+        {{ "common.refresh" | translate }}
+      </button>
+    </div>
+
+    <div class="loading" *ngIf="isGroupedLoading">
+      <mat-spinner diameter="28"></mat-spinner>
+    </div>
+
+    <div class="empty" *ngIf="!isGroupedLoading && grouped.length === 0">
+      <div class="empty-title">
+        {{ "sewingQueue.grouped.emptyTitle" | translate }}
+      </div>
+    </div>
+
+    <div class="grouped-grid" *ngIf="!isGroupedLoading && grouped.length > 0">
+      <div
+        class="group-card"
+        *ngFor="let g of grouped"
+        [ngClass]="groupCardClass(g)"
+      >
+        <div class="group-card-head">
+          <div class="date">
+            {{ g.sendUntilDate | date: "dd.MM.yyyy" }}
+          </div>
+
+          <div class="pill">
+            {{ "sewingQueue.grouped.items" | translate }}:
+            {{ g.items.length || 0 }}
+          </div>
+        </div>
+
+        <div class="group-items">
+          <div class="g-item" *ngFor="let row of g.items | slice: 0 : 4">
+            <div class="g-name">{{ productTitle(row) }}</div>
+
+            <div class="g-meta">
+              <span
+                class="mini-badge"
+                [class.mb-custom]="row.isCustomTailoring"
+                [class.mb-regular]="!row.isCustomTailoring"
+              >
+                {{
+                  row.isCustomTailoring
+                    ? ("sewingQueue.labels.custom" | translate)
+                    : ("sewingQueue.labels.regular" | translate)
+                }}
+              </span>
+
+              <span class="g-qty">
+                {{ "sewingQueue.table.toProduce" | translate }}:
+                <b>{{ row.quantityToProduce }}</b>
+              </span>
+            </div>
+
+            <div class="g-comment" *ngIf="row.comment">
+              <mat-icon class="comment-icon">chat</mat-icon>
+              <span>{{ row.comment }}</span>
+            </div>
+          </div>
+
+          <div class="more" *ngIf="(g.items.length || 0) > 4">
+            {{
+              "sewingQueue.grouped.more"
+                | translate: { count: g.items.length - 4 }
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -16,6 +16,7 @@ import { SubmitSewedReport } from 'src/app/core/models/sewing-queue/submit-sewed
 import { OrderItemService } from '../../services/order-item.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { GroupedSewingQueueItem } from 'src/app/core/models/sewing-queue/grouped-sewing-queue-item';
 
 @Component({
   selector: 'app-sewing-queue',
@@ -43,6 +44,9 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
 
   public submitting = new Set<string>();
 
+  public grouped: GroupedSewingQueueItem[] = [];
+  public isGroupedLoading = false;
+
   private _destroy$ = new Subject<void>();
 
   constructor(
@@ -65,6 +69,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       });
 
     this.loadQueue();
+    this.loadGrouped();
   }
 
   public ngOnDestroy(): void {
@@ -152,6 +157,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
 
         this._toastr.success(this._t('sewingQueue.toastr.submitted'));
         this.loadQueue();
+        this.loadGrouped();
       });
   }
 
@@ -162,6 +168,51 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     const size = pv?.size?.name ?? '';
     const parts = [name, color, size].filter(Boolean);
     return parts.length ? parts.join(' • ') : row.productVariantId;
+  }
+
+  public groupCardClass(g: GroupedSewingQueueItem): string {
+    const d =
+      g.sendUntilDate instanceof Date
+        ? g.sendUntilDate
+        : new Date(g.sendUntilDate as any);
+
+    const k = this.dayKey(d);
+    const today = this.dayKey(new Date());
+
+    if (k < today) return 'card-overdue';
+    if (k === today) return 'card-today';
+
+    const threeDaysAhead = today + 3 * 24 * 60 * 60 * 1000;
+    if (k <= threeDaysAhead) return 'card-soon';
+
+    return 'card-future';
+  }
+
+  public loadGrouped(): void {
+    this.isGroupedLoading = true;
+
+    this._service
+      .getSewingQueueGrouped()
+      .pipe(
+        catchError(() => of([] as GroupedSewingQueueItem[])),
+        finalize(() => (this.isGroupedLoading = false)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((groups) => {
+        this.grouped = (groups ?? []).map((g) => ({
+          ...g,
+          sendUntilDate:
+            g.sendUntilDate instanceof Date
+              ? g.sendUntilDate
+              : new Date(g.sendUntilDate as any),
+          items: g.items ?? [],
+        }));
+      });
+  }
+
+  private dayKey(d: Date): number {
+    const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    return x.getTime();
   }
 
   private rebuildActualForms(items: SewingQueueItem[]): void {

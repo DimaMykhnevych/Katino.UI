@@ -29,7 +29,8 @@
         "city": "City",
         "save": "Save",
         "reset": "Reset",
-        "somethingWentWrong": "Something went wrong..."
+        "somethingWentWrong": "Something went wrong...",
+        "refresh": "Refresh"
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -432,6 +433,13 @@
             "submitted": "Report saved",
             "submitFailed": "Failed to save report",
             "tooMuchCustom": "For custom items you cannot submit more than required"
-        }
+        },
+        "grouped": {
+            "title": "Queue grouped by send date",
+            "subtitle": "Grouped by the “Send until” deadline",
+            "items": "Items",
+            "more": "+{{count}} more items",
+            "emptyTitle": "No groups"
+        }        
     }
 }

@@ -41,6 +41,7 @@
 }
 
 .sewing-table {
+  width: 100%;
   min-width: 780px;
 
   th {
@@ -114,7 +115,9 @@
   color: #14532d;
 }
 
-.comment {
+.comment,
+.m-comment,
+.g-comment {
   display: flex;
   align-items: flex-start;
   gap: 6px;
@@ -187,9 +190,7 @@
   max-width: 420px;
 }
 
-.desktop-only { display: block; }
-.mobile-only { display: none; }
-
+/* Mobile info column layout */
 .m-info {
   display: flex;
   flex-direction: column;
@@ -211,25 +212,157 @@
 }
 
 .m-qty {
-  color: rgba(0,0,0,0.65);
+  color: rgba(0, 0, 0, 0.65);
   font-size: 13px;
 }
 
-.m-comment {
+.desktop-only {
+  display: block;
+}
+
+/* Grouped cards */
+.grouped-wrapper {
+  border-radius: 10px;
+}
+
+.grouped-header {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  color: rgba(0, 0, 0, 0.65);
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
 
-  .comment-icon {
+  .grouped-title {
+    font-weight: 900;
+    color: #0f172a;
     font-size: 16px;
-    width: 16px;
-    height: 16px;
-    margin-top: 1px;
   }
 
-  span {
-    word-break: break-word;
+  .grouped-subtitle {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 2px;
+  }
+}
+
+.grouped-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.group-card {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 12px;
+  padding: 12px;
+  background: white;
+  overflow: hidden;
+
+  .group-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    .date {
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      background: rgba(148, 163, 184, 0.18);
+      color: rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+    }
+  }
+}
+
+.group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.g-item {
+  padding-top: 10px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.25);
+
+  &:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+.g-name {
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.g-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 13px;
+}
+
+.mini-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  width: fit-content;
+}
+
+.mb-custom {
+  background: rgba(245, 158, 11, 0.18);
+  color: #7c2d12;
+}
+
+.mb-regular {
+  background: rgba(34, 197, 94, 0.16);
+  color: #14532d;
+}
+
+.more {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+/* Card highlights */
+.card-today {
+  background: rgba(6, 182, 212, 0.10);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+.card-overdue {
+  background: rgba(239, 68, 68, 0.10);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.card-soon {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.card-future {
+  background: #fff;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .grouped-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -243,16 +376,11 @@
   }
 
   .mat-table-container {
-    overflow-x: visible;
+    overflow-x: visible; /* no horizontal scroll on mobile */
   }
 
   .sewing-table {
     min-width: 0 !important;
-  }
-
-  .actual-input {
-    width: 74px;
-    max-width: 74px;
   }
 
   .sewing-table th,
@@ -260,17 +388,28 @@
     padding: 10px 8px;
   }
 
+  .actual-input {
+    width: 74px;
+    max-width: 74px;
+  }
+
   .submit-btn {
     width: 40px;
     height: 40px;
   }
+
+  .desktop-only {
+    display: none;
+  }
 }
 
-@media (max-width: 480px) {
-  .main .table-header {
-    padding: 12px;
+@media (max-width: 576px) {
+  .grouped-grid {
+    grid-template-columns: 1fr;
   }
 
-  .desktop-only { display: none; }
-  .mobile-only { display: flex; }
+  .grouped-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
