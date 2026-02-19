@@ -270,13 +270,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   private onProductVariantDeletionCompleted(resp: boolean) {
-    if (resp) {
+    if (resp === true) {
       this._translate
         .get('toastrs.productVariantDeleted')
         .subscribe((resp: string) => {
           this.showSuccess(resp);
         });
-    } else {
+    } else if (resp === false) {
       this._translate
         .get('toastrs.productVariantDeletedError')
         .subscribe((resp: string) => {
