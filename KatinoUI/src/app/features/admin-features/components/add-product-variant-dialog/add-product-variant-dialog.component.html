@@ -208,7 +208,7 @@
                 {{ "validation.requiredField" | translate }}
               </span>
               <span *ngIf="quantityInStock?.errors?.min">
-                {{ "validation.minValue" | translate : { value: 0 } }}
+                {{ "validation.minValue" | translate: { value: 0 } }}
               </span>
             </mat-error></mat-form-field
           >
@@ -238,7 +238,7 @@
                     {{ "validation.requiredField" | translate }}
                   </span>
                   <span *ngIf="quantityDropSold?.errors?.min">
-                    {{ "validation.minValue" | translate : { value: 0 } }}
+                    {{ "validation.minValue" | translate: { value: 0 } }}
                   </span>
                 </mat-error></mat-form-field
               >
@@ -269,7 +269,7 @@
                     {{ "validation.requiredField" | translate }}
                   </span>
                   <span *ngIf="quantityRegularSold?.errors?.min">
-                    {{ "validation.minValue" | translate : { value: 0 } }}
+                    {{ "validation.minValue" | translate: { value: 0 } }}
                   </span>
                 </mat-error>
               </mat-form-field>
@@ -316,9 +316,8 @@
           <input
             type="file"
             #photoInput
-            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif"
+            accept="image/*"
             multiple
-            capture="environment"
             (change)="onPhotoFileSelected($event)"
             style="display: none"
           />
@@ -455,7 +454,7 @@
                   {{ "validation.requiredField" | translate }}
                 </span>
                 <span *ngIf="getMeasurementValueControl(i)?.errors?.min">
-                  {{ "validation.minValue" | translate : { value: 0 } }}
+                  {{ "validation.minValue" | translate: { value: 0 } }}
                 </span>
               </mat-error>
             </mat-form-field>
