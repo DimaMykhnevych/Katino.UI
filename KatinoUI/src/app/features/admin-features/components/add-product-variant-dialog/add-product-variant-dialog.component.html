@@ -437,26 +437,10 @@
               </mat-label>
               <input
                 matInput
-                type="number"
+                type="text"
                 formControlName="value"
                 [placeholder]="getMeasurementType(i)?.name ?? ''"
-                min="0"
-                step="0.1"
-                required
               />
-              <mat-error
-                *ngIf="
-                  getMeasurementValueControl(i)?.invalid &&
-                  getMeasurementValueControl(i)?.touched
-                "
-              >
-                <span *ngIf="getMeasurementValueControl(i)?.errors?.required">
-                  {{ "validation.requiredField" | translate }}
-                </span>
-                <span *ngIf="getMeasurementValueControl(i)?.errors?.min">
-                  {{ "validation.minValue" | translate: { value: 0 } }}
-                </span>
-              </mat-error>
             </mat-form-field>
           </div>
         </ng-container>

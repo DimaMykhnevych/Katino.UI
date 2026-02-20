@@ -110,6 +110,7 @@
         "category": "Category",
         "categoryName": "Category Name",
         "categoryDescription": "Category Description",
+        "productDescription":  "Producr Description",
         "size": "Size",
         "sizeName": "Size Name",
         "color": "Color",

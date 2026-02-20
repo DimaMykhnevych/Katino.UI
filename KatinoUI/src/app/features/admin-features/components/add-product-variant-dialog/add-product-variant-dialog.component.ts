@@ -76,7 +76,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     private _builder: FormBuilder,
     private _customTranslateService: CustomTranslateService,
     private _translate: TranslateService,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
   ) {
     this.data = data;
   }
@@ -99,7 +99,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
   public onColorSelectionChange(event: MatSelectChange): void {
     if (!this.data.isAdding) {
       const changedColor = this.colorsResponse?.colors.find(
-        (c) => c.id == event.value
+        (c) => c.id == event.value,
       );
 
       this.data.productVariant!.color = changedColor!;
@@ -122,7 +122,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         this.productId?.setValue(resp.id);
       } else {
         const requiredProduct = this.productsResponse?.products.find(
-          (c) => c.id === resp.id
+          (c) => c.id === resp.id,
         );
 
         if (requiredProduct) {
@@ -158,7 +158,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         this.colorId?.setValue(resp.id);
       } else {
         const requiredColor = this.colorsResponse?.colors.find(
-          (c) => c.id === resp.id
+          (c) => c.id === resp.id,
         );
 
         if (requiredColor) {
@@ -356,7 +356,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
     return (
       this.colorsResponse.colors.find(
-        (color) => color.id === selectedColorId
+        (color) => color.id === selectedColorId,
       ) ?? null
     );
   }
@@ -400,34 +400,34 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     formData.append('ProductVariant.ColorId', productVariantData.colorId);
     formData.append(
       'ProductVariant.Status',
-      productVariantData.status.toString()
+      productVariantData.status.toString(),
     );
     formData.append(
       'ProductVariant.QuantityInStock',
-      productVariantData.quantityInStock.toString()
+      productVariantData.quantityInStock.toString(),
     );
     formData.append(
       'ProductVariant.QuantityDropSold',
-      productVariantData.quantityDropSold.toString()
+      productVariantData.quantityDropSold.toString(),
     );
     formData.append(
       'ProductVariant.QuantityRegularSold',
-      productVariantData.quantityRegularSold.toString()
+      productVariantData.quantityRegularSold.toString(),
     );
     formData.append('ProductVariant.Article', productVariantData.article);
     formData.append(
       'ProductVariant.IsDrop',
-      productVariantData.isDrop.toString()
+      productVariantData.isDrop.toString(),
     );
 
     measurements.forEach((measurement, index) => {
       formData.append(
         `ProductVariant.Measurements[${index}].MeasurementTypeId`,
-        measurement.measurementTypeId
+        measurement.measurementTypeId,
       );
       formData.append(
         `ProductVariant.Measurements[${index}].Value`,
-        measurement.value.toString()
+        measurement.value.toString(),
       );
     });
 
@@ -442,7 +442,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         takeUntil(this._destroy$),
         catchError((error) => {
           return this.onCatchUpdateError(true);
-        })
+        }),
       )
       .subscribe((success: boolean) => {
         if (success === true) {
@@ -482,34 +482,34 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     formData.append('ProductVariant.ColorId', productVariantData.colorId);
     formData.append(
       'ProductVariant.Status',
-      productVariantData.status.toString()
+      productVariantData.status.toString(),
     );
     formData.append(
       'ProductVariant.QuantityInStock',
-      productVariantData.quantityInStock.toString()
+      productVariantData.quantityInStock.toString(),
     );
     formData.append(
       'ProductVariant.QuantityDropSold',
-      productVariantData.quantityDropSold.toString()
+      productVariantData.quantityDropSold.toString(),
     );
     formData.append(
       'ProductVariant.QuantityRegularSold',
-      productVariantData.quantityRegularSold.toString()
+      productVariantData.quantityRegularSold.toString(),
     );
     formData.append('ProductVariant.Article', productVariantData.article);
     formData.append(
       'ProductVariant.IsDrop',
-      productVariantData.isDrop.toString()
+      productVariantData.isDrop.toString(),
     );
 
     measurements.forEach((measurement, index) => {
       formData.append(
         `ProductVariant.Measurements[${index}].MeasurementTypeId`,
-        measurement.measurementTypeId
+        measurement.measurementTypeId,
       );
       formData.append(
         `ProductVariant.Measurements[${index}].Value`,
-        measurement.value.toString()
+        measurement.value.toString(),
       );
     });
 
@@ -518,7 +518,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       formData.append(
         'ProductVariant.NewPhotos',
         photo.file!,
-        photo.file!.name
+        photo.file!.name,
       );
     });
 
@@ -537,7 +537,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       .pipe(
         catchError((error) => {
           return this.onCatchUpdateError(false);
-        })
+        }),
       )
       .subscribe((success: boolean) => {
         if (success === true) {
@@ -627,7 +627,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
             products: [],
             resultsAmount: 0,
           } as GetProductsResponse);
-        })
+        }),
       ),
       sizes: this._sizeService.getSizes().pipe(
         catchError((error) => {
@@ -635,7 +635,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
             sizes: [],
             resultsAmount: 0,
           } as GetSizesResponse);
-        })
+        }),
       ),
       colors: this._colorService.getColors().pipe(
         catchError((error) => {
@@ -643,13 +643,13 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
             colors: [],
             resultsAmount: 0,
           } as GetColorsResponse);
-        })
+        }),
       ),
       article: this.data.isAdding
         ? this._productVariantService.getGeneratedArticle().pipe(
             catchError((error) => {
               return of(null);
-            })
+            }),
           )
         : of(null),
       measurementTypes: this._measurementTypeService.getMeasurementTypes().pipe(
@@ -658,7 +658,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
             measurementTypes: [],
             resultsAmount: 0,
           } as GetMeasurementTypesResponse);
-        })
+        }),
       ),
     })
       .pipe(takeUntil(this._destroy$))
@@ -691,7 +691,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           value: this.data?.productVariant?.productId,
           disabled: !this.data?.isAdding,
         },
-        [Validators.required]
+        [Validators.required],
       ),
       sizeId: new FormControl(this.data?.productVariant?.sizeId, [
         Validators.required,
@@ -701,26 +701,26 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       ]),
       status: new FormControl(
         this.data?.productVariant?.status ?? ProductStatus.inStock,
-        [Validators.required]
+        [Validators.required],
       ),
       quantityInStock: new FormControl(
         this.data?.productVariant?.quantityInStock ?? 1,
-        [Validators.required]
+        [Validators.required],
       ),
       quantityDropSold: new FormControl(
         this.data?.productVariant?.quantityDropSold ?? 0,
-        [Validators.required]
+        [Validators.required],
       ),
       quantityRegularSold: new FormControl(
         this.data?.productVariant?.quantityRegularSold ?? 0,
-        [Validators.required]
+        [Validators.required],
       ),
       article: new FormControl(
         {
           value: this.data?.productVariant?.article,
           disabled: true,
         },
-        [Validators.required]
+        [Validators.required],
       ),
       measurements: this._builder.array([]),
     });
@@ -732,15 +732,12 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
     this.measurementTypesResponse?.measurementTypes.forEach((type) => {
       const existingMeasurement = this.data?.productVariant?.measurements?.find(
-        (m) => m.measurementTypeId === type.id
+        (m) => m.measurementTypeId === type.id,
       );
 
       const measurementGroup = this._builder.group({
         measurementTypeId: new FormControl(type.id, [Validators.required]),
-        value: new FormControl(existingMeasurement?.value ?? 0, [
-          Validators.required,
-          Validators.min(0),
-        ]),
+        value: new FormControl(existingMeasurement?.value ?? ''),
       });
 
       measurementsArray.push(measurementGroup);

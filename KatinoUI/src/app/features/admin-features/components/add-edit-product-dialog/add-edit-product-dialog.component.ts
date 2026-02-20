@@ -44,7 +44,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _productService: ProductService,
     private _toastr: ToastrService,
-    private _translate: TranslateService
+    private _translate: TranslateService,
   ) {
     this.data = data;
   }
@@ -79,7 +79,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
         this.categoryId?.setValue(resp.id);
       } else {
         const requiredCategory = this.categoriesResponse?.categories.find(
-          (c) => c.id === resp.id
+          (c) => c.id === resp.id,
         );
 
         requiredCategory!.name = resp.name;
@@ -103,7 +103,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
   public onCategorySelectionChange(event: MatSelectChange): void {
     if (!this.data.isAdding) {
       const changedCategory = this.categoriesResponse?.categories.find(
-        (c) => c.id == event.value
+        (c) => c.id == event.value,
       );
 
       this.data.product!.category = changedCategory!;
@@ -117,7 +117,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
       .pipe(
         catchError((error) => {
           return this.onCatchUpdateError(true);
-        })
+        }),
       )
       .subscribe((product: Product) => {
         if (product.id) {
@@ -136,13 +136,14 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
       wholesalePrice: this.wholesalePrice?.value,
       dropPrice: this.dropPrice?.value,
       price: this.price?.value,
+      description: this.description?.value,
     };
     this._productService
       .updateProduct(updateModel)
       .pipe(
         catchError((error) => {
           return this.onCatchUpdateError(false);
-        })
+        }),
       )
       .subscribe((product: Product) => {
         if (product.id) {
@@ -179,7 +180,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
         catchError((error) => {
           return this.onCatchError(error);
         }),
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy$),
       )
       .subscribe((resp: GetCategoriesResponse) => {
         this.categoriesResponse = resp;
@@ -236,6 +237,7 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
       categoryId: new FormControl(this.data?.product?.category.id, [
         Validators.required,
       ]),
+      description: new FormControl(this.data.product?.description),
     });
   }
 
@@ -256,5 +258,8 @@ export class AddEditProductDialogComponent implements OnInit, OnDestroy {
   }
   get categoryId() {
     return this.form.get('categoryId');
+  }
+  get description() {
+    return this.form.get('description');
   }
 }

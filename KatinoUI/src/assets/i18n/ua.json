@@ -110,6 +110,7 @@
         "category": "Категорія",
         "categoryName": "Назва Категорії",
         "categoryDescription": "Опис Категорії",
+        "productDescription":  "Опис Товару",
         "size": "Розмір",
         "sizeName": "Назва Розміру",
         "color": "Колір",
