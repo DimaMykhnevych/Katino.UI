@@ -2,8 +2,7 @@ name: Deploy Katino to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -11,13 +10,10 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 16
 
@@ -26,11 +22,20 @@ jobs:
         working-directory: KatinoUI
 
       - name: Build Angular
-        run: npm run build -- --configuration production --base-href "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+        run: npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
+        working-directory: KatinoUI
+
+      - name: Show dist (debug)
+        run: |
+          find dist -maxdepth 5 -type f -name "index.html" -print
+          ls -la dist
+          ls -la dist/* || true
+          ls -la dist/*/* || true
         working-directory: KatinoUI
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: KatinoUI/dist/KatinoUI
+          publish_dir: KatinoUI/dist/KatinoUI   # <-- поменяй на .../browser если debug это покажет
+          force_orphan: true
