@@ -25,6 +25,10 @@ jobs:
         run: npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
         working-directory: KatinoUI
 
+      - name: Add 404.html for SPA routing
+        run: cp dist/KatinoUI/index.html dist/KatinoUI/404.html
+        working-directory: KatinoUI
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
