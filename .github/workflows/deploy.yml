@@ -1,4 +1,4 @@
-name: Deploy Katino to GitHub Pages
+name: Deploy Katino UI to GitHub Pages
 
 on:
   push:
