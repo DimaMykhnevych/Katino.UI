@@ -241,7 +241,7 @@
         </div>
 
         <div class="group-items">
-          <div class="g-item" *ngFor="let row of g.items | slice: 0 : 4">
+          <div class="g-item" *ngFor="let row of g.items">
             <div class="g-name">{{ productTitle(row) }}</div>
 
             <div class="g-meta">
@@ -267,13 +267,6 @@
               <mat-icon class="comment-icon">chat</mat-icon>
               <span>{{ row.comment }}</span>
             </div>
-          </div>
-
-          <div class="more" *ngIf="(g.items.length || 0) > 4">
-            {{
-              "sewingQueue.grouped.more"
-                | translate: { count: g.items.length - 4 }
-            }}
           </div>
         </div>
       </div>
