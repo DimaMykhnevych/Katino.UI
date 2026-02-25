@@ -311,7 +311,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
   }
 
   private loadExistingPhotos(): void {
-    if (!this.data.isAdding && this.data.productVariant?.photos) {
+    if (this.data.productVariant?.photos) {
       this.photos = this.data.productVariant.photos
         .sort((a, b) => a.displayOrder - b.displayOrder)
         .map((photo) => ({
