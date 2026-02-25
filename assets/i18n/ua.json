@@ -1,0 +1,446 @@
+
+{
+    "common": {
+        "signin": "Увійти",
+        "signup": "Регістрація",
+        "signInProcessText": "Вхід...",
+        "logout": "Вийти",
+        "allOption":"Всі",
+        "totalItems": "Загальна кількість",
+        "close": "Закрити",
+        "update": "Змінити",
+        "add": "Додати",
+        "edit": "Змінити",
+        "name": "Назва",
+        "description": "Опис",
+        "addingButtonText": "Додавання...",
+        "updatingButtonText":"Оновлення...",
+        "hexCode": "HEX-код",
+        "colorPicker": "Вибір Кольору",
+        "spending": "Витрати",
+        "drop": "Дроп",
+        "my": "Мої",
+        "coming": "Прихід",
+        "delete": "Видалити",
+        "cancel": "Відмінити",
+        "restore": "Відновити",
+        "copy": "Копіювати",
+        "loading": "Завантаження...",
+        "city": "Місто",
+        "save": "Зберегти",
+        "reset": "Скинути",
+        "somethingWentWrong": "Щось пійшло не так...",
+        "refresh": "Оновити"
+    },
+    "login": {
+        "subtitle": "Увійдіть до свого облікового запису",
+        "username": "Ім'я користувача",
+        "password": "Пароль"
+    },
+    "validation": {
+        "requiredField": "Це поле обов'язкове",
+        "invalidStatus": "Невірний статус",
+        "minValue": "Не може бути менше {{value}}",
+        "maxPhotosReached": "Дозволено максимум {{max}} фото",
+        "invalidImageFormat": "Невірний формат фото. Дозволені формати: JPG, PNG, GIF, WEBP",
+        "fileTooLarge": "Розмір файлу повинен бути менший ніж {{max}}",
+        "failedLoadingImagePreview": "Помилка при завантаженні фото",
+        "mustBeGreaterThanZero": "Значення повинно бути більше нуля"        
+    },    
+    "emailConfirmation": {
+        "emailConfirmation": "Підтвердження електронною поштою",
+        "success": "Вашу електронну пошту було успішно підтверджено",
+        "clickToLogin": "Натисніть тут, щоб увійти",
+        "requiredValidation": "Підтвердження електронної пошти необхідне",
+        "checkEmail": "Будь ласка, перевірте свою електронну пошту та підтвердіть свій обліковий запис",
+        "error": "Помилка підтвердження",
+        "errorHelpText": "Посилання могло бути недійсним або застарілим. Спробуйте запросити нове підтвердження",
+        "successHeader": "Успішно підтверджено!",
+        "successHelpText": "Ваш обліковий запис тепер активний. Ви можете увійти та почати користуватися платформою",
+        "loadingHeader": "Підтвердження електронної пошти...",
+        "loadingHelpText": "Будь ласка, зачекайте, поки ми обробляємо ваш запит"
+    },
+    "validationMessages": {
+        "usernameRequired": "Ім'я користувача обов'язкове",
+        "passwordRequired": "Пароль обов'язковий",
+        "wrongUsernameOrPassword": "Неправильне ім'я користувача або пароль"
+    },
+    "languageSelection": {
+        "ua": "Укр",
+        "en": "En"
+    },
+    "roles": {
+        "admin": "Адміністратор",
+        "user": "Користувач",
+        "sewer": "Швачка"
+    },
+    "navbar": {
+        "menu": "Меню",
+        "availability": "Наявність",
+        "orders": "Замовлення",
+        "crm-settings": "Налаштування CRM",
+        "sewing-queue": "Черга На Шиття"
+    },
+    "inventory": {
+        "availability": "Наявність",
+        "searchingProducts": "Пошук товарів ...",
+        "productName": "Назва товару",
+        "product": "Товар",
+        "photo": "Фото",
+        "status": "Статус",
+        "measurements": "Заміри",
+        "prices": "Ціни",
+        "costPrice": "Собівартість",
+        "productCostPrice": "Собівартість Товару",
+        "dropPrice":"Дроп",
+        "dropPriceDescr":"Дроп Ціна",
+        "productDropPrice":"Ціна Товару За Дроп",
+        "wholesalePrice": "РРЦ(ОПТ)",
+        "wholesalePriceDescr": "ОПТ Ціна",
+        "wholesaleProductPrice": "Оптова Ціна Товару",
+        "price": "Ціна",
+        "productPrice": "Ціна Товару",
+        "amount": "Кількість",
+        "quantityInStock": "Пошито",
+        "quantityDropSold": "Витрати Дроп",
+        "quantityRegularSold": "Витрати Мої",
+        "article": "Артикул",
+        "actions": "Дії",
+        "info": "Інфо",
+        "category": "Категорія",
+        "categoryName": "Назва Категорії",
+        "categoryDescription": "Опис Категорії",
+        "productDescription":  "Опис Товару",
+        "size": "Розмір",
+        "sizeName": "Назва Розміру",
+        "color": "Колір",
+        "colorName": "Назва Кольору",
+        "colorHexCodeDescription": "HEX-код Кольору",
+        "photos": "Фото",
+        "uploadPhotos": "Завантажити Фото",
+        "takePhoto": "Зробити Фото",
+        "copyLastAddedProductVariant": "Скопіювати останній доданий товар"
+    },
+    "adminFeatures": {
+        "addingProductVariant": "Додавання Варіанту Товару",
+        "updatingProductVariant": "Оновлення Варіанту Товару",
+        "addingProduct": "Додавання Товару",
+        "updatingProduct": "Оновлення Товару",
+        "addingCategory": "Додавання Категорії",
+        "updatingCategory": "Оновлення Категорії",
+        "addingSize": "Додавання Розміру",
+        "addingColor": "Додавання Кольору",
+        "updatingColor": "Оновлення Кольору"
+    },
+    "toastrs": {
+        "categoryAdded": "Категорію успішно збережено",
+        "categoryUpdated": "Категорію успішно оновлено",
+        "categoryAddedError": "Виникла помилка під час додавання категорії",
+        "categoryUpdatedError": "Виникла помилка під час оновлення категорії",
+        "productAdded": "Товар успішно збережено",
+        "productUpdated": "Товар успішно оновлено",
+        "productAddedError": "Виникла помилка під час додавання товару",
+        "productUpdatedError": "Виникла помилка під час оновлення товару",
+        "sizeAdded": "Розмір успішно збережено",
+        "sizeAddedError": "Виникла помилка під час додавання розміру",
+        "colorAddedError": "Виникла помилка під час додавання кольору",
+        "colorUpdatedError": "Виникла помилка під час оновлення кольору",
+        "colorAdded": "Колір успішно збережено",
+        "colorUpdated": "Колір успішно оновлено",
+        "productVariantAddedError": "Виникла помилка під час додавання варіанту товару",
+        "productVariantUpdatedError": "Виникла помилка під час оновлення варіанту товару",
+        "productVariantAdded": "Варіант товару успішно збережено",
+        "productVariantUpdated": "Варіант товару успішно оновлено",
+        "productVariantDeletedError": "Виникла помилка під час видалення варіанту товару",
+        "productVariantDeleted": "Варіант товару успішно видалено",
+        "orderDeletedUnknownError": "Виникла невідома помилка під час видалення замовлення",
+        "orderDeletionFailed": "Виникла помилка під час видалення замовлення",
+        "docNotDeleted": "Замовлення видалено, але під час видалення ТТН сталася помилка",
+        "orderDeleteSuccess": "Замовлення та ТТН видалено"
+    },
+    "dialogs": {
+        "productVariantDeletionTitle": "Видалення Варіанту Товару",
+        "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?",
+        "orderDeletionTitle": "Видалення Замовлення",
+        "orderDeletionContent": "Ви впевненні, що бажаєте видалити заомвлення від {{orderDate}}?\n Склад замовлення:\n {{orderInfo}} ?"
+    },
+    "crmSettingsPage": {
+        "crmSettings": "Налаштування CRM",
+        "npSettingsHint": "Збережіть місто та відділення, з яких зазвичай відправляються замовлення",
+        "sync": {
+            "title": "Синхронізація відділень",
+            "subtitle": "Історія останніх {{limit}} запусків",
+            "currentStatus": "Поточний статус",
+            "trigger": "Запустити синхронізацію",
+            "empty": "Історія синхронізацій поки відсутня.",
+            "status": {
+                "notStarted": "Не запускалось",
+                "inProgress": "В процесі",
+                "completed": "Успішно",
+                "failed": "Помилка"
+            },
+            "table": {
+                "status": "Статус",
+                "startedAt": "Початок",
+                "completedAt": "Завершення",
+                "apiRequested": "API записів",
+                "dbInserted": "Додано в БД",
+                "triggeredBy": "Запустив",
+                "error": "Помилка"
+            },
+            "toast": {
+                "title": "Нова Пошта",
+                "triggered": "Синхронізацію запущено.",
+                "triggerFailed": "Не вдалося запустити синхронізацію."
+            }
+        }
+    },
+    "novaPost": {
+        "np": "Нова Пошта",
+        "departmentOrPost": "Відділення/Поштомат"
+    },
+    "orders": {
+        "ordersHeader": "Замовлення",
+        "searchingOrders": "Пошук замовлень ...",
+        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача",        
+        "table": {
+            "created": "Створено",
+            "ttn": "ТТН",
+            "recipient": "Отримувач",
+            "delivery": "Доставка",
+            "saleType": "Продаж",
+            "status": "Статус",
+            "manualStatus": "Власний статус",
+            "cost": "Сума",
+            "afterpayment": "Післяплата",
+            "items": "Товари",
+            "custom": "Індивідуально",
+            "openToSeeAll": "Відкрийте, щоб побачити всі",
+            "sendUntil": "Відправити до",
+            "sendUntilShort": "До",
+            "ttnNotCreated": "ТТН не була створена"            
+        },
+        "sections": {
+            "paymentAndStatuses": "Оплата та статуси",
+            "delivery": "Доставка",
+            "seats": "Місця",
+            "recipient": "Отримувач",
+            "deliveryAddress": "Адреса доставки",
+            "items": "Товари в замовленні",
+            "pricing": "Ціни",
+            "seat": "Місце (габарити)",
+            "orderInfo": "Додаткова інформація"
+        },
+        "labels": {
+            "deliveryType": "Тип доставки",
+            "city": "Місто",
+            "warehouse": "Відділення",
+            "address": "Адреса",
+            "note": "Примітка",
+            "custom": "Індивідуально",
+            "payerType": "Платник",
+            "paymentMethod": "Спосіб оплати",
+            "saleType": "Тип продажу",
+            "npStatus": "Статус НП",
+            "orderDescription": "Опис",
+            "recipientPhone": "Телефон отримувача",
+            "recipientLastName": "Прізвище",
+            "recipientFirstName": "Ім’я",
+            "recipientMiddleName": "По батькові",
+            "instUrl": "Посилання / нік (Instagram / Telegram)",
+            "addProduct": "Додати товар",
+            "totalCost": "Загальна вартість",
+            "prepayment": "Передоплата",
+            "afterpayment": "Сума післяплати",
+            "sendUntilDate": "Відправити до",
+            "description": "Опис"  
+        },
+        "deliveryType": {
+            "warehouseOrPost": "Відділення/Поштомат",
+            "address": "Адресна"
+        },
+        "payerType": {
+            "sender": "Відправник",
+            "recipient": "Отримувач",
+            "thirdPerson": "Третя особа"
+        },
+        "paymentMethod": {
+            "cash": "Готівка",
+            "nonCash": "Безготівково"
+        },        
+        "details": {
+            "title": "Деталі замовлення",
+            "main": "Основне",
+            "created": "Створено",
+            "sendUntil": "Відправити до",
+            "cost": "Сума",
+            "recipient": "Отримувач",
+            "name": "ПІБ",
+            "phone": "Телефон",
+            "items": "Товари",
+            "qty": "К-сть",
+            "toProduce": "Пошити"
+        },
+        "readiness": {
+            "inProgress": "В роботі",
+            "readyToShip": "Готово до відправки"
+        },
+        "itemStatus": {
+            "forSewing": "Пошити",
+            "ready": "Готово"
+        },
+        "saleType": {
+            "retail": "Роздріб",
+            "drop": "Дроп",
+            "wholesale": "Опт"
+        },
+        "manualStatus": {
+            "none": "Немає",
+            "refusal": "Відмова",
+            "exchange": "Обмін"
+        },
+        "npStatus": {
+            "notProcessed": "Не оброблено",
+            "created": "Створено",
+            "deleted": "Видалено",
+            "notFound": "Не знайдено",
+            "inTheCityInterregional": "У місті (міжміське)",
+            "onTheWayToCity": "В дорозі до міста",
+            "onTheWayToDepartment": "В дорозі до відділення",
+            "arrived": "Прибуло у відділення",
+            "arrivedPostomat": "Прибуло у поштомат",
+            "received": "Отримано",
+            "receivedRemittancePending": "Отримано, очікується переказ",
+            "receivedRemittanceCompleted": "Отримано, переказ завершено",
+            "npCompletingOrder": "НП комплектує відправлення",
+            "inTheCityWithinTheCity": "У місті (в межах міста)",
+            "onTheWayToReceiver": "На шляху до одержувача",
+            "rejectionBySender": "Відмова відправника",
+            "rejection": "Відмова",
+            "addressChanged": "Адресу змінено",
+            "storageStopped": "Зберігання припинено",
+            "receivedAndReturnCreated": "Отримано та створено повернення",
+            "receiverNotAnswering": "Отримувач не відповідає",
+            "deliveryDateChangedByReceiver": "Отримувач змінив дату доставки"
+        },
+        "orderStatus": {
+            "none": "Немає",
+
+            "inProgress": "В роботі",
+            "readyToShip": "Готово до відправки",
+            "packed": "Запаковано",
+
+            "created": "Створено",
+            "deleted": "Видалено",
+            "notFound": "Не знайдено",
+            "inTheCityInterregional": "У місті (міжміське)",
+            "onTheWayToCity": "В дорозі до міста",
+            "onTheWayToDepartment": "В дорозі до відділення",
+            "arrived": "Прибуло",
+            "arrivedPostomat": "Прибуло у поштомат",
+            "received": "Отримано",
+            "receivedRemittancePending": "Отримано, очікується переказ",
+            "receivedRemittanceCompleted": "Отримано, переказ завершено",
+            "npCompletingOrder": "НП завершує оформлення",
+            "inTheCityWithinTheCity": "У місті (в межах міста)",
+            "onTheWayToReceiver": "Кур’єр в дорозі",
+            "rejectionBySender": "Відмова відправника",
+            "rejection": "Відмова",
+            "addressChanged": "Адресу змінено",
+            "storageStopped": "Зберігання припинено",
+            "receivedAndReturnCreated": "Отримано та створено повернення",
+            "receiverNotAnswering": "Отримувач не відповідає",
+            "deliveryDateChangedByReceiver": "Змінено дату доставки",
+
+            "refusal": "Відмова (ручна)",
+            "exchange": "Обмін (ручний)"
+        },
+        "status": {
+            "noManualOptions": "Немає доступних ручних статусів"
+        },
+        "toastr": {
+            "statusUpdated": "Статус оновлено",
+            "statusUpdateFailed": "Не вдалося оновити статус",
+            "settingsRequired": "Спочатку заповніть налаштування CRM (місто та відділення відправки).",
+            "senderContactMissing": "Не знайдено контактну особу відправника.",
+            "discontinuedErrorAdd": "Неможливо створити замовлення: у списку є знятий з продажу товар.",
+            "discontinuedErrorUpdate": "Неможливо оновити замовлення: у списку є знятий з продажу товар.",
+            "saveFailed": "Не вдалося зберегти замовлення.",
+            "saveSuccess": "Замовлення успішно збережено.",
+            "docNotCreated": "Замовлення збережено, але ТТН не створено.",
+            "docNotUpdated": "Замовлення оновлено, але ТТН не оновлено."            
+        },
+        "filters": {
+            "statuses": "Статуси",
+            "allStatuses": "Усі статуси"
+        },
+        "addingOrder": {
+            "dialogTitle": "Додавання Замовлення"
+        },
+        "updatingOrder": {
+            "dialogTitle": "Оновлення Замовлення"
+        },
+        "hints": {
+            "searchingPhones": "Пошук...",
+            "saleTypeLocked": "Тип продажу не можна змінювати під час редагування",
+            "afterpaymentDefault": "За замовчуванням: загальна вартість − {{amount}}"
+        },
+        "validation": {
+            "phoneFormat": "Телефон має бути у форматі 380660000000",
+            "sendUntilDateNotPast": "Дата не може бути в минулому",
+            "invalidDate": "Некоректна дата"
+        },
+        "address": {
+            "city": "Місто",
+            "addressName": "Вулиця",
+            "house": "Будинок",
+            "flat": "Квартира",
+            "note": "Примітка",
+            "warehouseHint": "Виберіть місто та відділення/поштомат",
+            "warehouseRequired": "Оберіть місто та відділення / поштомат"
+        },
+        "items": {
+            "product": "Товар",
+            "custom": "Індив.",
+            "comment": "Коментар",
+            "qty": "Кількість"
+        },
+        "seat": {
+            "weight": "Вага",
+            "length": "Довжина",
+            "width": "Ширина",
+            "height": "Висота"
+        }
+    },
+    "sewingQueue": {
+        "sewingQueueHeader": "Черга на шиття",
+        "emptyTitle": "Немає задач на шиття",
+        "emptySubtitle": "Зараз немає позицій у черзі. Спробуйте оновити сторінку пізніше.",
+        "table": {
+            "product": "Товар",
+            "toProduce": "Потрібно",
+            "custom": "Тип",
+            "actual": "Пошито",
+            "actions": ""
+        },
+        "labels": {
+            "custom": "По параметрах",
+            "regular": "Звичайний"
+        },
+        "placeholders": {
+            "actual": "0"
+        },
+        "toastr": {
+            "submitted": "Звіт збережено",
+            "submitFailed": "Не вдалося зберегти звіт",
+            "tooMuchCustom": "Для виробу по параметрах не можна вказати більше, ніж потрібно пошити"
+        },
+        "grouped": {
+            "title": "Черга за датами відправки",
+            "subtitle": "Згруповано за дедлайном “Відправити до”",
+            "items": "Позицій",
+            "more": "Ще +{{count}} позицій",
+            "emptyTitle": "Групи відсутні"
+        }        
+    }
+}

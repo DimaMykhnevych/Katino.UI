@@ -1,0 +1,446 @@
+
+{
+    "common": {
+        "signin": "Sign In",
+        "signup": "Sign Up",
+        "signInProcessText": "Signing in...",
+        "logout": "Log Out",
+        "allOption":"All",
+        "totalItems": "Total items",
+        "close": "Close",
+        "update": "Update",
+        "add": "Add",
+        "edit": "Edit",
+        "name": "Name",
+        "description": "Description",
+        "addingButtonText": "Adding...",
+        "updatingButtonText":"Updating...",
+        "hexCode": "HEX Code",
+        "colorPicker": "Color Picker",
+        "spending": "Sold",
+        "drop": "Drop",
+        "my": "Regular",
+        "coming": "Coming",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "restore": "Restore",
+        "copy": "Copy",
+        "loading": "Loading...",
+        "city": "City",
+        "save": "Save",
+        "reset": "Reset",
+        "somethingWentWrong": "Something went wrong...",
+        "refresh": "Refresh"
+    },
+    "login": {
+        "subtitle": "Log in to your account",
+        "username": "Username",
+        "password": "Password"
+    },
+    "validation": {
+        "requiredField": "This field is required",
+        "invalidStatus": "Invalid status",
+        "minValue": "Can not be less than {{value}}",
+        "maxPhotosReached": "Maximum {{max}} photos allowed",
+        "invalidImageFormat": "Invalid image format. Allowed: JPG, PNG, GIF, WEBP",
+        "fileTooLarge": "File size must be less than {{max}}",
+        "failedLoadingImagePreview": "Failed to load image preview",
+        "mustBeGreaterThanZero": "Value must be greater than zero"
+    },    
+    "emailConfirmation": {
+        "emailConfirmation": "Email Confirmation",
+        "success": "Your email has been successfully confirmed",
+        "clickToLogin": "Click here to log in",
+        "requiredValidation": "Email confirmation is required",
+        "checkEmail": "Please check your email and confirm your account",
+        "error": "Confirmation error",
+        "errorHelpText": "The link may be invalid or outdated. Try requesting a new verification",
+        "successHeader": "Successfully confirmed!",
+        "successHelpText": "Your account is now active. You can log in and start using the platform",
+        "loadingHeader": "Email confirmation...",
+        "loadingHelpText": "Please wait while we process your request" 
+    },
+    "validationMessages": {
+        "usernameRequired": "Username is required",
+        "passwordRequired": "Password is requried",
+        "wrongUsernameOrPassword": "Incorrect username or password"
+    },
+    "languageSelection": {
+        "ua": "Ua",
+        "en": "En"
+    },
+    "roles": {
+        "admin": "Admin",
+        "user": "User",
+        "sewer": "Sewer"
+    },
+    "navbar": {
+        "menu": "Menu",
+        "availability": "Availability",
+        "orders": "Orders",
+        "crm-settings": "CRM Settings",
+        "sewing-queue": "Sewing Queue"
+    },
+    "inventory": {
+        "availability": "Availability",
+        "searchingProducts": "Searching products ...",
+        "productName": "Product name",
+        "product": "Product",
+        "photo": "Photo",
+        "status": "Status",
+        "measurements": "Measurements",
+        "prices": "Prices",
+        "costPrice": "Cost Price",
+        "productCostPrice": "Product Cost Price",
+        "dropPrice":"Drop Price",
+        "dropPriceDescr":"Drop Price",
+        "productDropPrice":"Product Drop Price",        
+        "wholesalePrice": "Wholesale",
+        "wholesalePriceDescr": "Wholesale Price",
+        "wholesaleProductPrice": "Wholesale Product Price",
+        "price": "Price",
+        "productPrice": "Product Price",
+        "amount": "Amount",
+        "quantityInStock": "In Stock",
+        "quantityDropSold": "Drop Sold",
+        "quantityRegularSold": "Regular Sold",
+        "article": "Article",
+        "actions": "Actions",
+        "info": "Info",
+        "category": "Category",
+        "categoryName": "Category Name",
+        "categoryDescription": "Category Description",
+        "productDescription":  "Producr Description",
+        "size": "Size",
+        "sizeName": "Size Name",
+        "color": "Color",
+        "colorName": "Color Name",
+        "colorHexCodeDescription": "Color HEX-code",
+        "photos": "Photos",
+        "uploadPhotos": "Upload Photos",
+        "takePhoto": "Take Photo",
+        "copyLastAddedProductVariant": "Copy last added product variant"
+    },
+    "adminFeatures": {
+        "addingProductVariant": "Adding Product Variant",
+        "updatingProductVariant": "Updating Product Variant",
+        "addingProduct": "Adding Product",
+        "updatingProduct": "Updating Product",
+        "addingCategory": "Adding Category",
+        "updatingCategory": "Updating Category",
+        "addingSize": "Adding Size",
+        "addingColor": "Adding Color",
+        "updatingColor": "Updating Color"
+    },
+    "toastrs": {
+        "categoryAdded": "Category was successfully added",
+        "categoryUpdated": "Category was successfully updated",
+        "categoryAddedError": "An error occurred during adding category",
+        "categoryUpdatedError": "An error occurred during updating category",
+        "productAdded": "Product was successfully added",
+        "productUpdated": "Product was successfully updated",
+        "productAddedError": "An error occurred during adding product",
+        "productUpdatedError": "An error occurred during updating product",
+        "sizeAdded": "Size was successfully added",
+        "sizeAddedError": "An error occurred during adding size",
+        "colorAddedError": "An error occurred during adding color",
+        "colorUpdatedError": "An error occurred during updating color",
+        "colorAdded": "Color was successfully added",
+        "colorUpdated": "Color was successfully updated",
+        "productVariantAddedError": "An error occurred during adding product variant",
+        "productVariantUpdatedError": "An error occurred during updating product variant",
+        "productVariantAdded": "Product variant was successfully added",
+        "productVariantUpdated": "Product variant was successfully updated",
+        "productVariantDeletedError": "An error occurred during deleting product variant",
+        "productVariantDeleted": "Product variant was successfully deleted",
+        "orderDeletedUnknownError": "An unknown error occurred during deleting order",
+        "orderDeletionFailed": "An error occurred during deleting order",
+        "docNotDeleted": "Order has been deleted, however an error occurred during TTN deletion",
+        "orderDeleteSuccess": "Order and TTN have been deleted successfully"
+    },
+    "dialogs": {
+        "productVariantDeletionTitle": "Product Variant Deletion",
+        "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?",
+        "orderDeletionTitle": "Order Deletion",
+        "orderDeletionContent": "Are you sure you want to delete order from {{orderDate}}?\n Order items:\n {{orderInfo}} ?"
+    },
+    "crmSettingsPage": {
+        "crmSettings": "CRM Settings",
+        "npSettingsHint": "Save the city and warehouse from which orders are usually shipped",
+        "sync": {
+            "title": "Warehouse sync",
+            "subtitle": "History of the last {{limit}} runs",
+            "currentStatus": "Current status",
+            "trigger": "Trigger sync",
+            "empty": "Sync history is empty.",
+            "status": {
+                "notStarted": "Not started",
+                "inProgress": "In progress",
+                "completed": "Completed",
+                "failed": "Failed"
+            },
+            "table": {
+                "status": "Status",
+                "startedAt": "Started",
+                "completedAt": "Completed",
+                "apiRequested": "API records",
+                "dbInserted": "Inserted to DB",
+                "triggeredBy": "Triggered by",
+                "error": "Error"
+            },
+            "toast": {
+                "title": "Nova Post",
+                "triggered": "Sync has been started.",
+                "triggerFailed": "Failed to start sync."
+            }            
+        }
+    },
+    "novaPost": {
+        "np": "Nova Post",
+        "departmentOrPost": "Department/Parcel Terminal"
+    },
+    "orders": {
+        "ordersHeader": "Orders",
+        "searchingOrders": "Searching orders ...",
+        "searchHelpText": "Internet doc number, Inst-link, receiver data",        
+        "table": {
+            "created": "Created",
+            "ttn": "TTN",
+            "recipient": "Recipient",
+            "delivery": "Delivery",
+            "saleType": "Sale type",
+            "status": "Status",
+            "manualStatus": "Manual status",            
+            "cost": "Total",
+            "afterpayment": "COD",
+            "items": "Items",
+            "custom": "Custom",
+            "openToSeeAll": "Open to see all",
+            "sendUntil": "Send until",
+            "sendUntilShort": "Due",
+            "ttnNotCreated": "Internet doc was not created"
+        },
+        "sections": {
+            "paymentAndStatuses": "Payment & statuses",
+            "delivery": "Delivery",
+            "seats": "Seats",
+            "recipient": "Recipient",
+            "deliveryAddress": "Delivery address",
+            "items": "Order products",
+            "pricing": "Pricing",
+            "seat": "Package (dimensions)",
+            "orderInfo": "Additional information"
+        },
+        "labels": {
+            "deliveryType": "Delivery type",
+            "city": "City",
+            "warehouse": "Warehouse",
+            "address": "Address",
+            "note": "Note",
+            "custom": "Custom",
+            "payerType": "Payer",
+            "paymentMethod": "Payment method",
+            "saleType": "Sale type",
+            "npStatus": "Nova Post status",
+            "orderDescription": "Description",
+            "recipientPhone": "Recipient phone",
+            "recipientLastName": "Last name",
+            "recipientFirstName": "First name",
+            "recipientMiddleName": "Middle name",
+            "instUrl": "Link / username (Instagram / Telegram)",
+            "addProduct": "Add product",
+            "totalCost": "Total cost",
+            "prepayment": "Prepayment",
+            "afterpayment": "Afterpayment amount",
+            "sendUntilDate": "Send until",
+            "description": "Description"            
+        },
+        "deliveryType": {
+            "warehouseOrPost": "Warehouse/Postomat",
+            "address": "Address"
+        },
+        "payerType": {
+            "sender": "Sender",
+            "recipient": "Recipient",
+            "thirdPerson": "Third party"
+        },
+        "paymentMethod": {
+            "cash": "Cash",
+            "nonCash": "Non-cash"
+        },        
+        "details": {
+            "title": "Order details",
+            "main": "Main",
+            "created": "Created",
+            "sendUntil": "Send until",
+            "cost": "Total",
+            "recipient": "Recipient",
+            "name": "Name",
+            "phone": "Phone",
+            "items": "Items",
+            "qty": "Qty",
+            "toProduce": "To sew"
+        },
+        "readiness": {
+            "inProgress": "In progress",
+            "readyToShip": "Ready to ship"
+        },
+        "itemStatus": {
+            "forSewing": "For sewing",
+            "ready": "Ready"
+        },
+        "saleType": {
+            "retail": "Retail",
+            "drop": "Drop",
+            "wholesale": "Wholesale"
+        },
+        "manualStatus": {
+            "none": "None",
+            "refusal": "Refusal",
+            "exchange": "Exchange"
+        },
+        "npStatus": {
+            "notProcessed": "Not processed",
+            "created": "Created",
+            "deleted": "Deleted",
+            "notFound": "Not found",
+            "inTheCityInterregional": "In city (interregional)",
+            "onTheWayToCity": "On the way to city",
+            "onTheWayToDepartment": "On the way to warehouse",
+            "arrived": "Arrived",
+            "arrivedPostomat": "Arrived to postomat",
+            "received": "Received",
+            "receivedRemittancePending": "Received, remittance pending",
+            "receivedRemittanceCompleted": "Received, remittance completed",
+            "npCompletingOrder": "NP completing order",
+            "inTheCityWithinTheCity": "In city (within city)",
+            "onTheWayToReceiver": "On the way to receiver",
+            "rejectionBySender": "Rejected by sender",
+            "rejection": "Rejected",
+            "addressChanged": "Address changed",
+            "storageStopped": "Storage stopped",
+            "receivedAndReturnCreated": "Received and return created",
+            "receiverNotAnswering": "Receiver not answering",
+            "deliveryDateChangedByReceiver": "Delivery date changed by receiver"
+        },
+        "orderStatus": {
+            "none": "None",
+
+            "inProgress": "In progress",
+            "readyToShip": "Ready to ship",
+            "packed": "Packed",
+
+            "created": "Created",
+            "deleted": "Deleted",
+            "notFound": "Not found",
+            "inTheCityInterregional": "In city (interregional)",
+            "onTheWayToCity": "On the way to city",
+            "onTheWayToDepartment": "On the way to warehouse",
+            "arrived": "Arrived",
+            "arrivedPostomat": "Arrived to postomat",
+            "received": "Received",
+            "receivedRemittancePending": "Received, remittance pending",
+            "receivedRemittanceCompleted": "Received, remittance completed",
+            "npCompletingOrder": "NP completing order",
+            "inTheCityWithinTheCity": "In city (within city)",
+            "onTheWayToReceiver": "Courier on the way",
+            "rejectionBySender": "Rejected by sender",
+            "rejection": "Rejected",
+            "addressChanged": "Address changed",
+            "storageStopped": "Storage stopped",
+            "receivedAndReturnCreated": "Received & return created",
+            "receiverNotAnswering": "Receiver not answering",
+            "deliveryDateChangedByReceiver": "Delivery date changed",
+
+            "refusal": "Manual refusal",
+            "exchange": "Manual exchange"
+        },
+        "status": {
+            "noManualOptions": "No available manual statuses"
+        },
+        "toastr": {
+            "statusUpdated": "Status updated",
+            "statusUpdateFailed": "Failed to update status",
+            "settingsRequired": "Please fill in CRM settings first (sender city and warehouse).",
+            "senderContactMissing": "Sender contact person was not found.",
+            "discontinuedErrorAdd": "Cannot create order: discontinued product exists in items.",
+            "discontinuedErrorUpdate": "Cannot update order: discontinued product exists in items.",
+            "saveFailed": "Failed to save the order.",
+            "saveSuccess": "Order saved successfully.",
+            "docNotCreated": "Order saved, but the TTN was not created.",
+            "docNotUpdated": "Order updated, but the TTN was not updated."            
+        },
+        "filters": {
+            "statuses": "Statuses",
+            "allStatuses": "All statuses"
+        },
+        "addingOrder": {
+            "dialogTitle": "Adding Order"
+        },
+        "updatingOrder": {
+            "dialogTitle": "Updating Order"
+        },
+        "hints": {
+            "searchingPhones": "Searching...",
+            "saleTypeLocked": "Sale type cannot be changed while editing",
+            "afterpaymentDefault": "Default: total cost − {{amount}}"
+        },
+        "validation": {
+            "phoneFormat": "Phone must be in format 380660000000",
+            "sendUntilDateNotPast": "Date cannot be in the past",
+            "invalidDate": "Invalid date"            
+        },
+        "address": {
+            "city": "City",
+            "addressName": "Street",
+            "house": "House",
+            "flat": "Flat",
+            "note": "Note",
+            "warehouseHint": "Select city and warehouse/postomat",
+            "warehouseRequired": "Select city and warehouse / postomat"            
+        },
+        "items": {
+            "product": "Product",
+            "custom": "Custom",
+            "comment": "Comment",
+            "qty": "Quantity"
+        },
+        "seat": {
+            "weight": "Weight",
+            "length": "Length",
+            "width": "Width",
+            "height": "Height"
+        }        
+    },
+    "sewingQueue": {
+        "sewingQueueHeader": "Sewing queue",
+        "emptyTitle": "No sewing tasks",
+        "emptySubtitle": "There are no items in the queue right now. Please check again later.",
+        "table": {
+            "product": "Product",
+            "toProduce": "To sew",
+            "custom": "Type",
+            "actual": "Done",
+            "actions": ""
+        },
+        "labels": {
+            "custom": "Custom",
+            "regular": "Regular"
+        },
+        "placeholders": {
+            "actual": "0"
+        },
+        "toastr": {
+            "submitted": "Report saved",
+            "submitFailed": "Failed to save report",
+            "tooMuchCustom": "For custom items you cannot submit more than required"
+        },
+        "grouped": {
+            "title": "Queue grouped by send date",
+            "subtitle": "Grouped by the “Send until” deadline",
+            "items": "Items",
+            "more": "+{{count}} more items",
+            "emptyTitle": "No groups"
+        }        
+    }
+}
