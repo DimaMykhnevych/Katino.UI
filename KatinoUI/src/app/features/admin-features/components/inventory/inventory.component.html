@@ -69,6 +69,7 @@
     </div>
     <div class="info-row mt-3" *ngIf="!isRetrievingData">
       <div
+        *ngIf="isActionControlsVisible()"
         class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3"
       >
         <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -343,15 +344,27 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="onEditClick(variant)">
+            <button
+              [disabled]="!isActionControlsVisible()"
+              mat-menu-item
+              (click)="onEditClick(variant)"
+            >
               <mat-icon>edit</mat-icon>
               <span>{{ "common.update" | translate }}</span>
             </button>
-            <button mat-menu-item (click)="onDeleteClick(variant)">
+            <button
+              [disabled]="!isActionControlsVisible()"
+              mat-menu-item
+              (click)="onDeleteClick(variant)"
+            >
               <mat-icon>delete</mat-icon>
               <span>{{ "common.delete" | translate }}</span>
             </button>
-            <button mat-menu-item (click)="onCopyClick(variant)">
+            <button
+              [disabled]="!isActionControlsVisible()"
+              mat-menu-item
+              (click)="onCopyClick(variant)"
+            >
               <mat-icon>content_copy</mat-icon>
               <span>{{ "common.copy" | translate }}</span>
             </button>

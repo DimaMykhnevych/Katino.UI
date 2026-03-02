@@ -21,28 +21,28 @@ const routes: Routes = [
         path: 'inventory',
         component: InventoryComponent,
         data: {
-          roles: [Roles.Admin],
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
         },
       },
       {
         path: 'orders',
         component: OrdersComponent,
         data: {
-          roles: [Roles.Admin],
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
         },
       },
       {
         path: 'crm-settings',
         component: CrmSettingsComponent,
         data: {
-          roles: [Roles.Admin],
+          roles: [Roles.Admin, Roles.Owner],
         },
       },
       {
         path: 'sewing-queue',
         component: SewingQueueComponent,
         data: {
-          roles: [Roles.Admin, Roles.Sewer],
+          roles: [Roles.Admin, Roles.Sewer, Roles.Owner],
         },
       },
     ],

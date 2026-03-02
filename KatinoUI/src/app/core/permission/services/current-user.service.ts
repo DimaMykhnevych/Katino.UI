@@ -26,7 +26,9 @@ export class CurrentUserService {
     this.userInfoChanged.next(this._userInfo);
   }
 
-  public get isAdmin(): boolean {
-    return this._userInfo.role === Roles.Admin;
+  public get isAdminRelatedRole(): boolean {
+    return (
+      this._userInfo.role === Roles.Admin || this._userInfo.role === Roles.Owner
+    );
   }
 }

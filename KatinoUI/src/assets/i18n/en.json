@@ -72,7 +72,9 @@
     "roles": {
         "admin": "Admin",
         "user": "User",
-        "sewer": "Sewer"
+        "sewer": "Sewer",
+        "directManager": "Direct Manager",
+        "owner": "Owner"
     },
     "navbar": {
         "menu": "Menu",

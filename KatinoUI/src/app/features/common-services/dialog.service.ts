@@ -27,6 +27,8 @@ export class DialogService {
       width: '800px',
       disableClose: true,
       data: data,
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -37,6 +39,8 @@ export class DialogService {
       width: '750px',
       disableClose: true,
       data: data,
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -85,6 +89,8 @@ export class DialogService {
       width: '800px',
       disableClose: true,
       data: data,
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 }

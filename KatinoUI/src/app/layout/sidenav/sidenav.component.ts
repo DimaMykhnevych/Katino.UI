@@ -14,10 +14,14 @@ export class SidenavComponent implements OnInit {
   public version = AppSettings.version;
   public sidenavWidth = 4;
   public userInfo: UserInfo = null as any;
-  public inventoryPage: string[] = [Roles.Admin];
-  public ordersPage: string[] = [Roles.Admin];
-  public crmSettingsPage: string[] = [Roles.Admin];
-  public sewingQueuePage: string[] = [Roles.Admin, Roles.Sewer];
+  public inventoryPage: string[] = [
+    Roles.Admin,
+    Roles.Owner,
+    Roles.DirectManager,
+  ];
+  public ordersPage: string[] = [Roles.Admin, Roles.Owner, Roles.DirectManager];
+  public crmSettingsPage: string[] = [Roles.Admin, Roles.Owner];
+  public sewingQueuePage: string[] = [Roles.Admin, Roles.Owner, Roles.Sewer];
   public isMobile = false;
   public isSidenavOpened = false;
 

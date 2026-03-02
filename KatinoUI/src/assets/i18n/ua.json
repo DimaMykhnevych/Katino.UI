@@ -72,7 +72,9 @@
     "roles": {
         "admin": "Адміністратор",
         "user": "Користувач",
-        "sewer": "Швачка"
+        "sewer": "Швачка",
+        "directManager": "Direct Менеджер",
+        "owner": "Власник"
     },
     "navbar": {
         "menu": "Меню",

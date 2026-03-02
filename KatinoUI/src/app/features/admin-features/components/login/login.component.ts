@@ -39,15 +39,27 @@ export class LoginComponent implements OnInit {
     if (this._auth.isAuthenticated()) {
       const isCurrentUserAdmin =
         this._currentUserService.userInfo.role === Roles.Admin;
+      const isCurrentUserOwner =
+        this._currentUserService.userInfo.role === Roles.Owner;
       const isCurrentUserSewer =
         this._currentUserService.userInfo.role === Roles.Sewer;
+      const isCurrentUserDirectManager =
+        this._currentUserService.userInfo.role === Roles.DirectManager;
       if (isCurrentUserAdmin) {
         this._router.navigate([
           RouteConstants.alreadySignedInAdminWhenOnLoginPage,
         ]);
+      } else if (isCurrentUserOwner) {
+        this._router.navigate([
+          RouteConstants.alreadySignedInOwnerWhenOnLoginPage,
+        ]);
       } else if (isCurrentUserSewer) {
         this._router.navigate([
           RouteConstants.alreadySignedInSewerWhenOnLoginPage,
+        ]);
+      } else if (isCurrentUserDirectManager) {
+        this._router.navigate([
+          RouteConstants.alreadySignedInDirectManagerWhenOnLoginPage,
         ]);
       } else {
         this._router.navigate([
@@ -92,8 +104,14 @@ export class LoginComponent implements OnInit {
       case Roles.Admin:
         this._router.navigate([RouteConstants.successLoginAdmin]);
         break;
+      case Roles.Owner:
+        this._router.navigate([RouteConstants.successLoginOwner]);
+        break;
       case Roles.Sewer:
         this._router.navigate([RouteConstants.successLoginSewer]);
+        break;
+      case Roles.DirectManager:
+        this._router.navigate([RouteConstants.successLoginDirectManager]);
         break;
       default:
         this._router.navigate([RouteConstants.successLoginUser]);

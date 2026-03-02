@@ -23,6 +23,8 @@ import { AddEditProductVariantData } from '../../models/add-edit-product-variant
 import { StatusConstants } from 'src/app/core/constants/status-constants';
 import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { CurrentUserService } from 'src/app/core/permission/services';
+import { Roles } from 'src/app/core/models/roles';
 
 @Component({
   selector: 'app-inventory',
@@ -36,6 +38,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   sort!: MatSort;
 
   private productGroups: ProductGroup[] = [];
+  public userRole: string | undefined = '';
 
   public productVariantResponse?: GetProductVariant;
   public categoriesResponse?: GetCategoriesResponse;
@@ -83,9 +86,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService,
     private _uiDialogService: UIDialogService,
     private _toastr: ToastrService,
+    private _userService: CurrentUserService,
   ) {}
 
   public ngOnInit(): void {
+    const currentUserInfo = this._userService.userInfo;
+    this.userRole = currentUserInfo.role;
     this.initializeForm();
     this.translatedAllOption$ = this._translate.stream('common.allOption');
     this.subscribeOnFormValueChanges();
@@ -100,6 +106,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   public toggleMeasurementsColumn(): void {
     this.isHeadersCollapsed = !this.isHeadersCollapsed;
+  }
+
+  public isActionControlsVisible(): boolean {
+    return this.userRole === Roles.Admin || this.userRole === Roles.Owner;
   }
 
   public getProductStatusDisplayName(productStatus: ProductStatus): string {
@@ -125,6 +135,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     const data: AddEditProductVariantData = {
       productVariant: null,
       isAdding: true,
+      isCopying: false,
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {
@@ -136,6 +147,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     const data: AddEditProductVariantData = {
       productVariant: productVariant,
       isAdding: false,
+      isCopying: false,
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {
@@ -249,6 +261,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     const data: AddEditProductVariantData = {
       productVariant: productVariant,
       isAdding: true,
+      isCopying: true,
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {

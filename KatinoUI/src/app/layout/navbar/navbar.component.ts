@@ -46,8 +46,12 @@ export class NavbarComponent implements OnInit {
     switch (this.userRole) {
       case Roles.Admin:
         return this._translate.instant('roles.admin');
+      case Roles.Owner:
+        return this._translate.instant('roles.owner');
       case Roles.Sewer:
         return this._translate.instant('roles.sewer');
+      case Roles.DirectManager:
+        return this._translate.instant('roles.directManager');
       default:
         return this._translate.instant('roles.user');
     }
@@ -57,8 +61,12 @@ export class NavbarComponent implements OnInit {
     switch (this.userRole) {
       case Roles.Admin:
         return RouteConstants.navbarBrandClickAdmin;
+      case Roles.Owner:
+        return RouteConstants.navbarBrandClickOwner;
       case Roles.Sewer:
         return RouteConstants.navbarBrandClickSewer;
+      case Roles.DirectManager:
+        return RouteConstants.navbarBrandClickDirectManager;
       default:
         return '#';
     }
