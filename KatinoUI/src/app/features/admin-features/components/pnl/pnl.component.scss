@@ -1,0 +1,49 @@
+.main {
+  .table-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+
+    .header-content {
+      margin-bottom: 10px;
+
+      .table-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+
+        .title-icon {
+          color: #06b6d4;
+          font-size: 22px;
+        }
+      }
+    }
+  }
+}
+
+.table-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mat-table-container {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .main .table-header {
+    padding: 16px;
+
+    .table-title {
+      font-size: 20px;
+    }
+  }
+
+  .mat-table-container {
+    overflow-x: visible; /* no horizontal scroll on mobile */
+  }
+}

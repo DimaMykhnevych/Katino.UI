@@ -9,6 +9,7 @@ import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { OrdersComponent } from './features/admin-features/components/orders/orders.component';
 import { CrmSettingsComponent } from './features/admin-features/components/crm-settings/crm-settings.component';
 import { SewingQueueComponent } from './features/admin-features/components/sewing-queue/sewing-queue.component';
+import { PnlComponent } from './features/admin-features/components/pnl/pnl.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,13 @@ const routes: Routes = [
         component: SewingQueueComponent,
         data: {
           roles: [Roles.Admin, Roles.Sewer, Roles.Owner],
+        },
+      },
+      {
+        path: 'pnl',
+        component: PnlComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner],
         },
       },
     ],

@@ -20,6 +20,7 @@ import { NpSyncHistoryComponent } from './components/np-sync-history/np-sync-his
 import { OrderDetailsDialogComponent } from './components/order-details-dialog/order-details-dialog.component';
 import { AddEditOrderDialogComponent } from './components/add-edit-order-dialog/add-edit-order-dialog.component';
 import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.component';
+import { PnlComponent } from './components/pnl/pnl.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.com
     OrderDetailsDialogComponent,
     AddEditOrderDialogComponent,
     SewingQueueComponent,
+    PnlComponent,
   ],
   imports: [
     CommonModule,

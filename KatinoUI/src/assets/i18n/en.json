@@ -81,7 +81,8 @@
         "availability": "Availability",
         "orders": "Orders",
         "crm-settings": "CRM Settings",
-        "sewing-queue": "Sewing Queue"
+        "sewing-queue": "Sewing Queue",
+        "pnl": "P&L"
     },
     "inventory": {
         "availability": "Availability",
@@ -444,5 +445,8 @@
             "more": "+{{count}} more items",
             "emptyTitle": "No groups"
         }        
-    }
+    },
+    "pnl": {
+        "pnlHeader": "Profit and Loss"
+    }    
 }

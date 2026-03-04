@@ -81,7 +81,8 @@
         "availability": "Наявність",
         "orders": "Замовлення",
         "crm-settings": "Налаштування CRM",
-        "sewing-queue": "Черга На Шиття"
+        "sewing-queue": "Черга На Шиття",
+        "pnl": "P&L"
     },
     "inventory": {
         "availability": "Наявність",
@@ -444,5 +445,8 @@
             "more": "Ще +{{count}} позицій",
             "emptyTitle": "Групи відсутні"
         }        
+    },
+    "pnl": {
+        "pnlHeader": "Дохід та Витрати"
     }
 }
