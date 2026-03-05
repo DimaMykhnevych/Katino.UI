@@ -122,6 +122,14 @@ export class PnlComponent implements OnInit, OnDestroy {
     };
   }
 
+  public isSecondaryCategory(row: PnlRow): boolean {
+    return (
+      row.kind === PnlRowKind.expenseCategory ||
+      row.kind === PnlRowKind.revenueRetail ||
+      row.kind === PnlRowKind.revenueDropWholesale
+    );
+  }
+
   public getCellClass(row: PnlRow, value: number): string {
     if (
       (row.kind === PnlRowKind.margin ||
@@ -167,6 +175,7 @@ export class PnlComponent implements OnInit, OnDestroy {
 
         this.newCategoryName.setValue('');
         this.newCategoryName.markAsPristine();
+        this.newCategoryName.markAsUntouched();
         this._toastr.success(this._t('pnl.categories.toastr.created'));
         this.loadReport(this.selectedYear);
       });

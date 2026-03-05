@@ -37,7 +37,9 @@ export class PnlExpensesComponent implements OnInit, OnDestroy {
   ];
 
   public addForm: FormGroup = this._fb.group({
-    entryDate: new FormControl(null, [Validators.required]),
+    entryDate: new FormControl(this.asLocalNoon(new Date()), [
+      Validators.required,
+    ]),
     categoryId: new FormControl(null, [Validators.required]),
     amount: new FormControl(null, [Validators.required, Validators.min(0.01)]),
     comment: new FormControl(''),
@@ -213,6 +215,7 @@ export class PnlExpensesComponent implements OnInit, OnDestroy {
         this._toastr.success(this._t('pnl.expenses.toastr.created'));
 
         this.addForm.reset();
+        this.entryDate?.setValue(this.asLocalNoon(new Date()));
         this.loadExpenses();
       });
   }

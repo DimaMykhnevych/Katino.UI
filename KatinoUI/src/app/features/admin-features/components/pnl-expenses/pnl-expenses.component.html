@@ -4,7 +4,7 @@
     <div class="add-title">{{ "pnl.expenses.addTitle" | translate }}</div>
 
     <form [formGroup]="addForm" class="add-form">
-      <mat-form-field appearance="outline" class="f date">
+      <mat-form-field appearance="outline" class="f date expenses-input">
         <mat-label>{{ "pnl.expenses.date" | translate }}</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="entryDate" />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -15,7 +15,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="f category">
+      <mat-form-field appearance="outline" class="f category expenses-input">
         <mat-label>{{ "pnl.expenses.category" | translate }}</mat-label>
         <mat-select formControlName="categoryId">
           <mat-option *ngFor="let c of expenseCategories" [value]="c.id">
@@ -28,7 +28,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="f amount">
+      <mat-form-field appearance="outline" class="f amount expenses-input">
         <mat-label>{{ "pnl.expenses.amount" | translate }}</mat-label>
         <input matInput type="number" formControlName="amount" min="0.01" />
 
@@ -37,14 +37,13 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="f comment">
+      <mat-form-field appearance="outline" class="f comment expenses-input">
         <mat-label>{{ "pnl.expenses.comment" | translate }}</mat-label>
         <input matInput type="text" formControlName="comment" />
       </mat-form-field>
 
       <button
-        mat-flat-button
-        color="primary"
+        mat-raised-button
         class="add-btn"
         type="button"
         (click)="addExpense()"
@@ -111,7 +110,10 @@
             </ng-container>
 
             <ng-template #editAmountTpl>
-              <mat-form-field appearance="outline" class="inline-field">
+              <mat-form-field
+                appearance="outline"
+                class="inline-field expenses-input"
+              >
                 <input
                   matInput
                   type="number"
@@ -135,7 +137,10 @@
             </ng-container>
 
             <ng-template #editCommentTpl>
-              <mat-form-field appearance="outline" class="inline-field w-100">
+              <mat-form-field
+                appearance="outline"
+                class="inline-field w-100 expenses-input"
+              >
                 <input
                   matInput
                   type="text"

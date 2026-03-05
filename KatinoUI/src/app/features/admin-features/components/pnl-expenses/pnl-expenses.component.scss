@@ -121,6 +121,28 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
+.expenses-input {
+  width: 100%;
+
+  ::ng-deep {
+    .mat-form-field-outline {
+      color: rgba(148, 163, 184, 0.3);
+    }
+
+    .mat-form-field-outline-thick {
+      color: #06b6d4;
+    }
+
+    .mat-form-field-label {
+      color: #64748b;
+    }
+
+    .mat-select-arrow {
+      color: #64748b;
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .add-card .add-form {
     grid-template-columns: 1fr 1fr;

@@ -478,12 +478,13 @@
             "revenueTotal": "Gross revenue",
             "revenueRetail": "Retail",
             "revenueDropWholesale": "Drop / Wholesale",
-            "expensesTotal": "Operating expenses",
+            "expensesTotal": "Expenses",
             "margin": "Margin",
             "marginPercent": "Margin %"
         },
         "categories": {
             "title": "Expense categories",
+            "hint": "Add or hide categories",
             "subtitle": "Add and hide categories for manual expenses",
             "new": "New category",
             "hide": "Hide",

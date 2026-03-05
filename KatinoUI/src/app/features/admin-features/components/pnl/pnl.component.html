@@ -9,7 +9,7 @@
       </div>
 
       <div class="header-actions">
-        <mat-form-field appearance="outline" class="year-select year-input">
+        <mat-form-field appearance="outline" class="year-select pnl-form-input">
           <mat-label>{{ "pnl.year" | translate }}</mat-label>
           <mat-select
             [value]="selectedYear"
@@ -24,67 +24,88 @@
     </div>
   </div>
 
-  <div class="mat-elevation-z8 table-wrapper p-3 categories-panel mb-3">
-    <div class="categories-head">
-      <div class="categories-title">
-        {{ "pnl.categories.title" | translate }}
+  <mat-accordion class="categories-accordion">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="me-2">category</mat-icon>
+          {{ "pnl.categories.title" | translate }}
+        </mat-panel-title>
+
+        <mat-panel-description class="d-none d-md-flex">
+          {{ "pnl.categories.hint" | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="categories-panel">
+        <div class="mat-elevation-z8 table-wrapper p-3 categories-panel mb-3">
+          <div class="categories-head">
+            <div class="categories-title">
+              {{ "pnl.categories.title" | translate }}
+            </div>
+            <div class="categories-sub text-muted">
+              {{ "pnl.categories.subtitle" | translate }}
+            </div>
+          </div>
+
+          <div class="categories-actions align-items-center">
+            <mat-form-field
+              appearance="outline"
+              class="cat-input pnl-form-input"
+            >
+              <mat-label>{{ "pnl.categories.new" | translate }}</mat-label>
+              <input matInput [formControl]="newCategoryName" />
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              (click)="addExpenseCategory()"
+              [disabled]="isCategorySaving || newCategoryName.invalid"
+            >
+              <ng-container *ngIf="!isCategorySaving">
+                {{ "common.add" | translate }}
+              </ng-container>
+              <ng-container *ngIf="isCategorySaving">
+                <mat-spinner diameter="18"></mat-spinner>
+              </ng-container>
+            </button>
+          </div>
+
+          <div
+            class="categories-list"
+            *ngIf="!isCategoriesLoading; else catsLoading"
+          >
+            <div class="cat-chip" *ngFor="let c of expenseCategories">
+              <span class="name">{{ c.name }}</span>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="hideExpenseCategory(c)"
+                [matTooltip]="'pnl.categories.hide' | translate"
+              >
+                <mat-icon>visibility_off</mat-icon>
+              </button>
+            </div>
+
+            <div class="text-muted" *ngIf="expenseCategories.length === 0">
+              {{ "pnl.categories.empty" | translate }}
+            </div>
+          </div>
+
+          <ng-template #catsLoading>
+            <div class="loading">
+              <app-spinner [diameter]="26"></app-spinner>
+              <div class="text-muted mt-2">
+                {{ "common.loading" | translate }}
+              </div>
+            </div>
+          </ng-template>
+        </div>
       </div>
-      <div class="categories-sub text-muted">
-        {{ "pnl.categories.subtitle" | translate }}
-      </div>
-    </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-    <div class="categories-actions">
-      <mat-form-field appearance="outline" class="cat-input">
-        <mat-label>{{ "pnl.categories.new" | translate }}</mat-label>
-        <input matInput [formControl]="newCategoryName" />
-        <mat-error *ngIf="newCategoryName.touched && newCategoryName.invalid">
-          {{ "validation.requiredField" | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="addExpenseCategory()"
-        [disabled]="isCategorySaving || newCategoryName.invalid"
-      >
-        <ng-container *ngIf="!isCategorySaving">
-          {{ "common.add" | translate }}
-        </ng-container>
-        <ng-container *ngIf="isCategorySaving">
-          <mat-spinner diameter="18"></mat-spinner>
-        </ng-container>
-      </button>
-    </div>
-
-    <div class="categories-list" *ngIf="!isCategoriesLoading; else catsLoading">
-      <div class="cat-chip" *ngFor="let c of expenseCategories">
-        <span class="name">{{ c.name }}</span>
-        <button
-          mat-icon-button
-          color="warn"
-          (click)="hideExpenseCategory(c)"
-          [matTooltip]="'pnl.categories.hide' | translate"
-        >
-          <mat-icon>visibility_off</mat-icon>
-        </button>
-      </div>
-
-      <div class="text-muted" *ngIf="expenseCategories.length === 0">
-        {{ "pnl.categories.empty" | translate }}
-      </div>
-    </div>
-
-    <ng-template #catsLoading>
-      <div class="loading">
-        <app-spinner [diameter]="26"></app-spinner>
-        <div class="text-muted mt-2">{{ "common.loading" | translate }}</div>
-      </div>
-    </ng-template>
-  </div>
-
-  <div class="mat-elevation-z8 table-wrapper p-0">
+  <div class="mat-elevation-z8 table-wrapper p-0 mt-3">
     <mat-tab-group (selectedTabChange)="onTabChanged($event)">
       <!-- TAB 1: Report -->
       <mat-tab [label]="'pnl.tabs.report' | translate">
@@ -101,8 +122,17 @@
                 <th mat-header-cell *matHeaderCellDef class="sticky-col">
                   {{ "pnl.table.article" | translate }}
                 </th>
-                <td mat-cell *matCellDef="let row" class="sticky-col">
-                  <span class="row-title" [ngClass]="getRowClass(row)">
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  class="sticky-col"
+                  [class.stickyColSecondary]="isSecondaryCategory(row)"
+                >
+                  <span
+                    class="row-title"
+                    [ngClass]="getRowClass(row)"
+                    [class.secondaryCategory]="isSecondaryCategory(row)"
+                  >
                     <ng-container
                       *ngIf="
                         row.kind === PnlRowKind.expenseCategory;
@@ -126,9 +156,25 @@
                 <th mat-header-cell *matHeaderCellDef class="month-col">
                   {{ "pnl.months." + mk | translate }}
                 </th>
-                <td mat-cell *matCellDef="let row" class="month-col">
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  class="month-col"
+                  [class.rowRevenueTotal]="row.kind === PnlRowKind.revenueTotal"
+                  [class.rowExpenseTotal]="
+                    row.kind === PnlRowKind.expensesTotal
+                  "
+                  [class.rowMargin]="row.kind === PnlRowKind.margin"
+                >
                   <span [ngClass]="getCellClass(row, row.months?.[i] ?? 0)">
-                    {{ row.months?.[i] ?? 0 | number: "1.0-2" }}
+                    <ng-container *ngIf="row.kind === PnlRowKind.marginPercent">
+                      {{
+                        row.months?.[i] ?? 0 | number: "1.0-2"
+                      }}%</ng-container
+                    >
+                    <ng-container *ngIf="row.kind != PnlRowKind.marginPercent">
+                      {{ row.months?.[i] ?? 0 | number: "1.0-2" }}</ng-container
+                    >
                   </span>
                 </td>
               </ng-container>
@@ -140,7 +186,12 @@
                 </th>
                 <td mat-cell *matCellDef="let row" class="total-col">
                   <span [ngClass]="getCellClass(row, row.total ?? 0)">
-                    {{ row.total ?? 0 | number: "1.0-2" }}
+                    <ng-container *ngIf="row.kind === PnlRowKind.marginPercent">
+                      {{ row.total ?? 0 | number: "1.0-2" }}%</ng-container
+                    >
+                    <ng-container *ngIf="row.kind != PnlRowKind.marginPercent">
+                      {{ row.total ?? 0 | number: "1.0-2" }}</ng-container
+                    >
                   </span>
                 </td>
               </ng-container>
