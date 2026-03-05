@@ -3,19 +3,125 @@
     <div class="header-content">
       <div class="header-info">
         <h2 class="table-title">
-          <mat-icon class="title-icon">money_bag</mat-icon>
+          <mat-icon class="title-icon">bar_chart</mat-icon>
           {{ "pnl.pnlHeader" | translate }}
         </h2>
+      </div>
+
+      <div class="header-actions">
+        <mat-form-field appearance="outline" class="year-select year-input">
+          <mat-label>{{ "pnl.year" | translate }}</mat-label>
+          <mat-select
+            [value]="selectedYear"
+            (selectionChange)="onYearChanged($event.value)"
+          >
+            <mat-option *ngFor="let y of yearOptions" [value]="y">
+              {{ y }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>
 
   <div class="mat-elevation-z8 table-wrapper p-0">
-    <!-- <div class="loading" *ngIf="isLoading">
-      <mat-spinner diameter="32"></mat-spinner>
-      <div class="text-muted mt-2">{{ "common.loading" | translate }}</div>
-    </div> -->
+    <mat-tab-group>
+      <!-- TAB 1: Report -->
+      <mat-tab [label]="'pnl.tabs.report' | translate">
+        <div class="loading" *ngIf="isLoading">
+          <app-spinner [diameter]="32"></app-spinner>
+          <div class="text-muted mt-2">{{ "common.loading" | translate }}</div>
+        </div>
 
-    <div class="mat-table-container"></div>
+        <ng-container *ngIf="!isLoading">
+          <div class="mat-table-container">
+            <table mat-table [dataSource]="dataSource" class="w-100 pnl-table">
+              <!-- Title -->
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef class="sticky-col">
+                  {{ "pnl.table.article" | translate }}
+                </th>
+                <td mat-cell *matCellDef="let row" class="sticky-col">
+                  <span class="row-title" [ngClass]="getRowClass(row)">
+                    <ng-container
+                      *ngIf="
+                        row.kind === PnlRowKind.expenseCategory;
+                        else translatedTitle
+                      "
+                    >
+                      {{ row.title }}
+                    </ng-container>
+                    <ng-template #translatedTitle>
+                      {{ getRowTitle(row) | translate }}
+                    </ng-template>
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Months -->
+              <ng-container
+                *ngFor="let mk of monthKeys; let i = index"
+                [matColumnDef]="'m_' + mk"
+              >
+                <th mat-header-cell *matHeaderCellDef class="month-col">
+                  {{ "pnl.months." + mk | translate }}
+                </th>
+                <td mat-cell *matCellDef="let row" class="month-col">
+                  <span [ngClass]="getCellClass(row, row.months?.[i] ?? 0)">
+                    {{ row.months?.[i] ?? 0 | number: "1.0-2" }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Total -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef class="total-col">
+                  {{ "pnl.table.total" | translate }}
+                </th>
+                <td mat-cell *matCellDef="let row" class="total-col">
+                  <span [ngClass]="getCellClass(row, row.total ?? 0)">
+                    {{ row.total ?? 0 | number: "1.0-2" }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Share -->
+              <ng-container matColumnDef="share">
+                <th mat-header-cell *matHeaderCellDef class="share-col">
+                  {{ "pnl.table.share" | translate }}
+                </th>
+                <td mat-cell *matCellDef="let row" class="share-col">
+                  <span
+                    *ngIf="
+                      row.sharePercent !== null &&
+                        row.sharePercent !== undefined;
+                      else dash
+                    "
+                  >
+                    {{ formatPercent(row.sharePercent) }}
+                  </span>
+                  <ng-template #dash>—</ng-template>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                [ngClass]="getRowClass(row)"
+              ></tr>
+            </table>
+          </div>
+        </ng-container>
+      </mat-tab>
+
+      <!-- TAB 2: Expenses -->
+      <mat-tab [label]="'pnl.tabs.expenses' | translate">
+        <div class="p-3 text-muted">
+          {{ "pnl.expensesPlaceholder" | translate }}
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

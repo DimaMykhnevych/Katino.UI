@@ -10,7 +10,7 @@ import { AppSettings } from 'src/app/core/settings';
 export class FinanceReportService {
   constructor(private _http: HttpClient) {}
 
-  public getPnl(year?: number): Observable<PnlReport> {
+  public getPnlReport(year?: number): Observable<PnlReport> {
     let httpParams = new HttpParams();
     if (year) {
       httpParams = httpParams.append('year', year);

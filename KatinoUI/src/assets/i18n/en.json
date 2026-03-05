@@ -447,6 +447,39 @@
         }        
     },
     "pnl": {
-        "pnlHeader": "Profit and Loss"
+        "pnlHeader": "Profit and Loss",
+        "year": "Year",
+        "tabs": {
+            "report": "Report",
+            "expenses": "Expenses"
+        },
+        "expensesPlaceholder": "Expenses table (add/edit/delete) will be implemented here.",
+        "table": {
+            "article": "Article",
+            "total": "Total",
+            "share": "Share %"
+        },
+        "months": {
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun",
+            "jul": "Jul",
+            "aug": "Aug",
+            "sep": "Sep",
+            "oct": "Oct",
+            "nov": "Nov",
+            "dec": "Dec"
+        },
+        "rows": {
+            "revenueTotal": "Gross revenue",
+            "revenueRetail": "Retail",
+            "revenueDropWholesale": "Drop / Wholesale",
+            "expensesTotal": "Operating expenses",
+            "margin": "Margin",
+            "marginPercent": "Margin %"
+        }    
     }    
 }
