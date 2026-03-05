@@ -131,7 +131,10 @@
                   <span
                     class="row-title"
                     [ngClass]="getRowClass(row)"
-                    [class.secondaryCategory]="isSecondaryCategory(row)"
+                    [class.secondaryCategory]="
+                      isSecondaryCategory(row) ||
+                      row.kind === PnlRowKind.marginPercent
+                    "
                   >
                     <ng-container
                       *ngIf="
