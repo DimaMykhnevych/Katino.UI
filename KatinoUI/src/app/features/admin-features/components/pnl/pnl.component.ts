@@ -6,6 +6,12 @@ import { PnlReport } from 'src/app/core/models/pnl/pnl-report';
 import { PnlRow } from 'src/app/core/models/pnl/pnl-row';
 import { PnlRowKind } from 'src/app/core/enums/pnl-row-kind';
 import { FinanceReportService } from '../../services/finance-report.service';
+import { FinanceCategory } from 'src/app/core/models/financeCategory/finance-category';
+import { FormControl, Validators } from '@angular/forms';
+import { FinanceCategoryService } from '../../services/finance-category.service';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-pnl',
@@ -23,6 +29,16 @@ export class PnlComponent implements OnInit, OnDestroy {
   public dataSource = new MatTableDataSource<PnlRow>([]);
   public displayedColumns: string[] = [];
 
+  public expenseCategories: FinanceCategory[] = [];
+  public isCategoriesLoading = false;
+  public isCategorySaving = false;
+
+  public newCategoryName = new FormControl('', [
+    Validators.required,
+    Validators.minLength(2),
+  ]);
+
+  private readonly REPORT_TAB_INDEX = 0;
   public readonly monthKeys = [
     'jan',
     'feb',
@@ -42,12 +58,18 @@ export class PnlComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject<void>();
 
-  constructor(private _pnlService: FinanceReportService) {}
+  constructor(
+    private _pnlService: FinanceReportService,
+    private _financeCategoryService: FinanceCategoryService,
+    private _toastr: ToastrService,
+    private _translate: TranslateService,
+  ) {}
 
   public ngOnInit(): void {
     this.buildYearOptions();
     this.selectedYear = this.yearOptions[this.yearOptions.length - 1];
     this.loadReport(this.selectedYear);
+    this.loadExpenseCategories();
   }
 
   public ngOnDestroy(): void {
@@ -116,6 +138,64 @@ export class PnlComponent implements OnInit, OnDestroy {
     return `${v.toFixed(2)}%`;
   }
 
+  public addExpenseCategory(): void {
+    if (this.newCategoryName.invalid) {
+      this.newCategoryName.markAsTouched();
+      return;
+    }
+
+    const name = (this.newCategoryName.value ?? '').trim();
+    if (!name) return;
+
+    this.isCategorySaving = true;
+
+    this._financeCategoryService
+      .addExpenseCategory(name)
+      .pipe(
+        catchError(() => of(undefined)),
+        finalize(() => (this.isCategorySaving = false)),
+      )
+      .subscribe((created) => {
+        if (!created) {
+          this._toastr.error(this._t('pnl.categories.toastr.createFailed'));
+          return;
+        }
+
+        this.expenseCategories = [...this.expenseCategories, created].sort(
+          (a, b) => (a.name ?? '').localeCompare(b.name ?? ''),
+        );
+
+        this.newCategoryName.setValue('');
+        this.newCategoryName.markAsPristine();
+        this._toastr.success(this._t('pnl.categories.toastr.created'));
+        this.loadReport(this.selectedYear);
+      });
+  }
+
+  public hideExpenseCategory(cat: FinanceCategory): void {
+    this._financeCategoryService
+      .hideExpenseCategory(cat.id)
+      .pipe(catchError(() => of(false)))
+      .subscribe((ok) => {
+        if (!ok) {
+          this._toastr.error(this._t('pnl.categories.toastr.hideFailed'));
+          return;
+        }
+
+        this.expenseCategories = this.expenseCategories.filter(
+          (x) => x.id !== cat.id,
+        );
+        this._toastr.success(this._t('pnl.categories.toastr.hidden'));
+        this.loadReport(this.selectedYear);
+      });
+  }
+
+  public onTabChanged(e: MatTabChangeEvent): void {
+    if (e.index === this.REPORT_TAB_INDEX) {
+      this.loadReport(this.selectedYear);
+    }
+  }
+
   private buildYearOptions(): void {
     const MIN_YEAR = 2026;
     const now = new Date();
@@ -150,5 +230,22 @@ export class PnlComponent implements OnInit, OnDestroy {
         this.report = rep;
         this.dataSource.data = rep?.rows ?? [];
       });
+  }
+
+  private loadExpenseCategories(): void {
+    this.isCategoriesLoading = true;
+    this._financeCategoryService
+      .getExpenseCategories()
+      .pipe(
+        catchError(() => of([] as FinanceCategory[])),
+        finalize(() => (this.isCategoriesLoading = false)),
+      )
+      .subscribe((cats) => {
+        this.expenseCategories = cats;
+      });
+  }
+
+  private _t(key: string): string {
+    return this._translate.instant(key);
   }
 }

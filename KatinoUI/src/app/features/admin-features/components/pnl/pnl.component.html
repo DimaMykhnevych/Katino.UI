@@ -24,8 +24,68 @@
     </div>
   </div>
 
+  <div class="mat-elevation-z8 table-wrapper p-3 categories-panel mb-3">
+    <div class="categories-head">
+      <div class="categories-title">
+        {{ "pnl.categories.title" | translate }}
+      </div>
+      <div class="categories-sub text-muted">
+        {{ "pnl.categories.subtitle" | translate }}
+      </div>
+    </div>
+
+    <div class="categories-actions">
+      <mat-form-field appearance="outline" class="cat-input">
+        <mat-label>{{ "pnl.categories.new" | translate }}</mat-label>
+        <input matInput [formControl]="newCategoryName" />
+        <mat-error *ngIf="newCategoryName.touched && newCategoryName.invalid">
+          {{ "validation.requiredField" | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="addExpenseCategory()"
+        [disabled]="isCategorySaving || newCategoryName.invalid"
+      >
+        <ng-container *ngIf="!isCategorySaving">
+          {{ "common.add" | translate }}
+        </ng-container>
+        <ng-container *ngIf="isCategorySaving">
+          <mat-spinner diameter="18"></mat-spinner>
+        </ng-container>
+      </button>
+    </div>
+
+    <div class="categories-list" *ngIf="!isCategoriesLoading; else catsLoading">
+      <div class="cat-chip" *ngFor="let c of expenseCategories">
+        <span class="name">{{ c.name }}</span>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="hideExpenseCategory(c)"
+          [matTooltip]="'pnl.categories.hide' | translate"
+        >
+          <mat-icon>visibility_off</mat-icon>
+        </button>
+      </div>
+
+      <div class="text-muted" *ngIf="expenseCategories.length === 0">
+        {{ "pnl.categories.empty" | translate }}
+      </div>
+    </div>
+
+    <ng-template #catsLoading>
+      <div class="loading">
+        <app-spinner [diameter]="26"></app-spinner>
+        <div class="text-muted mt-2">{{ "common.loading" | translate }}</div>
+      </div>
+    </ng-template>
+  </div>
+
   <div class="mat-elevation-z8 table-wrapper p-0">
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="onTabChanged($event)">
       <!-- TAB 1: Report -->
       <mat-tab [label]="'pnl.tabs.report' | translate">
         <div class="loading" *ngIf="isLoading">
@@ -118,9 +178,10 @@
 
       <!-- TAB 2: Expenses -->
       <mat-tab [label]="'pnl.tabs.expenses' | translate">
-        <div class="p-3 text-muted">
-          {{ "pnl.expensesPlaceholder" | translate }}
-        </div>
+        <app-pnl-expenses
+          [year]="selectedYear"
+          [expenseCategories]="expenseCategories"
+        ></app-pnl-expenses>
       </mat-tab>
     </mat-tab-group>
   </div>

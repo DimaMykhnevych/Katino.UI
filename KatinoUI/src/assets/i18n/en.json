@@ -30,7 +30,8 @@
         "save": "Save",
         "reset": "Reset",
         "somethingWentWrong": "Something went wrong...",
-        "refresh": "Refresh"
+        "refresh": "Refresh",
+        "actions": "Actions"        
     },
     "login": {
         "subtitle": "Log in to your account",
@@ -480,6 +481,40 @@
             "expensesTotal": "Operating expenses",
             "margin": "Margin",
             "marginPercent": "Margin %"
-        }    
+        },
+        "categories": {
+            "title": "Expense categories",
+            "subtitle": "Add and hide categories for manual expenses",
+            "new": "New category",
+            "hide": "Hide",
+            "empty": "No categories yet",
+            "toastr": {
+                "created": "Category added",
+                "createFailed": "Failed to add category",
+                "hidden": "Category hidden",
+                "hideFailed": "Failed to hide category"
+            }
+        },
+        "expenses": {
+            "tableTitle": "Manual expenses",
+            "addTitle": "Add expense",
+            "hintLocked": "Locked rows (isLocked) cannot be edited or deleted.",
+            "date": "Date",
+            "category": "Category",
+            "amount": "Amount",
+            "comment": "Comment",
+            "locked": "Locked",
+            "empty": "No expenses for this year",
+            "amountInvalid": "Amount must be greater than 0",
+            "toastr": {
+                "created": "Expense created",
+                "createFailed": "Failed to create expense",
+                "updated": "Changes saved",
+                "updateFailed": "Failed to save changes",
+                "deleted": "Expense deleted",
+                "deleteFailed": "Failed to delete expense",
+                "amountInvalid": "Invalid amount"
+            }
+        }        
     }    
 }

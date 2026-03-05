@@ -205,6 +205,69 @@
     background: none;
 }
 
+.categories-panel {
+  margin-top: 12px;
+  border-radius: 10px;
+  background: #fff;
+
+  .categories-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+
+    .categories-title {
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .categories-sub {
+      font-size: 12px;
+    }
+  }
+
+  .categories-actions {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    .cat-input {
+      flex: 1;
+      min-width: 240px;
+    }
+  }
+
+  .categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .cat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.18);
+
+    .name {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 12px;
+    }
+
+    button {
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .main .table-header {
     padding: 16px;
@@ -250,5 +313,21 @@
   .pnl-table td.mat-cell {
     padding-top: 6px;
     padding-bottom: 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .categories-panel {
+    .categories-actions {
+      flex-direction: column;
+
+      .cat-input {
+        min-width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
   }
 }

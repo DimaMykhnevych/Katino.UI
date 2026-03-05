@@ -1,0 +1,230 @@
+<div class="expenses-wrapper">
+  <!-- Add row -->
+  <div class="add-card">
+    <div class="add-title">{{ "pnl.expenses.addTitle" | translate }}</div>
+
+    <form [formGroup]="addForm" class="add-form">
+      <mat-form-field appearance="outline" class="f date">
+        <mat-label>{{ "pnl.expenses.date" | translate }}</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="entryDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+        <mat-error *ngIf="entryDate?.touched && entryDate?.invalid">
+          {{ "validation.requiredField" | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="f category">
+        <mat-label>{{ "pnl.expenses.category" | translate }}</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option *ngFor="let c of expenseCategories" [value]="c.id">
+            {{ c.name }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="categoryId?.touched && categoryId?.invalid">
+          {{ "validation.requiredField" | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="f amount">
+        <mat-label>{{ "pnl.expenses.amount" | translate }}</mat-label>
+        <input matInput type="number" formControlName="amount" min="0.01" />
+
+        <mat-error *ngIf="amount?.touched && amount?.invalid">
+          {{ "pnl.expenses.amountInvalid" | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="f comment">
+        <mat-label>{{ "pnl.expenses.comment" | translate }}</mat-label>
+        <input matInput type="text" formControlName="comment" />
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="add-btn"
+        type="button"
+        (click)="addExpense()"
+        [disabled]="isLoading || addForm.invalid"
+      >
+        <ng-container *ngIf="!isLoading">
+          {{ "common.add" | translate }}
+        </ng-container>
+
+        <ng-container *ngIf="isLoading">
+          <mat-spinner diameter="18"></mat-spinner>
+        </ng-container>
+      </button>
+    </form>
+
+    <div class="hint text-muted">
+      {{ "pnl.expenses.hintLocked" | translate }}
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="mat-elevation-z8 table-card">
+    <div class="table-header">
+      <div class="table-title">
+        {{ "pnl.expenses.tableTitle" | translate }} — {{ year }}
+      </div>
+
+      <div class="table-sub text-muted">
+        {{ "common.totalItems" | translate }}:
+        {{ dataSource.data.length || 0 }}
+      </div>
+    </div>
+
+    <div class="mat-table-container">
+      <table mat-table [dataSource]="dataSource" class="w-100 expenses-table">
+        <!-- Date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "pnl.expenses.date" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.entryDate | date: "dd.MM.yyyy" }}
+          </td>
+        </ng-container>
+
+        <!-- Category -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "pnl.expenses.category" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let r">
+            <span class="cat-chip">{{ r.categoryName }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Amount -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef class="text-end">
+            {{ "pnl.expenses.amount" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let r" class="text-end">
+            <ng-container *ngIf="!isRowEditing[r.id]; else editAmountTpl">
+              {{ r.amount | number: "1.0-2" }}
+            </ng-container>
+
+            <ng-template #editAmountTpl>
+              <mat-form-field appearance="outline" class="inline-field">
+                <input
+                  matInput
+                  type="number"
+                  min="0.01"
+                  [ngModel]="editAmount[r.id]"
+                  (ngModelChange)="editAmount[r.id] = $event"
+                />
+              </mat-form-field>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Comment -->
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "pnl.expenses.comment" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let r">
+            <ng-container *ngIf="!isRowEditing[r.id]; else editCommentTpl">
+              {{ r.comment || "—" }}
+            </ng-container>
+
+            <ng-template #editCommentTpl>
+              <mat-form-field appearance="outline" class="inline-field w-100">
+                <input
+                  matInput
+                  type="text"
+                  [ngModel]="editComment[r.id]"
+                  (ngModelChange)="editComment[r.id] = $event"
+                />
+              </mat-form-field>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-end">
+            {{ "common.actions" | translate }}
+          </th>
+
+          <td mat-cell *matCellDef="let r" class="text-end">
+            <div class="actions">
+              <ng-container *ngIf="!isRowEditing[r.id]">
+                <button
+                  mat-icon-button
+                  (click)="startEdit(r)"
+                  [disabled]="r.isLocked"
+                  [matTooltip]="
+                    r.isLocked ? ('pnl.expenses.locked' | translate) : ''
+                  "
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteRow(r)"
+                  [disabled]="r.isLocked || isDeleting(r.id)"
+                  [matTooltip]="
+                    r.isLocked ? ('pnl.expenses.locked' | translate) : ''
+                  "
+                >
+                  <mat-icon *ngIf="!isDeleting(r.id)">delete</mat-icon>
+                  <mat-spinner
+                    *ngIf="isDeleting(r.id)"
+                    diameter="18"
+                  ></mat-spinner>
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="isRowEditing[r.id]">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="saveEdit(r)"
+                  [disabled]="isSaving(r.id)"
+                >
+                  <mat-icon *ngIf="!isSaving(r.id)">check</mat-icon>
+                  <mat-spinner
+                    *ngIf="isSaving(r.id)"
+                    diameter="18"
+                  ></mat-spinner>
+                </button>
+
+                <button
+                  mat-icon-button
+                  (click)="cancelEdit(r)"
+                  [disabled]="isSaving(r.id)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [class.locked]="row.isLocked"
+        ></tr>
+      </table>
+
+      <div
+        class="empty"
+        *ngIf="!isLoading && (dataSource.data.length || 0) === 0"
+      >
+        {{ "pnl.expenses.empty" | translate }}
+      </div>
+    </div>
+  </div>
+</div>

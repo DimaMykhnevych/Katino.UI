@@ -1,0 +1,152 @@
+.expenses-wrapper {
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.add-card {
+  padding: 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  background: #fff;
+
+  .add-title {
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }
+
+  .add-form {
+    display: grid;
+    grid-template-columns: 160px 1fr 160px 1fr auto;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .add-btn {
+    height: 56px;
+    min-width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .hint {
+    margin-top: 8px;
+    font-size: 12px;
+  }
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .table-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+
+    .table-title {
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .table-sub {
+      font-size: 12px;
+    }
+  }
+
+  .mat-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.expenses-table {
+  width: 100%;
+
+  th.mat-header-cell {
+    font-weight: 800;
+    color: #475569;
+    background: #fff;
+  }
+
+  td.mat-cell,
+  th.mat-header-cell {
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  td.mat-cell {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  tr.locked td {
+    opacity: 0.7;
+  }
+}
+
+.inline-field {
+  width: 120px;
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(6, 182, 212, 0.10);
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.empty {
+  padding: 18px 12px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 992px) {
+  .add-card .add-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .add-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .expenses-wrapper {
+    padding: 10px;
+  }
+
+  .add-card .add-form {
+    grid-template-columns: 1fr;
+  }
+
+  .inline-field {
+    width: 100px;
+  }
+
+  .expenses-table td.mat-cell,
+  .expenses-table th.mat-header-cell {
+    padding: 8px 10px;
+  }
+}

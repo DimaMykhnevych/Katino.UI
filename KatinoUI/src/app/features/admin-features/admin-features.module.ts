@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MaterialModule } from 'src/app/layout/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from 'src/app/core/core.module';
 import { LoginComponent } from './components/login/login.component';
@@ -21,6 +21,7 @@ import { OrderDetailsDialogComponent } from './components/order-details-dialog/o
 import { AddEditOrderDialogComponent } from './components/add-edit-order-dialog/add-edit-order-dialog.component';
 import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.component';
 import { PnlComponent } from './components/pnl/pnl.component';
+import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PnlComponent } from './components/pnl/pnl.component';
     AddEditOrderDialogComponent,
     SewingQueueComponent,
     PnlComponent,
+    PnlExpensesComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { PnlComponent } from './components/pnl/pnl.component';
     SpinnerModule,
     DialogsModule,
     CommonComponentsModule,
+    FormsModule,
   ],
   providers: [DatePipe],
 })
