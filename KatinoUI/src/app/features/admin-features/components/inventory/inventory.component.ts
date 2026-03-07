@@ -258,6 +258,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   private copyProductVariant(productVariant: ProductVariant): void {
+    productVariant.quantityDropSold = 0;
+    productVariant.quantityRegularSold = 0;
+    productVariant.quantityInStock = 0;
+    productVariant.status = ProductStatus.onOrder;
+
     const data: AddEditProductVariantData = {
       productVariant: productVariant,
       isAdding: true,
