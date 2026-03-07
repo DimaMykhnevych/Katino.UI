@@ -436,6 +436,8 @@
         },
         "toastr": {
             "submitted": "Report saved",
+            "submittedBatch": "Sewn items saved",
+            "invalidBatch": "Please check entered values before saving",            
             "submitFailed": "Failed to save report",
             "tooMuchCustom": "For custom items you cannot submit more than required"
         },
@@ -445,7 +447,11 @@
             "items": "Items",
             "more": "+{{count}} more items",
             "emptyTitle": "No groups"
-        }        
+        },
+        "batch": {
+            "submit": "Save sewn items",
+            "filledRows": "Filled rows"
+        }
     },
     "pnl": {
         "pnlHeader": "Profit and Loss",

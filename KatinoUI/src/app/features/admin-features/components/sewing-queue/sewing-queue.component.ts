@@ -13,6 +13,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { GetSewingQueueItems } from 'src/app/core/models/sewing-queue/get-sewing-queue-items';
 import { SewingQueueItem } from 'src/app/core/models/sewing-queue/sewing-queue-item';
 import { SubmitSewedReport } from 'src/app/core/models/sewing-queue/submit-sewed-report';
+import { SubmitSewedReportCommand } from 'src/app/core/models/sewing-queue/submit-sewed-report-command';
 import { OrderItemService } from '../../services/order-item.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -29,9 +30,9 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     'toProduce',
     'custom',
     'actual',
-    'actions',
   ];
-  private readonly MOBILE_COLUMNS: string[] = ['info', 'actual', 'actions'];
+
+  private readonly MOBILE_COLUMNS: string[] = ['info', 'actual'];
 
   public isLoading = false;
   public isMobile = false;
@@ -42,7 +43,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
 
   public actualForms = new Map<string, FormGroup>();
 
-  public submitting = new Set<string>();
+  public isSubmittingAll = false;
 
   public grouped: GroupedSewingQueueItem[] = [];
   public isGroupedLoading = false;
@@ -107,46 +108,53 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     return form?.get('actual') as FormControl;
   }
 
-  public canSubmit(row: SewingQueueItem): boolean {
-    const ctrl = this.getActualControl(row);
-    if (!ctrl) return false;
-    return (
-      ctrl.valid &&
-      Number(ctrl.value) > 0 &&
-      !this.submitting.has(this.getRowKey(row))
-    );
+  public getFilledRowsCount(): number {
+    return this.dataSource.data.filter((row) => this.hasValue(row)).length;
   }
 
-  public submitRow(row: SewingQueueItem): void {
-    const key = this.getRowKey(row);
-    const ctrl = this.getActualControl(row);
+  public canSubmitAll(): boolean {
+    if (this.isSubmittingAll) return false;
 
-    if (!ctrl) return;
-    ctrl.markAsTouched();
+    const filledRows = this.dataSource.data.filter((row) => this.hasValue(row));
+    if (filledRows.length === 0) return false;
 
-    if (ctrl.invalid) return;
+    return filledRows.every((row) => this.isRowValidForSubmit(row));
+  }
 
-    const actual = Number(ctrl.value ?? 0);
-    if (actual <= 0) return;
+  public submitAll(): void {
+    const filledRows = this.dataSource.data.filter((row) => this.hasValue(row));
 
-    if (row.isCustomTailoring && actual > row.quantityToProduce) {
-      this._toastr.error(this._t('sewingQueue.toastr.tooMuchCustom'));
+    if (filledRows.length === 0) {
       return;
     }
 
-    const req: SubmitSewedReport = {
+    for (const row of filledRows) {
+      this.getActualControl(row)?.markAsTouched();
+    }
+
+    const invalidRow = filledRows.find((row) => !this.isRowValidForSubmit(row));
+    if (invalidRow) {
+      this._toastr.error(this._t('sewingQueue.toastr.invalidBatch'));
+      return;
+    }
+
+    const reportItems: SubmitSewedReport[] = filledRows.map((row) => ({
       productVariantId: row.productVariantId,
-      actualSewedQuantity: actual,
+      actualSewedQuantity: Number(this.getActualControl(row)?.value ?? 0),
       orderItemId: row.isCustomTailoring ? row.orderItemId : undefined,
+    }));
+
+    const req: SubmitSewedReportCommand = {
+      reportItems,
     };
 
-    this.submitting.add(key);
+    this.isSubmittingAll = true;
 
     this._service
       .submitSewingReport(req)
       .pipe(
         catchError((err) => this.onSubmitError(err)),
-        finalize(() => this.submitting.delete(key)),
+        finalize(() => (this.isSubmittingAll = false)),
         takeUntil(this._destroy$),
       )
       .subscribe((ok: boolean) => {
@@ -155,7 +163,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this._toastr.success(this._t('sewingQueue.toastr.submitted'));
+        this._toastr.success(this._t('sewingQueue.toastr.submittedBatch'));
         this.loadQueue();
         this.loadGrouped();
       });
@@ -228,14 +236,29 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       this.actualForms.set(
         key,
         this._fb.group({
-          actual: new FormControl(null, [
-            Validators.required,
-            Validators.min(1),
-            ...maxValidators,
-          ]),
+          actual: new FormControl(null, [Validators.min(1), ...maxValidators]),
         }),
       );
     }
+  }
+
+  private hasValue(row: SewingQueueItem): boolean {
+    const value = this.getActualControl(row)?.value;
+    return value !== null && value !== undefined && value !== '';
+  }
+
+  private isRowValidForSubmit(row: SewingQueueItem): boolean {
+    const ctrl = this.getActualControl(row);
+    if (!ctrl) return false;
+
+    const actual = Number(ctrl.value ?? 0);
+    if (actual <= 0) return false;
+
+    if (row.isCustomTailoring && actual > row.quantityToProduce) {
+      return false;
+    }
+
+    return ctrl.valid;
   }
 
   private onCatchError(error: any): Observable<GetSewingQueueItems> {

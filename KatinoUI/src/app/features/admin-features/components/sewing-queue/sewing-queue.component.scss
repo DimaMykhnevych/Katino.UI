@@ -36,13 +36,36 @@
   overflow: hidden;
 }
 
+.batch-submit-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  backdrop-filter: blur(6px);
+}
+
+.batch-submit-info {
+  font-size: 13px;
+  color: #475569;
+}
+
+.batch-submit-btn {
+  min-width: 180px;
+}
+
 .mat-table-container {
   overflow-x: auto;
 }
 
 .sewing-table {
   width: 100%;
-  min-width: 780px;
+  min-width: 680px;
 
   th {
     font-weight: 700;
@@ -155,11 +178,6 @@
   }
 }
 
-.submit-btn {
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  border-radius: 10px;
-}
-
 .loading,
 .empty {
   padding: 28px 16px;
@@ -190,7 +208,6 @@
   max-width: 420px;
 }
 
-/* Mobile info column layout */
 .m-info {
   display: flex;
   flex-direction: column;
@@ -220,7 +237,6 @@
   display: block;
 }
 
-/* Grouped cards */
 .grouped-wrapper {
   border-radius: 10px;
 }
@@ -339,7 +355,6 @@
   font-weight: 700;
 }
 
-/* Card highlights */
 .card-today {
   background: rgba(6, 182, 212, 0.05);
   border-color: rgba(6, 181, 212, 0.169);
@@ -359,7 +374,6 @@
   background: #fff;
 }
 
-/* Responsive */
 @media (max-width: 992px) {
   .grouped-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -375,8 +389,18 @@
     }
   }
 
+  .batch-submit-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 12px;
+  }
+
+  .batch-submit-btn {
+    width: 100%;
+  }
+
   .mat-table-container {
-    overflow-x: visible; /* no horizontal scroll on mobile */
+    overflow-x: visible;
   }
 
   .sewing-table {
@@ -391,11 +415,6 @@
   .actual-input {
     width: 74px;
     max-width: 74px;
-  }
-
-  .submit-btn {
-    width: 40px;
-    height: 40px;
   }
 
   .desktop-only {

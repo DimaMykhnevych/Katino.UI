@@ -28,87 +28,74 @@
       </div>
     </div>
 
-    <div
-      class="mat-table-container"
-      *ngIf="!isLoading && dataSource.data.length > 0"
-    >
-      <table mat-table [dataSource]="dataSource" class="w-100 sewing-table">
-        <!-- Product -->
-        <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef>
-            {{ "sewingQueue.table.product" | translate }}
-          </th>
+    <ng-container *ngIf="!isLoading && dataSource.data.length > 0">
+      <div class="batch-submit-bar">
+        <div class="batch-submit-info">
+          {{ "sewingQueue.batch.filledRows" | translate }}:
+          <b>{{ getFilledRowsCount() }}</b>
+        </div>
 
-          <td mat-cell *matCellDef="let row">
-            <div class="cell-stack">
-              <div class="product-title">{{ productTitle(row) }}</div>
+        <button
+          mat-flat-button
+          color="primary"
+          class="batch-submit-btn"
+          [disabled]="!canSubmitAll()"
+          (click)="submitAll()"
+        >
+          <ng-container *ngIf="!isSubmittingAll">
+            <mat-icon>done_all</mat-icon>
+            {{ "sewingQueue.batch.submit" | translate }}
+          </ng-container>
 
-              <div class="text-muted small">
-                <span class="article" *ngIf="row.productVariant?.article">
-                  #{{ row.productVariant.article }}
-                </span>
+          <ng-container *ngIf="isSubmittingAll">
+            <mat-spinner diameter="18"></mat-spinner>
+          </ng-container>
+        </button>
+      </div>
+
+      <div class="mat-table-container">
+        <table mat-table [dataSource]="dataSource" class="w-100 sewing-table">
+          <!-- Product -->
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "sewingQueue.table.product" | translate }}
+            </th>
+
+            <td mat-cell *matCellDef="let row">
+              <div class="cell-stack">
+                <div class="product-title">{{ productTitle(row) }}</div>
+
+                <div class="text-muted small">
+                  <span class="article" *ngIf="row.productVariant?.article">
+                    #{{ row.productVariant.article }}
+                  </span>
+                </div>
+
+                <div class="comment mobile-only" *ngIf="row.comment">
+                  <mat-icon class="comment-icon">chat</mat-icon>
+                  <span>{{ row.comment }}</span>
+                </div>
               </div>
+            </td>
+          </ng-container>
 
-              <!-- mobile: show comment if exists -->
-              <div class="comment mobile-only" *ngIf="row.comment">
-                <mat-icon class="comment-icon">chat</mat-icon>
-                <span>{{ row.comment }}</span>
-              </div>
-            </div>
-          </td>
-        </ng-container>
+          <!-- To produce -->
+          <ng-container matColumnDef="toProduce">
+            <th mat-header-cell *matHeaderCellDef class="text-end">
+              {{ "sewingQueue.table.toProduce" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let row" class="text-end">
+              <span class="qty-pill">{{ row.quantityToProduce }}</span>
+            </td>
+          </ng-container>
 
-        <!-- To produce -->
-        <ng-container matColumnDef="toProduce">
-          <th mat-header-cell *matHeaderCellDef class="text-end">
-            {{ "sewingQueue.table.toProduce" | translate }}
-          </th>
-          <td mat-cell *matCellDef="let row" class="text-end">
-            <span class="qty-pill">{{ row.quantityToProduce }}</span>
-          </td>
-        </ng-container>
-
-        <!-- Custom -->
-        <ng-container matColumnDef="custom">
-          <th mat-header-cell *matHeaderCellDef>
-            {{ "sewingQueue.table.custom" | translate }}
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <div class="cell-stack">
-              <span
-                class="badge"
-                [class.badge-custom]="row.isCustomTailoring"
-                [class.badge-regular]="!row.isCustomTailoring"
-              >
-                <mat-icon class="badge-icon">{{
-                  row.isCustomTailoring ? "star" : "check"
-                }}</mat-icon>
-                {{
-                  row.isCustomTailoring
-                    ? ("sewingQueue.labels.custom" | translate)
-                    : ("sewingQueue.labels.regular" | translate)
-                }}
-              </span>
-
-              <div class="comment desktop-only" *ngIf="row.comment">
-                <mat-icon class="comment-icon">chat</mat-icon>
-                <span>{{ row.comment }}</span>
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- Mobile Info (one column) -->
-        <ng-container matColumnDef="info">
-          <th mat-header-cell *matHeaderCellDef>
-            {{ "sewingQueue.table.product" | translate }}
-          </th>
-
-          <td mat-cell *matCellDef="let row">
-            <div class="m-info">
-              <div class="m-title">{{ productTitle(row) }}</div>
-
-              <div class="m-meta">
+          <!-- Custom -->
+          <ng-container matColumnDef="custom">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "sewingQueue.table.custom" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <div class="cell-stack">
                 <span
                   class="badge"
                   [class.badge-custom]="row.isCustomTailoring"
@@ -124,73 +111,89 @@
                   }}
                 </span>
 
-                <span class="m-qty">
-                  {{ "sewingQueue.table.toProduce" | translate }}:
-                  <b>{{ row.quantityToProduce }}</b>
-                </span>
+                <div class="comment desktop-only" *ngIf="row.comment">
+                  <mat-icon class="comment-icon">chat</mat-icon>
+                  <span>{{ row.comment }}</span>
+                </div>
               </div>
+            </td>
+          </ng-container>
 
-              <div class="m-comment" *ngIf="row.comment">
-                <mat-icon class="comment-icon">chat</mat-icon>
-                <span>{{ row.comment }}</span>
+          <!-- Mobile Info -->
+          <ng-container matColumnDef="info">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "sewingQueue.table.product" | translate }}
+            </th>
+
+            <td mat-cell *matCellDef="let row">
+              <div class="m-info">
+                <div class="m-title">{{ productTitle(row) }}</div>
+
+                <div class="m-meta">
+                  <span
+                    class="badge"
+                    [class.badge-custom]="row.isCustomTailoring"
+                    [class.badge-regular]="!row.isCustomTailoring"
+                  >
+                    <mat-icon class="badge-icon">{{
+                      row.isCustomTailoring ? "star" : "check"
+                    }}</mat-icon>
+                    {{
+                      row.isCustomTailoring
+                        ? ("sewingQueue.labels.custom" | translate)
+                        : ("sewingQueue.labels.regular" | translate)
+                    }}
+                  </span>
+
+                  <span class="m-qty">
+                    {{ "sewingQueue.table.toProduce" | translate }}:
+                    <b>{{ row.quantityToProduce }}</b>
+                  </span>
+                </div>
+
+                <div class="m-comment" *ngIf="row.comment">
+                  <mat-icon class="comment-icon">chat</mat-icon>
+                  <span>{{ row.comment }}</span>
+                </div>
               </div>
-            </div>
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
-        <!-- Actual -->
-        <ng-container matColumnDef="actual">
-          <th mat-header-cell *matHeaderCellDef class="text-end">
-            {{ "sewingQueue.table.actual" | translate }}
-          </th>
-          <td mat-cell *matCellDef="let row" class="text-end">
-            <input
-              matInput
-              type="number"
-              class="actual-input"
-              [formControl]="getActualControl(row)"
-              min="1"
-              [attr.max]="row.isCustomTailoring ? row.quantityToProduce : null"
-              [class.invalid]="
-                getActualControl(row).invalid && getActualControl(row).touched
-              "
-              [placeholder]="'sewingQueue.placeholders.actual' | translate"
-            />
-          </td>
-        </ng-container>
+          <!-- Actual -->
+          <ng-container matColumnDef="actual">
+            <th mat-header-cell *matHeaderCellDef class="text-end">
+              {{ "sewingQueue.table.actual" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let row" class="text-end">
+              <input
+                matInput
+                type="number"
+                class="actual-input"
+                [formControl]="getActualControl(row)"
+                min="1"
+                [attr.max]="
+                  row.isCustomTailoring ? row.quantityToProduce : null
+                "
+                [class.invalid]="
+                  getActualControl(row).invalid && getActualControl(row).touched
+                "
+                [placeholder]="'sewingQueue.placeholders.actual' | translate"
+              />
+            </td>
+          </ng-container>
 
-        <!-- Actions -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row" class="text-end">
-            <button
-              mat-icon-button
-              color="primary"
-              class="submit-btn"
-              [disabled]="!canSubmit(row)"
-              (click)="submitRow(row)"
-            >
-              <mat-icon *ngIf="!submitting.has(getRowKey(row))">done</mat-icon>
-              <mat-spinner
-                *ngIf="submitting.has(getRowKey(row))"
-                diameter="18"
-              ></mat-spinner>
-            </button>
-          </td>
-        </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="row-separator"
-        ></tr>
-      </table>
-    </div>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="row-separator"
+          ></tr>
+        </table>
+      </div>
+    </ng-container>
   </div>
 
-  <!-- GROUPED CARDS -->
   <div class="mat-elevation-z8 table-wrapper p-3 mt-3 grouped-wrapper">
     <div class="grouped-header">
       <div>

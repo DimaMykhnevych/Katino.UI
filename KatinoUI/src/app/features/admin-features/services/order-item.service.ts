@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GetSewingQueueItems } from 'src/app/core/models/sewing-queue/get-sewing-queue-items';
 import { GroupedSewingQueueItem } from 'src/app/core/models/sewing-queue/grouped-sewing-queue-item';
-import { SubmitSewedReport } from 'src/app/core/models/sewing-queue/submit-sewed-report';
+import { SubmitSewedReportCommand } from 'src/app/core/models/sewing-queue/submit-sewed-report-command';
 import { AppSettings } from 'src/app/core/settings';
 
 @Injectable({
@@ -24,7 +24,9 @@ export class OrderItemService {
     );
   }
 
-  public submitSewingReport(request: SubmitSewedReport): Observable<boolean> {
+  public submitSewingReport(
+    request: SubmitSewedReportCommand,
+  ): Observable<boolean> {
     return this._http.post<boolean>(
       `${AppSettings.apiHost}/OrderItem/sewing-report`,
       request,
