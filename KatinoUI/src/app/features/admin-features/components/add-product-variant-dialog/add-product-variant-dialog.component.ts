@@ -436,6 +436,16 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       formData.append('ProductVariant.Photos', photo.file!, photo.file!.name);
     });
 
+    const existingPhotos = this.photos.filter(
+      (p) => p.isExisting && !p.markedForDeletion,
+    );
+    existingPhotos.forEach((photo, index) => {
+      formData.append(
+        `ProductVariant.ExistingPhotoUrls[${index}]`,
+        photo.photoUrl,
+      );
+    });
+
     this._productVariantService
       .addProductVariant(formData)
       .pipe(
