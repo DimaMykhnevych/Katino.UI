@@ -15,6 +15,7 @@
         "description": "Description",
         "addingButtonText": "Adding...",
         "updatingButtonText":"Updating...",
+        "creatingButtonText":"Creating...",
         "hexCode": "HEX Code",
         "colorPicker": "Color Picker",
         "spending": "Sold",
@@ -206,7 +207,8 @@
     "orders": {
         "ordersHeader": "Orders",
         "searchingOrders": "Searching orders ...",
-        "searchHelpText": "Internet doc number, Inst-link, receiver data",        
+        "searchHelpText": "Internet doc number, Inst-link, receiver data",
+        "createScanSheet": "Create scan sheet",     
         "table": {
             "created": "Created",
             "ttn": "TTN",
@@ -372,7 +374,9 @@
             "saveFailed": "Failed to save the order.",
             "saveSuccess": "Order saved successfully.",
             "docNotCreated": "Order saved, but the TTN was not created.",
-            "docNotUpdated": "Order updated, but the TTN was not updated."            
+            "docNotUpdated": "Order updated, but the TTN was not updated.",
+            "scanSheetCreated": "Scan sheet created successfully",
+            "scanSheetFailed": "An error occurred furing scan sheet creation"                     
         },
         "filters": {
             "statuses": "Statuses",

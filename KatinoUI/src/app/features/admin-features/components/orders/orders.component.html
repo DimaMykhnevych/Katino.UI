@@ -61,6 +61,26 @@
           <button mat-mini-fab color="success" (click)="onAddOrderClick()">
             <mat-icon>add</mat-icon>
           </button>
+
+          <button
+            mat-raised-button
+            *ngIf="isCreateScanSheetControlVisible()"
+            (click)="onCreateScanSheetClick()"
+            [disabled]="isCreatingScanSheet"
+          >
+            <ng-container *ngIf="!isCreatingScanSheet">
+              <span>
+                {{ "orders.createScanSheet" | translate }}</span
+              ></ng-container
+            >
+
+            <div *ngIf="isCreatingScanSheet" class="spinner-container">
+              <mat-spinner diameter="20" color="accent"></mat-spinner>
+              <span class="loading-text">{{
+                "common.creatingButtonText" | translate
+              }}</span>
+            </div>
+          </button>
         </div>
 
         <div class="total-items-text text-center">

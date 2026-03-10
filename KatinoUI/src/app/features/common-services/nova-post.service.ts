@@ -80,4 +80,11 @@ export class NovaPostService {
       },
     );
   }
+
+  public createScanSheet(): Observable<boolean> {
+    return this._http.post<boolean>(
+      `${AppSettings.apiHost}/NovaPost/scan-sheet`,
+      null,
+    );
+  }
 }

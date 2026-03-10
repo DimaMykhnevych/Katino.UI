@@ -32,6 +32,9 @@ import { AddEditOrderData } from '../../models/order/add-edit-order-data';
 import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
 import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-delete-result';
 import { DatePipe } from '@angular/common';
+import { CurrentUserService } from 'src/app/core/permission/services';
+import { Roles } from 'src/app/core/models/roles';
+import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
 
 @Component({
   selector: 'app-orders',
@@ -43,8 +46,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
   public translatedAllOption$?: Observable<string>;
 
+  public userRole: string | undefined = '';
   public form: FormGroup = this._builder.group({});
   public isRetrievingData = false;
+  public isCreatingScanSheet = false;
 
   public statusLoading = new Set<string>();
   public statusSaving = new Set<string>();
@@ -84,10 +89,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _translate: TranslateService,
     private _uiDialogService: UIDialogService,
+    private _userService: CurrentUserService,
+    private _novaPostService: NovaPostService,
     private datePipe: DatePipe,
   ) {}
 
   public ngOnInit(): void {
+    const currentUserInfo = this._userService.userInfo;
+    this.userRole = currentUserInfo.role;
     this.initializeForm();
     this.translatedAllOption$ = this._translate.stream(
       'orders.filters.allStatuses',
@@ -102,6 +111,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
+  public isCreateScanSheetControlVisible(): boolean {
+    return this.userRole === Roles.Admin || this.userRole === Roles.Owner;
+  }
+
   public onAddOrderClick(): void {
     const data: AddEditOrderData = {
       order: null,
@@ -114,6 +127,31 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.fetchOrders();
       }
     });
+  }
+
+  public onCreateScanSheetClick(): void {
+    this.isCreatingScanSheet = true;
+    this._novaPostService
+      .createScanSheet()
+      .pipe(
+        catchError(() => {
+          this.isCreatingScanSheet = false;
+          return of(false);
+        }),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((resp: boolean) => {
+        this.isCreatingScanSheet = false;
+        if (resp === true) {
+          this._toastr.success(
+            this._translate.instant('orders.toastr.scanSheetCreated'),
+          );
+        } else {
+          this._toastr.error(
+            this._translate.instant('orders.toastr.scanSheetFailed'),
+          );
+        }
+      });
   }
 
   public onEditOrderClick(order: Order): void {

@@ -15,6 +15,7 @@
         "description": "Опис",
         "addingButtonText": "Додавання...",
         "updatingButtonText":"Оновлення...",
+        "creatingButtonText":"Створення...",
         "hexCode": "HEX-код",
         "colorPicker": "Вибір Кольору",
         "spending": "Витрати",
@@ -206,7 +207,8 @@
     "orders": {
         "ordersHeader": "Замовлення",
         "searchingOrders": "Пошук замовлень ...",
-        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача",        
+        "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача",
+        "createScanSheet": "Створити реєстр",
         "table": {
             "created": "Створено",
             "ttn": "ТТН",
@@ -372,7 +374,9 @@
             "saveFailed": "Не вдалося зберегти замовлення.",
             "saveSuccess": "Замовлення успішно збережено.",
             "docNotCreated": "Замовлення збережено, але ТТН не створено.",
-            "docNotUpdated": "Замовлення оновлено, але ТТН не оновлено."            
+            "docNotUpdated": "Замовлення оновлено, але ТТН не оновлено.",
+            "scanSheetCreated": "Реєстр успішно створено",
+            "scanSheetFailed": "Виникла помилка під час створення реєстру"
         },
         "filters": {
             "statuses": "Статуси",
