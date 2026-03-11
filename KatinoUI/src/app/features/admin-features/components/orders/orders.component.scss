@@ -99,8 +99,17 @@
 }
 
 .ttn {
-  font-weight: 700;
   letter-spacing: 0.2px;
+}
+
+.ttn-prefix {
+  font-weight: 400;
+}
+
+.ttn-suffix {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 15px;
 }
 
 .cell-stack {
@@ -250,11 +259,41 @@
   );
 }
 
+.creation-date-chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+
+.mobile-recipient {
+  color: #0f172a;
+  line-height: 1.15;
+}
+
+.mobile-date-row {
+  display: grid;
+  grid-template-columns: 50px auto;
+  column-gap: 6px;
+}
+
+.mobile-date-label {
+  white-space: nowrap;
+}
+
+.creation-date-chip,
+.deadline {
+  justify-self: start;
+}
+
 .deadline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 8px;
+  padding-left: 8px;
   border-radius: 999px;
   border: 1px solid transparent;
   font-weight: 600;

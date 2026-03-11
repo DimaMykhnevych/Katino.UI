@@ -113,10 +113,24 @@
           </th>
           <td mat-cell *matCellDef="let o">
             <div class="cell-stack">
-              <div class="ttn-row">
-                <span class="ttn">{{
-                  o.internetDocumentIntDocNumber || "—"
-                }}</span>
+              <div class="mobile-recipient d-md-none mb-3">
+                {{ o.orderRecipient?.npContactPerson?.lastName }}
+                {{ o.orderRecipient?.npContactPerson?.firstName }}
+              </div>
+              <div class="ttn-row mb-3">
+                <span
+                  class="ttn"
+                  *ngIf="o.internetDocumentIntDocNumber; else noTtn"
+                >
+                  <span class="ttn-prefix">
+                    {{ getTtnPrefix(o.internetDocumentIntDocNumber) }}
+                  </span>
+                  <span class="ttn-suffix">
+                    {{ getTtnSuffix(o.internetDocumentIntDocNumber) }}
+                  </span>
+                </span>
+
+                <ng-template #noTtn>—</ng-template>
 
                 <button
                   *ngIf="shouldShowTtnWarning(o)"
@@ -132,12 +146,25 @@
                 </button>
               </div>
 
-              <span class="text-muted small d-md-none">
-                {{ "orders.table.sendUntilShort" | translate }}:
+              <div class="mobile-date-row text-muted small d-md-none">
+                <span class="mobile-date-label">
+                  {{ "orders.table.created" | translate }}:
+                </span>
+
+                <span class="creation-date-chip">
+                  {{ o.creationDateTime | date: "shortDate" }}
+                </span>
+              </div>
+
+              <div class="mobile-date-row text-muted small d-md-none">
+                <span class="mobile-date-label">
+                  {{ "orders.table.sendUntilShort" | translate }}:
+                </span>
+
                 <span class="deadline" [ngClass]="getDeadlineClass(o)">
                   {{ o.sendUntilDate | date: "shortDate" }}
                 </span>
-              </span>
+              </div>
             </div>
           </td>
         </ng-container>

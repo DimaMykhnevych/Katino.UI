@@ -374,6 +374,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getTtnPrefix(ttn: string | null | undefined): string {
+    if (!ttn) return '';
+    if (ttn.length <= 4) return '';
+    return ttn.slice(0, -4);
+  }
+
+  public getTtnSuffix(ttn: string | null | undefined): string {
+    if (!ttn) return '';
+    return ttn.slice(-4);
+  }
+
   private fetchOrders(): void {
     const values = (this.orderStatuses!.value ?? []) as (
       | OrderStatus
