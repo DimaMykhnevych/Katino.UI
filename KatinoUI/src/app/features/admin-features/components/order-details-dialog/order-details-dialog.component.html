@@ -38,6 +38,9 @@
       <div class="k">{{ "orders.details.created" | translate }}</div>
       <div class="v">{{ order.creationDateTime | date: "medium" }}</div>
 
+      <div class="k">{{ "orders.details.updated" | translate }}</div>
+      <div class="v">{{ order.updatedAt | date: "medium" }}</div>
+
       <div class="k">{{ "orders.details.sendUntil" | translate }}</div>
       <div class="v">{{ order.sendUntilDate | date: "mediumDate" }}</div>
 
@@ -49,6 +52,9 @@
           {{ order.afterpaymentOnGoodsCost | number: "1.0-0" }})
         </span>
       </div>
+
+      <div class="k">{{ "orders.details.comment" | translate }}</div>
+      <div class="v">{{ order.comment ? order.comment : "-" }}</div>
     </div>
   </div>
 
@@ -239,7 +245,7 @@
   <div class="section" *ngIf="order.orderNpOptionsSeats.length">
     <div class="section-title">{{ "orders.sections.seats" | translate }}</div>
 
-    <div class="seats">
+    <div class="seats m-2">
       <div
         class="seat"
         *ngFor="let s of order.orderNpOptionsSeats; trackBy: trackById"
@@ -250,6 +256,16 @@
           }}
           • {{ s.weight }}kg
         </div>
+      </div>
+    </div>
+
+    <div class="kv">
+      <div class="k">{{ "orders.details.updateDetails" | translate }}</div>
+      <div
+        class="v show-update-details-text"
+        (click)="showDetailsClicked = !showDetailsClicked"
+      >
+        <p>{{ getUpdateDetailsText(order.updateReasonDetails) }}</p>
       </div>
     </div>
   </div>

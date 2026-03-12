@@ -11,6 +11,7 @@ import { SaleType } from 'src/app/core/enums/sale-type';
 import { OrderInternetDocStatus } from 'src/app/core/enums/order-internet-doc-status';
 import { CustomTranslateService } from 'src/app/core/services/custom-translate.service';
 import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order-details-dialog',
@@ -21,10 +22,13 @@ export class OrderDetailsDialogComponent {
   public readonly DeliveryType = DeliveryType;
   public readonly OrderItemStatus = OrderItemStatus;
 
+  public showDetailsClicked: boolean = false;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public order: Order,
     private _ref: MatDialogRef<OrderDetailsDialogComponent>,
     private _customTranslate: CustomTranslateService,
+    private _t: TranslateService,
   ) {}
 
   public close(): void {
@@ -76,5 +80,13 @@ export class OrderDetailsDialogComponent {
 
   public getNpStatusTextKey(v: OrderInternetDocStatus): string {
     return this._customTranslate.getNpStatusTextKey(v);
+  }
+
+  public getUpdateDetailsText(updateDetails: string): string {
+    return this.showDetailsClicked
+      ? updateDetails
+        ? updateDetails
+        : '-'
+      : this._t.instant('orders.details.showUpdateDetails');
   }
 }

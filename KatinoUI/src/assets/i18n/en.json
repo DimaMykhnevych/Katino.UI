@@ -224,7 +224,8 @@
             "openToSeeAll": "Open to see all",
             "sendUntil": "Send until",
             "sendUntilShort": "Due",
-            "ttnNotCreated": "Internet doc was not created"
+            "ttnNotCreated": "Internet doc was not created",
+            "comment": "Comment"
         },
         "sections": {
             "paymentAndStatuses": "Payment & statuses",
@@ -259,7 +260,8 @@
             "prepayment": "Prepayment",
             "afterpayment": "Afterpayment amount",
             "sendUntilDate": "Send until",
-            "description": "Description"            
+            "description": "Description",
+            "comment": "Comment"        
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
@@ -285,7 +287,11 @@
             "phone": "Phone",
             "items": "Items",
             "qty": "Qty",
-            "toProduce": "To sew"
+            "toProduce": "To sew",
+            "comment": "Comment",
+            "updated": "Updated",
+            "updateDetails": "Update details",
+            "showUpdateDetails": "Reveal"
         },
         "readiness": {
             "inProgress": "In progress",

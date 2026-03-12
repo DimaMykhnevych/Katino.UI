@@ -179,6 +179,12 @@
   }
 }
 
+.show-update-details-text{
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .kv {
     grid-template-columns: 1fr;

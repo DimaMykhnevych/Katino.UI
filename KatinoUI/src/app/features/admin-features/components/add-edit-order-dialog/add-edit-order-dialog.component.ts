@@ -328,6 +328,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       deliveryType: dt,
       seatsAmount: 1,
       description: this.form.value.description ?? '',
+      comment: this.comment?.value ?? '',
       cost: Number(this.cost?.value ?? 0),
       afterpaymentOnGoodsCost:
         this.isPrepayment?.value === true
@@ -408,6 +409,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       deliveryType: dt,
       seatsAmount: 1,
       description: this.form.value.description ?? '',
+      comment: this.comment?.value ?? '',
       cost: Number(this.cost?.value ?? 0),
       afterpaymentOnGoodsCost:
         this.isPrepayment?.value === true
@@ -695,6 +697,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       description: new FormControl(
         this.data?.order?.description ?? this.DEFAULT_DESCRIPTION,
       ),
+      comment: new FormControl(this.data?.order?.comment ?? ''),
     });
 
     if (!this.data?.isAdding) {
@@ -957,5 +960,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get description() {
     return this.form.get('description');
+  }
+  get comment() {
+    return this.form.get('comment');
   }
 }

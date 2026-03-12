@@ -224,7 +224,8 @@
             "openToSeeAll": "Відкрийте, щоб побачити всі",
             "sendUntil": "Відправити до",
             "sendUntilShort": "До",
-            "ttnNotCreated": "ТТН не була створена"            
+            "ttnNotCreated": "ТТН не була створена",
+            "comment": "Коментар"           
         },
         "sections": {
             "paymentAndStatuses": "Оплата та статуси",
@@ -259,7 +260,8 @@
             "prepayment": "Передоплата",
             "afterpayment": "Сума післяплати",
             "sendUntilDate": "Відправити до",
-            "description": "Опис"  
+            "description": "Опис",
+            "comment": "Коментар"
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
@@ -285,7 +287,11 @@
             "phone": "Телефон",
             "items": "Товари",
             "qty": "К-сть",
-            "toProduce": "Пошити"
+            "toProduce": "Пошити",
+            "comment": "Коментар",
+            "updated": "Оновлено",
+            "updateDetails": "Деталі оновлення",
+            "showUpdateDetails": "Показати"
         },
         "readiness": {
             "inProgress": "В роботі",

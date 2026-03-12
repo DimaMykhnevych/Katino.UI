@@ -284,6 +284,17 @@
   white-space: nowrap;
 }
 
+.comment {
+  border: 2px solid #f3f6f8;
+  padding: 2px 4px;
+  border-radius: 8px;
+  background-color: #f3f6f8;
+}
+
+.mat-column-comment {
+  max-width: 100px;
+}
+
 .creation-date-chip,
 .deadline {
   justify-self: start;
@@ -294,6 +305,7 @@
   align-items: center;
   justify-content: center;
   padding-left: 8px;
+  padding-right: 8px;  
   border-radius: 999px;
   border: 1px solid transparent;
   font-weight: 600;
@@ -426,7 +438,8 @@
 
   .mat-column-sendUntil,
   .mat-column-delivery,
-  .mat-column-cost {
+  .mat-column-cost,
+  .mat-column-comment {
     display: none;
   }
 

@@ -36,6 +36,9 @@ export interface Order {
   internetDocumentIntDocNumber: string;
   orderStatus: OrderStatus;
   orderInternetDocStatus: OrderInternetDocStatus;
+  comment: string;
+  updatedAt: Date;
+  updateReasonDetails: string;
 
   orderItems: OrderItem[];
   orderNpOptionsSeats: OrderNpOptionsSeat[];

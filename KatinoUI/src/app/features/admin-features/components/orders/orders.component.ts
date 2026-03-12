@@ -61,6 +61,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public dataSource = new MatTableDataSource<Order>([]);
   public displayedColumns: string[] = [
     'sendUntil',
+    'comment',
     'ttn',
     'items',
     'delivery',

@@ -23,6 +23,7 @@ export interface UpdateOrder {
   description: string;
   cost: number;
   afterpaymentOnGoodsCost?: number;
+  comment: string;
 
   orderItems: UpdateOrderItem[];
   orderNpOptionsSeats: AddOrderNpOptionsSeat[];
