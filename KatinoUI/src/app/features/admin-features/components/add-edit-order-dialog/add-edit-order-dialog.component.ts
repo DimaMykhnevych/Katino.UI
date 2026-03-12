@@ -404,7 +404,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       paymentMethod: PaymentMethod.cash,
       saleType: existingOrder.saleType,
 
-      sendUntilDate: this.form.value.sendUntilDate,
+      sendUntilDate: this.asLocalNoon(this.form.value.sendUntilDate),
       weight: Number(this.seatGroup.get('weight')?.value ?? 2),
       deliveryType: dt,
       seatsAmount: 1,
