@@ -386,7 +386,11 @@
         },
         "filters": {
             "statuses": "Статуси",
-            "allStatuses": "Усі статуси"
+            "allStatuses": "Усі статуси",
+            "creationDate": "Дата створення",
+            "dateFrom": "Від",
+            "dateTo": "До",
+            "clearDates": "Відчистити"
         },
         "addingOrder": {
             "dialogTitle": "Додавання Замовлення"

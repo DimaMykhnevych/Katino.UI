@@ -13,6 +13,7 @@
 
     <div class="table-controls">
       <form [formGroup]="form" class="filter-form">
+        <!-- Row 1: search + statuses -->
         <div class="form-row">
           <mat-form-field
             class="search-field form-control"
@@ -48,6 +49,48 @@
                 {{ getOrderStatusTextKey(s) | translate }}
               </mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: creation date range -->
+        <div class="form-row">
+          <mat-form-field
+            class="form-control date-range-field"
+            appearance="outline"
+          >
+            <mat-label>{{
+              "orders.filters.creationDate" | translate
+            }}</mat-label>
+            <mat-date-range-input [rangePicker]="creationDatePicker">
+              <input
+                matStartDate
+                formControlName="createdFrom"
+                placeholder="{{ 'orders.filters.dateFrom' | translate }}"
+              />
+              <input
+                matEndDate
+                formControlName="createdTo"
+                placeholder="{{ 'orders.filters.dateTo' | translate }}"
+              />
+            </mat-date-range-input>
+
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="date-clear-btn"
+              *ngIf="createdFrom?.value || createdTo?.value"
+              (click)="clearDateRange()"
+              [attr.aria-label]="'orders.filters.clearDates' | translate"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="creationDatePicker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #creationDatePicker></mat-date-range-picker>
           </mat-form-field>
         </div>
       </form>
@@ -219,7 +262,7 @@
                     class="custom-comment"
                     *ngIf="it.isCustomTailoring && it.comment"
                   >
-                    “{{ getCustomCommentShort(it.comment) }}”
+                    "{{ getCustomCommentShort(it.comment) }}"
                   </span>
                 </div>
 

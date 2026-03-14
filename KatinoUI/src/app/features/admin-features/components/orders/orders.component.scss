@@ -392,7 +392,39 @@
   min-width: 260px;
 }
 
+.date-range-field {
+  min-width: 280px;
+  max-width: 420px;
 
+  ::ng-deep .mat-date-range-input-container {
+    display: flex;
+    align-items: center;
+  }
+
+  ::ng-deep .mat-date-range-input-start-wrapper,
+  ::ng-deep .mat-date-range-input-end-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.date-clear-btn.mat-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.45);
+
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
 
 @media (max-width: 768px) {
   .main .table-header {
@@ -476,6 +508,11 @@
 
   .status-field {
     min-width: 100%;
+  }
+
+  .date-range-field {
+    min-width: 100%;
+    max-width: 100%;
   }
 }
 

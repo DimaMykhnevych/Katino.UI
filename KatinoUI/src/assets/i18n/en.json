@@ -386,7 +386,11 @@
         },
         "filters": {
             "statuses": "Statuses",
-            "allStatuses": "All statuses"
+            "allStatuses": "All statuses",
+            "creationDate": "Creation date",
+            "dateFrom": "From",
+            "dateTo": "To",
+            "clearDates": "Clear"
         },
         "addingOrder": {
             "dialogTitle": "Adding Order"

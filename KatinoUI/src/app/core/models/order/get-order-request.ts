@@ -5,4 +5,6 @@ export interface GetOrderRequest {
   page: number;
   pageSize: number;
   orderStatuses: OrderStatus[];
+  createdFrom: string | null;
+  createdTo: string | null;
 }

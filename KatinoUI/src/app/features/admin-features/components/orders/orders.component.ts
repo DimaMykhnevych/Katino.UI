@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, merge, of } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -375,6 +375,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
+  public clearDateRange(): void {
+    this.form.patchValue({ createdFrom: null, createdTo: null });
+  }
+
   public getTtnPrefix(ttn: string | null | undefined): string {
     if (!ttn) return '';
     if (ttn.length <= 4) return '';
@@ -384,6 +388,22 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public getTtnSuffix(ttn: string | null | undefined): string {
     if (!ttn) return '';
     return ttn.slice(-4);
+  }
+
+  get orderSearchString() {
+    return this.form.get('orderSearchString');
+  }
+
+  get orderStatuses() {
+    return this.form.get('orderStatuses');
+  }
+
+  get createdFrom() {
+    return this.form.get('createdFrom');
+  }
+
+  get createdTo() {
+    return this.form.get('createdTo');
   }
 
   private fetchOrders(): void {
@@ -402,6 +422,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
       pageSize: this.pageSize,
       search: (this.form.value.orderSearchString || '').trim(),
       orderStatuses: isAll ? [] : (values as OrderStatus[]),
+      createdFrom: this.toUtcStartOfDay(this.form.value.createdFrom),
+      createdTo: this.toUtcEndOfDay(this.form.value.createdTo),
     };
 
     this.getOrders(request);
@@ -514,6 +536,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.form = this._builder.group({
       orderSearchString: new FormControl(''),
       orderStatuses: new FormControl([this.ALL_STATUSES_VALUE]),
+      createdFrom: new FormControl(null),
+      createdTo: new FormControl(null),
     });
   }
 
@@ -541,13 +565,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
       this.pageIndex = 0;
       this.fetchOrdersWithStatuses(finalValues);
     });
+
+    merge(this.createdFrom!.valueChanges, this.createdTo!.valueChanges)
+      .pipe(auditTime(0), takeUntil(this._destroy$))
+      .subscribe(() => {
+        this.pageIndex = 0;
+        this.fetchOrders();
+      });
   }
 
-  get orderSearchString() {
-    return this.form.get('orderSearchString');
+  private toUtcStartOfDay(date: Date | null | undefined): string | null {
+    if (!date) return null;
+    return new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
+    ).toISOString();
   }
 
-  get orderStatuses() {
-    return this.form.get('orderStatuses');
+  private toUtcEndOfDay(date: Date | null | undefined): string | null {
+    if (!date) return null;
+    return new Date(
+      Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        23,
+        59,
+        59,
+        999,
+      ),
+    ).toISOString();
   }
 }
