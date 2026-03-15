@@ -112,6 +112,21 @@
     }
 }
 
+.product-status-indicator{
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+  margin: 4px;
+  &.inStock {
+    background-color: green;
+  }
+  &.onOrder {
+    background-color: blue;
+  }
+  &.discontinued {
+    background-color: red;
+  }  
+}
 
 @media (max-width: 768px) {
   .kv {

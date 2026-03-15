@@ -320,7 +320,13 @@
               >
                 <mat-option *ngFor="let pv of productVariants" [value]="pv">
                   <div class="d-flex flex-column">
-                    <strong>{{ pv.product.name }}</strong>
+                    <div class="d-flex">
+                      <strong>{{ pv.product.name }}</strong>
+                      <div
+                        class="product-status-indicator"
+                        [class]="getProductStatusClass(pv.status)"
+                      ></div>
+                    </div>
                     <small class="text-muted">
                       {{ pv.color.name }} • {{ pv.size.name }}
                     </small>

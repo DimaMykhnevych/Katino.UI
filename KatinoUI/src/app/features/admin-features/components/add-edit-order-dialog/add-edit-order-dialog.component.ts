@@ -282,6 +282,20 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       });
   }
 
+  public getProductStatusClass(productStatus: ProductStatus): string {
+    switch (productStatus) {
+      case ProductStatus.inStock:
+        return 'inStock';
+      case ProductStatus.onOrder:
+        return 'onOrder';
+      case ProductStatus.discontinued:
+        return 'discontinued';
+
+      default:
+        return '';
+    }
+  }
+
   private hasDiscontinuedItems(): boolean {
     const groups = this.orderItems.controls as FormGroup[];
     return groups.some((g) => {
