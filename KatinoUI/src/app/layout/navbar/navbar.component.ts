@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/auth';
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private _userService: CurrentUserService,
     private _translate: TranslateService,
+    private _dateAdapter: DateAdapter<Date>,
   ) {}
 
   public get currentLanguage(): string | null {
@@ -40,6 +42,16 @@ export class NavbarComponent implements OnInit {
     localStorage.setItem('language', language);
     this._translate.setDefaultLang(language);
     this._translate.use(language);
+
+    if (language === 'ua') {
+      this._dateAdapter.setLocale('uk-UA');
+      return;
+    }
+
+    if (language === 'en') {
+      this._dateAdapter.setLocale('en-GB');
+      return;
+    }
   }
 
   public getUserRoleText(): string {

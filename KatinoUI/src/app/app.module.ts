@@ -21,6 +21,8 @@ import { CommonComponentsModule } from './features/common-components/common-comp
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeUk from '@angular/common/locales/uk';
+import { DateAdapter } from '@angular/material/core';
+import { AppDateAdapter } from './core/adapters/app-date-adapter';
 
 registerLocaleData(localeUk);
 
@@ -50,7 +52,10 @@ registerLocaleData(localeUk);
     DialogsModule,
     CommonComponentsModule,
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'uk' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'uk' },
+    { provide: DateAdapter, useClass: AppDateAdapter },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
