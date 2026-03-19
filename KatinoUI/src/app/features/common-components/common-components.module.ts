@@ -6,9 +6,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SpinnerModule } from 'src/app/layout/spinner/spinner.module';
 import { NpWarehouseSelectionComponent } from './components/np-warehouse-selection/np-warehouse-selection.component';
+import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.component';
 
 @NgModule({
-  declarations: [NpWarehouseSelectionComponent],
+  declarations: [NpWarehouseSelectionComponent, PhotoOverlayComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -17,6 +18,6 @@ import { NpWarehouseSelectionComponent } from './components/np-warehouse-selecti
     ReactiveFormsModule,
     SpinnerModule,
   ],
-  exports: [NpWarehouseSelectionComponent],
+  exports: [NpWarehouseSelectionComponent, PhotoOverlayComponent],
 })
 export class CommonComponentsModule {}

@@ -69,9 +69,9 @@ export class InventoryComponent implements OnInit, OnDestroy {
     'actions',
   ];
 
-  public selectedImageUrl?: string;
   public currentPhotoIndex: number = 0;
-  public currentPhotos: any[] = [];
+
+  public selectedPhotos: any[] = [];
 
   public placeholderImageUrl = 'https://placehold.co/400';
 
@@ -207,11 +207,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   public openLargeImage(photos: any[], startIndex: number = 0): void {
     if (photos && photos.length > 0) {
-      this.currentPhotos = photos.filter((photo) => photo && photo.photoUrl);
-      if (this.currentPhotos.length > 0) {
+      const currentPhotos = photos.filter((photo) => photo && photo.photoUrl);
+      if (currentPhotos.length > 0) {
         this.currentPhotoIndex = startIndex;
-        this.selectedImageUrl =
-          this.currentPhotos[this.currentPhotoIndex].photoUrl;
+        this.selectedPhotos = photos;
         this.showLargeImage = true;
       }
     }
@@ -219,43 +218,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   public closeLargeImage(): void {
     this.showLargeImage = false;
-    this.selectedImageUrl = undefined;
-    this.currentPhotos = [];
+    this.selectedPhotos = [];
     this.currentPhotoIndex = 0;
   }
 
-  public nextPhoto(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
-    if (this.currentPhotos.length > 0) {
-      this.currentPhotoIndex =
-        (this.currentPhotoIndex + 1) % this.currentPhotos.length;
-      this.selectedImageUrl =
-        this.currentPhotos[this.currentPhotoIndex].photoUrl;
-    }
-  }
-
-  public previousPhoto(event?: Event): void {
-    if (event) {
-      event.stopPropagation();
-    }
-    if (this.currentPhotos.length > 0) {
-      this.currentPhotoIndex =
-        this.currentPhotoIndex === 0
-          ? this.currentPhotos.length - 1
-          : this.currentPhotoIndex - 1;
-      this.selectedImageUrl =
-        this.currentPhotos[this.currentPhotoIndex].photoUrl;
-    }
-  }
-
-  public get hasMultiplePhotos(): boolean {
-    return this.currentPhotos.length > 1;
-  }
-
-  public get photoCounter(): string {
-    return `${this.currentPhotoIndex + 1} / ${this.currentPhotos.length}`;
+  public onPhotoIndexChange(newIndex: number): void {
+    this.currentPhotoIndex = newIndex;
   }
 
   private copyProductVariant(productVariant: ProductVariant): void {

@@ -1,0 +1,34 @@
+<div class="photo-overlay" *ngIf="visible" (click)="onClose()">
+  <img
+    [src]="selectedImageUrl"
+    class="large-photo"
+    (click)="$event.stopPropagation()"
+    alt="Product photo"
+  />
+
+  <button
+    *ngIf="hasMultiplePhotos"
+    class="nav-btn prev-btn"
+    (click)="previousPhoto($event)"
+    [disabled]="currentIndex === 0"
+    aria-label="Previous photo"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <button
+    *ngIf="hasMultiplePhotos"
+    class="nav-btn next-btn"
+    (click)="nextPhoto($event)"
+    [disabled]="currentIndex === photos.length - 1"
+    aria-label="Next photo"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <div class="photo-counter" *ngIf="hasMultiplePhotos">
+    {{ photoCounter }}
+  </div>
+
+  <button class="close-btn" (click)="onClose()">×</button>
+</div>

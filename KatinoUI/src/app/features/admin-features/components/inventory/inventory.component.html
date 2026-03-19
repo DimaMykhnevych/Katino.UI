@@ -389,34 +389,11 @@
   </div>
 </div>
 
-<div class="photo-overlay" *ngIf="showLargeImage" (click)="closeLargeImage()">
-  <img
-    [src]="selectedImageUrl"
-    class="large-photo"
-    (click)="$event.stopPropagation()"
-  />
-
-  <button
-    *ngIf="hasMultiplePhotos"
-    class="nav-btn prev-btn"
-    (click)="previousPhoto($event)"
-    aria-label="Previous photo"
-  >
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-
-  <button
-    *ngIf="hasMultiplePhotos"
-    class="nav-btn next-btn"
-    (click)="nextPhoto($event)"
-    aria-label="Next photo"
-  >
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-
-  <div class="photo-counter" *ngIf="hasMultiplePhotos">
-    {{ photoCounter }}
-  </div>
-
-  <button class="close-btn" (click)="closeLargeImage()">×</button>
-</div>
+<app-photo-overlay
+  [photos]="selectedPhotos"
+  [currentIndex]="currentPhotoIndex"
+  [visible]="showLargeImage"
+  (close)="closeLargeImage()"
+  (indexChange)="onPhotoIndexChange($event)"
+>
+</app-photo-overlay>
