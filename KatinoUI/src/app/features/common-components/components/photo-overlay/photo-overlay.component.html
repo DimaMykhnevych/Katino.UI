@@ -1,8 +1,16 @@
 <div class="photo-overlay" *ngIf="visible" (click)="onClose()">
+  <div (click)="$event.stopPropagation()">
+    <div class="spinner" *ngIf="isLoading">
+      <div class="spinner__circle"></div>
+    </div>
+  </div>
+
   <img
     [src]="selectedImageUrl"
     class="large-photo"
-    (click)="$event.stopPropagation()"
+    [class.large-photo--hidden]="isLoading"
+    (load)="onImageLoad()"
+    (error)="onImageError()"
     alt="Product photo"
   />
 
@@ -10,7 +18,7 @@
     *ngIf="hasMultiplePhotos"
     class="nav-btn prev-btn"
     (click)="previousPhoto($event)"
-    [disabled]="currentIndex === 0"
+    [disabled]="currentIndex === 0 || isLoading"
     aria-label="Previous photo"
   >
     <mat-icon>chevron_left</mat-icon>
@@ -20,7 +28,7 @@
     *ngIf="hasMultiplePhotos"
     class="nav-btn next-btn"
     (click)="nextPhoto($event)"
-    [disabled]="currentIndex === photos.length - 1"
+    [disabled]="currentIndex === photos.length - 1 || isLoading"
     aria-label="Next photo"
   >
     <mat-icon>chevron_right</mat-icon>
