@@ -93,10 +93,35 @@
   min-width: 0;
 }
 
+.product-title-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
 .product-title {
   font-weight: 700;
   color: #0f172a;
   line-height: 1.2;
+}
+
+.photo-btn {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  flex-shrink: 0;
+  color: #64748b;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &:hover {
+    color: #06b6d4;
+  }
 }
 
 .qty-pill {

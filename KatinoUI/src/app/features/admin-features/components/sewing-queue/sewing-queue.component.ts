@@ -18,6 +18,8 @@ import { OrderItemService } from '../../services/order-item.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { GroupedSewingQueueItem } from 'src/app/core/models/sewing-queue/grouped-sewing-queue-item';
+import { PhotoItem } from 'src/app/features/common-components/components/photo-overlay/photo-overlay.component';
+import { ProductPhoto } from 'src/app/core/models/product-photo';
 
 @Component({
   selector: 'app-sewing-queue',
@@ -47,6 +49,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
 
   public grouped: GroupedSewingQueueItem[] = [];
   public isGroupedLoading = false;
+
+  public selectedPhotos: PhotoItem[] = [];
+  public currentPhotoIndex = 0;
+  public showPhotoOverlay = false;
 
   private _destroy$ = new Subject<void>();
 
@@ -167,6 +173,21 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
         this.loadQueue();
         this.loadGrouped();
       });
+  }
+
+  public openPhotos(photos: ProductPhoto[]): void {
+    this.selectedPhotos = photos;
+    this.currentPhotoIndex = 0;
+    this.showPhotoOverlay = true;
+  }
+
+  public closePhotos(): void {
+    this.showPhotoOverlay = false;
+    this.selectedPhotos = [];
+  }
+
+  public onPhotoIndexChange(index: number): void {
+    this.currentPhotoIndex = index;
   }
 
   public productTitle(row: SewingQueueItem): string {

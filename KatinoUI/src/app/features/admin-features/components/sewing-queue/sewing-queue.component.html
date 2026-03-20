@@ -63,7 +63,17 @@
 
             <td mat-cell *matCellDef="let row">
               <div class="cell-stack">
-                <div class="product-title">{{ productTitle(row) }}</div>
+                <div class="product-title-row">
+                  <div class="product-title">{{ productTitle(row) }}</div>
+                  <button
+                    *ngIf="row.productVariant?.photos?.length"
+                    mat-icon-button
+                    class="photo-btn"
+                    (click)="openPhotos(row.productVariant.photos)"
+                  >
+                    <mat-icon>photo_library</mat-icon>
+                  </button>
+                </div>
 
                 <div class="text-muted small">
                   <span class="article" *ngIf="row.productVariant?.article">
@@ -127,7 +137,17 @@
 
             <td mat-cell *matCellDef="let row">
               <div class="m-info">
-                <div class="m-title">{{ productTitle(row) }}</div>
+                <div class="product-title-row">
+                  <div class="m-title">{{ productTitle(row) }}</div>
+                  <button
+                    *ngIf="row.productVariant?.photos?.length"
+                    mat-icon-button
+                    class="photo-btn"
+                    (click)="openPhotos(row.productVariant.photos)"
+                  >
+                    <mat-icon>photo_library</mat-icon>
+                  </button>
+                </div>
 
                 <div class="m-meta">
                   <span
@@ -245,7 +265,17 @@
 
         <div class="group-items">
           <div class="g-item" *ngFor="let row of g.items">
-            <div class="g-name">{{ productTitle(row) }}</div>
+            <div class="product-title-row">
+              <div class="g-name">{{ productTitle(row) }}</div>
+              <button
+                *ngIf="row.productVariant.photos.length"
+                mat-icon-button
+                class="photo-btn"
+                (click)="openPhotos(row.productVariant.photos)"
+              >
+                <mat-icon>photo_library</mat-icon>
+              </button>
+            </div>
 
             <div class="g-meta">
               <span
@@ -276,3 +306,11 @@
     </div>
   </div>
 </div>
+
+<app-photo-overlay
+  [photos]="selectedPhotos"
+  [currentIndex]="currentPhotoIndex"
+  [visible]="showPhotoOverlay"
+  (close)="closePhotos()"
+  (indexChange)="onPhotoIndexChange($event)"
+></app-photo-overlay>
