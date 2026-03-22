@@ -5,4 +5,6 @@ export interface GetProductVariantRequest {
   categoryId?: string;
   productStatus?: ProductStatus;
   getLastAddedProductVariant?: boolean;
+  page: number;
+  pageSize: number;
 }

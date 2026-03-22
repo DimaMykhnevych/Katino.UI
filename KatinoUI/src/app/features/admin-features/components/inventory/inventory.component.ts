@@ -5,7 +5,6 @@ import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductVariant } from 'src/app/core/models/product-variant';
-import { MatPaginator } from '@angular/material/paginator';
 import { GroupedProductVariant } from '../../models/grouped-product-variant';
 import { ProductGroup } from '../../models/product-group';
 import { CustomTranslateService } from 'src/app/core/services/custom-translate.service';
@@ -33,12 +32,14 @@ import { SortingHelper } from 'src/app/core/helpers/sorting-helper';
   styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
   @ViewChild(MatSort)
   sort!: MatSort;
 
   private productGroups: ProductGroup[] = [];
+  private allVariants: ProductVariant[] = [];
+  private currentPage = 1;
+  private readonly pageSize = 30;
+
   public userRole: string | undefined = '';
 
   public productVariantResponse?: GetProductVariant;
@@ -97,12 +98,33 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.translatedAllOption$ = this._translate.stream('common.allOption');
     this.subscribeOnFormValueChanges();
     this.getCategories();
-    this.getProductVariants({});
+    this.getProductVariants(this.buildSearchParams(1));
   }
 
   public ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  public get hasMoreData(): boolean {
+    return (
+      this.allVariants.length <
+      (this.productVariantResponse?.resultsAmount ?? 0)
+    );
+  }
+
+  public get isInitialLoading(): boolean {
+    return this.isRetrievingData && this.allVariants.length === 0;
+  }
+
+  public get isLoadingMore(): boolean {
+    return this.isRetrievingData && this.allVariants.length > 0;
+  }
+
+  public onLoadMore(): void {
+    if (this.isRetrievingData || !this.hasMoreData) return;
+    this.currentPage++;
+    this.getProductVariants(this.buildSearchParams(this.currentPage), true);
   }
 
   public toggleMeasurementsColumn(): void {
@@ -189,6 +211,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this._productVariantService
       .getProductVariants({
         getLastAddedProductVariant: true,
+        page: 1,
+        pageSize: 1,
       })
       .pipe(
         catchError((error) => {
@@ -295,37 +319,53 @@ export class InventoryComponent implements OnInit, OnDestroy {
   private getFreshData(): void {
     this.clearForm();
     this.getCategories();
-    this.getProductVariants({});
+    this.resetPagination();
+    this.getProductVariants(this.buildSearchParams(1));
   }
 
   private subscribeOnFormValueChanges(): void {
     this.form.valueChanges
       .pipe(takeUntil(this._destroy$), debounceTime(300))
       .subscribe(() => {
+        this.resetPagination();
         this.dataSource.data = [];
         this.getProductVariantsWithSelectedFilters();
       });
   }
 
   private getProductVariantsWithSelectedFilters(): void {
-    let categoryId =
-      this.form.value.categoryId === this.allSelectionOptionId
-        ? null
-        : this.form.value.categoryId;
-
-    let productStatus =
-      this.form.value.productStatus === this.allSelectionOptionId
-        ? null
-        : this.form.value.productStatus;
-
-    this.getProductVariants({
-      productName: this.form.value.productName,
-      categoryId: categoryId,
-      productStatus: productStatus,
-    });
+    this.getProductVariants(this.buildSearchParams(this.currentPage));
   }
 
-  private getProductVariants(searchParams: GetProductVariantRequest): void {
+  private buildSearchParams(page: number): GetProductVariantRequest {
+    const categoryId =
+      this.form.value?.categoryId === this.allSelectionOptionId
+        ? null
+        : this.form.value?.categoryId;
+
+    const productStatus =
+      this.form.value?.productStatus === this.allSelectionOptionId
+        ? null
+        : this.form.value?.productStatus;
+
+    return {
+      productName: this.form.value?.productName,
+      categoryId,
+      productStatus,
+      page,
+      pageSize: this.pageSize,
+    };
+  }
+
+  private resetPagination(): void {
+    this.currentPage = 1;
+    this.allVariants = [];
+  }
+
+  private getProductVariants(
+    searchParams: GetProductVariantRequest,
+    append: boolean = false,
+  ): void {
     this.isRetrievingData = true;
     this._productVariantService
       .getProductVariants(searchParams)
@@ -337,7 +377,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
       )
       .subscribe((resp: GetProductVariant) => {
         this.productVariantResponse = resp;
-        this.processGroupedData(resp.productVariants);
+        if (append) {
+          this.allVariants = [...this.allVariants, ...resp.productVariants];
+        } else {
+          this.allVariants = resp.productVariants;
+        }
+        this.processGroupedData(this.allVariants);
         this.isRetrievingData = false;
       });
   }
@@ -355,7 +400,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
     // Create product groups
     this.productGroups = Array.from(groupedMap.entries()).map(
-      ([productId, productVariants]) => ({
+      ([, productVariants]) => ({
         product: productVariants[0].product,
         variants: productVariants.sort((a, b) =>
           SortingHelper.compareVariants(a, b),
@@ -381,7 +426,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
     });
 
     this.dataSource.data = flattenedVariants;
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -391,9 +435,6 @@ export class InventoryComponent implements OnInit, OnDestroy {
           return (item as any)[property];
       }
     };
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   private getCategories(): void {

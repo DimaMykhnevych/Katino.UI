@@ -56,6 +56,7 @@ export interface DeliveryTypeOption {
 })
 export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public readonly PREPAYMENT_AMOUNT = 200;
+  public readonly SEARCH_PRODUCTS_PAGE_SIZE = 1000;
   public form: FormGroup = this._builder.group({});
   public seatWeightOptions = [2, 4, 10];
 
@@ -554,6 +555,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           this._productVariantService
             .getProductVariants({
               productName: value,
+              page: 1,
+              pageSize: this.SEARCH_PRODUCTS_PAGE_SIZE,
             })
             .pipe(
               catchError(() => of({ productVariants: [], resultsAmount: 0 })),

@@ -1,0 +1,11 @@
+.scroll-container {
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.load-more-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}

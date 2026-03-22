@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SpinnerModule } from 'src/app/layout/spinner/spinner.module';
 import { NpWarehouseSelectionComponent } from './components/np-warehouse-selection/np-warehouse-selection.component';
 import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.component';
+import { ScrollableTableComponent } from './components/scrollable-table/scrollable-table.component';
 
 @NgModule({
-  declarations: [NpWarehouseSelectionComponent, PhotoOverlayComponent],
+  declarations: [NpWarehouseSelectionComponent, PhotoOverlayComponent, ScrollableTableComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -18,6 +19,6 @@ import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.
     ReactiveFormsModule,
     SpinnerModule,
   ],
-  exports: [NpWarehouseSelectionComponent, PhotoOverlayComponent],
+  exports: [NpWarehouseSelectionComponent, PhotoOverlayComponent, ScrollableTableComponent],
 })
 export class CommonComponentsModule {}

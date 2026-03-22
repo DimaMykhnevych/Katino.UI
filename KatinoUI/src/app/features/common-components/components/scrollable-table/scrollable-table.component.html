@@ -1,0 +1,6 @@
+<div class="scroll-container" #scrollContainer>
+  <ng-content></ng-content>
+  <div *ngIf="isLoading" class="load-more-spinner">
+    <app-spinner [diameter]="32"></app-spinner>
+  </div>
+</div>
