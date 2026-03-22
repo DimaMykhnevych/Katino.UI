@@ -47,9 +47,12 @@
             {{ "sewingQueue.batch.submit" | translate }}
           </ng-container>
 
-          <ng-container *ngIf="isSubmittingAll">
-            <mat-spinner diameter="18"></mat-spinner>
-          </ng-container>
+          <div *ngIf="isSubmittingAll" class="spinner-container">
+            <mat-spinner diameter="20"></mat-spinner>
+            <span class="loading-text">{{
+              "sewingQueue.batch.submit" | translate
+            }}</span>
+          </div>
         </button>
       </div>
 
