@@ -203,7 +203,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   public showCopyLastAddedButton(): boolean {
-    return this.productVariantResponse!.resultsAmount > 0;
+    return (this.productVariantResponse?.resultsAmount ?? 0) > 0;
   }
 
   public onCopyLastProductVariantClick(): void {

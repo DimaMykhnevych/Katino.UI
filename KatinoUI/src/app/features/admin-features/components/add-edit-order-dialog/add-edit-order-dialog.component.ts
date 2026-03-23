@@ -153,6 +153,14 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.recipientPhones?.markAsTouched();
   }
 
+  public onPhoneInput(): void {
+    const raw: string = this.recipientPhones?.value ?? '';
+    const normalized = this.normalizePhone(raw);
+    if (normalized !== raw) {
+      this.recipientPhones?.setValue(normalized, { emitEvent: true });
+    }
+  }
+
   public onRecipientWarehouseChanged(v: NpWarehouseSelectionValue): void {
     this.recipientNpSelection = v;
   }
@@ -295,6 +303,14 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
+  }
+
+  private normalizePhone(value: string): string {
+    const digits = value.replace(/\D/g, '');
+    if (digits.startsWith('380')) return digits;
+    if (digits.startsWith('0')) return '38' + digits;
+    if (digits.length === 9) return '380' + digits;
+    return digits;
   }
 
   private hasDiscontinuedItems(): boolean {
