@@ -66,6 +66,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     'measurements',
     'prices',
     'amount',
+    'description',
     'article',
     'actions',
   ];

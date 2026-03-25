@@ -110,6 +110,7 @@
         "quantityDropSold": "Drop Sold",
         "quantityRegularSold": "Regular Sold",
         "article": "Article",
+        "description": "Description",
         "actions": "Actions",
         "info": "Info",
         "category": "Category",
