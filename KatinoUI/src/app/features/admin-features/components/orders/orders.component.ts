@@ -35,6 +35,7 @@ import { DatePipe } from '@angular/common';
 import { CurrentUserService } from 'src/app/core/permission/services';
 import { Roles } from 'src/app/core/models/roles';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
+import { OrderSort } from 'src/app/core/enums/order-sort';
 
 @Component({
   selector: 'app-orders',
@@ -44,6 +45,10 @@ import { NovaPostService } from 'src/app/features/common-services/nova-post.serv
 export class OrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
+  public readonly orderSortOptions: { value: OrderSort; labelKey: string }[] = [
+    { value: OrderSort.byCreationDate, labelKey: 'orders.filters.sortByCreationDate' },
+    { value: OrderSort.byUrgency, labelKey: 'orders.filters.sortByUrgency' },
+  ];
   public translatedAllOption$?: Observable<string>;
 
   public userRole: string | undefined = '';
@@ -406,15 +411,19 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return this.form.get('createdTo');
   }
 
-  private fetchOrders(): void {
+  get orderSort() {
+    return this.form.get('orderSort');
+  }
+
+  private fetchOrders(sort?: OrderSort): void {
     const values = (this.orderStatuses!.value ?? []) as (
       | OrderStatus
       | string
     )[];
-    this.fetchOrdersWithStatuses(values);
+    this.fetchOrdersWithStatuses(values, sort);
   }
 
-  private fetchOrdersWithStatuses(values: (OrderStatus | string)[]): void {
+  private fetchOrdersWithStatuses(values: (OrderStatus | string)[], sort?: OrderSort): void {
     const isAll = values.includes(this.ALL_STATUSES_VALUE);
 
     const request: GetOrderRequest = {
@@ -424,6 +433,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       orderStatuses: isAll ? [] : (values as OrderStatus[]),
       createdFrom: this.toUtcStartOfDay(this.form.value.createdFrom),
       createdTo: this.toUtcEndOfDay(this.form.value.createdTo),
+      sort: sort ?? this.form.value.orderSort ?? OrderSort.byCreationDate,
     };
 
     this.getOrders(request);
@@ -538,6 +548,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       orderStatuses: new FormControl([this.ALL_STATUSES_VALUE]),
       createdFrom: new FormControl(null),
       createdTo: new FormControl(null),
+      orderSort: new FormControl(OrderSort.byCreationDate),
     });
   }
 
@@ -572,6 +583,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.pageIndex = 0;
         this.fetchOrders();
       });
+
+    this.orderSort!.valueChanges.pipe(takeUntil(this._destroy$)).subscribe((sort: OrderSort) => {
+      this.pageIndex = 0;
+      this.fetchOrders(sort);
+    });
   }
 
   private toUtcStartOfDay(date: Date | null | undefined): string | null {

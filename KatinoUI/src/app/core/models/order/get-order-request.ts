@@ -1,3 +1,4 @@
+import { OrderSort } from '../../enums/order-sort';
 import { OrderStatus } from '../../enums/order-status';
 
 export interface GetOrderRequest {
@@ -7,4 +8,5 @@ export interface GetOrderRequest {
   orderStatuses: OrderStatus[];
   createdFrom: string | null;
   createdTo: string | null;
+  sort: OrderSort;
 }

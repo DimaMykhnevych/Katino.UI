@@ -52,8 +52,17 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 2: creation date range -->
+        <!-- Row 2: sort + creation date range -->
         <div class="form-row">
+          <mat-form-field appearance="outline" class="form-control">
+            <mat-label>{{ "orders.filters.sort" | translate }}</mat-label>
+            <mat-select formControlName="orderSort">
+              <mat-option *ngFor="let option of orderSortOptions" [value]="option.value">
+                {{ option.labelKey | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <mat-form-field
             class="form-control date-range-field"
             appearance="outline"

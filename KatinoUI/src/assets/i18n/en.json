@@ -391,7 +391,10 @@
             "creationDate": "Creation date",
             "dateFrom": "From",
             "dateTo": "To",
-            "clearDates": "Clear"
+            "clearDates": "Clear",
+            "sort": "Sort",
+            "sortByCreationDate": "By creation date",
+            "sortByUrgency": "By urgency"
         },
         "addingOrder": {
             "dialogTitle": "Adding Order"

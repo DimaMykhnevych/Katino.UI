@@ -391,7 +391,10 @@
             "creationDate": "Дата створення",
             "dateFrom": "Від",
             "dateTo": "До",
-            "clearDates": "Відчистити"
+            "clearDates": "Відчистити",
+            "sort": "Сортування",
+            "sortByCreationDate": "За датою створення",
+            "sortByUrgency": "За терміновістю"
         },
         "addingOrder": {
             "dialogTitle": "Додавання Замовлення"
