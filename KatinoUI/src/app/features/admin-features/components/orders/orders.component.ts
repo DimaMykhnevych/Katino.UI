@@ -46,7 +46,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
   public readonly orderSortOptions: { value: OrderSort; labelKey: string }[] = [
-    { value: OrderSort.byCreationDate, labelKey: 'orders.filters.sortByCreationDate' },
+    {
+      value: OrderSort.byCreationDate,
+      labelKey: 'orders.filters.sortByCreationDate',
+    },
     { value: OrderSort.byUrgency, labelKey: 'orders.filters.sortByUrgency' },
   ];
   public translatedAllOption$?: Observable<string>;
@@ -86,6 +89,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public selectedStatuses: (OrderStatus | string)[] = [this.ALL_STATUSES_VALUE];
 
   private _destroy$ = new Subject<void>();
+  private _statusesAutoSet = false;
 
   constructor(
     private _builder: FormBuilder,
@@ -423,7 +427,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.fetchOrdersWithStatuses(values, sort);
   }
 
-  private fetchOrdersWithStatuses(values: (OrderStatus | string)[], sort?: OrderSort): void {
+  private fetchOrdersWithStatuses(
+    values: (OrderStatus | string)[],
+    sort?: OrderSort,
+  ): void {
     const isAll = values.includes(this.ALL_STATUSES_VALUE);
 
     const request: GetOrderRequest = {
@@ -569,6 +576,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       const ctrl = this.orderStatuses!;
       const values = (ctrl.value ?? []) as (OrderStatus | string)[];
 
+      this._statusesAutoSet = false;
       this.applyAllStatusesRules(values);
 
       const finalValues = (ctrl.value ?? []) as (OrderStatus | string)[];
@@ -584,10 +592,33 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.fetchOrders();
       });
 
-    this.orderSort!.valueChanges.pipe(takeUntil(this._destroy$)).subscribe((sort: OrderSort) => {
-      this.pageIndex = 0;
-      this.fetchOrders(sort);
-    });
+    this.orderSort!.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(
+      (sort: OrderSort) => {
+        const currentStatuses = (this.orderStatuses!.value ?? []) as (
+          | OrderStatus
+          | string
+        )[];
+        const isAllStatuses =
+          currentStatuses.length === 1 &&
+          currentStatuses[0] === this.ALL_STATUSES_VALUE;
+
+        if (sort === OrderSort.byUrgency && isAllStatuses) {
+          this._statusesAutoSet = true;
+          this.orderStatuses!.setValue(
+            [OrderStatus.inProgress, OrderStatus.readyToShip],
+            { emitEvent: false },
+          );
+        } else if (sort !== OrderSort.byUrgency && this._statusesAutoSet) {
+          this._statusesAutoSet = false;
+          this.orderStatuses!.setValue([this.ALL_STATUSES_VALUE], {
+            emitEvent: false,
+          });
+        }
+
+        this.pageIndex = 0;
+        this.fetchOrders(sort);
+      },
+    );
   }
 
   private toUtcStartOfDay(date: Date | null | undefined): string | null {
