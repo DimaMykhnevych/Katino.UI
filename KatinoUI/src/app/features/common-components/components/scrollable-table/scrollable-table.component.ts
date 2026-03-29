@@ -39,7 +39,7 @@ export class ScrollableTableComponent implements AfterViewInit, OnDestroy {
   private checkScroll(): void {
     if (this.isLoading || !this.hasMoreData) return;
     const el = this.scrollContainer.nativeElement;
-    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 100) {
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 1) {
       this.loadMore.emit();
     }
   }
