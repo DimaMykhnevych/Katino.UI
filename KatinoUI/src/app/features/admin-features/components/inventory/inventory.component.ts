@@ -24,7 +24,6 @@ import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.servi
 import { ToastrService } from 'ngx-toastr';
 import { CurrentUserService } from 'src/app/core/permission/services';
 import { Roles } from 'src/app/core/models/roles';
-import { SortingHelper } from 'src/app/core/helpers/sorting-helper';
 
 @Component({
   selector: 'app-inventory',
@@ -399,13 +398,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
       groupedMap.get(productId)!.push(variant);
     });
 
-    // Create product groups
+    // Create product groups (order preserved from backend)
     this.productGroups = Array.from(groupedMap.entries()).map(
       ([, productVariants]) => ({
         product: productVariants[0].product,
-        variants: productVariants.sort((a, b) =>
-          SortingHelper.compareVariants(a, b),
-        ),
+        variants: productVariants,
         variantCount: productVariants.length,
       }),
     );
