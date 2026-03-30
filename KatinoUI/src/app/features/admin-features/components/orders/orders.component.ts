@@ -448,6 +448,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   private getOrders(request: GetOrderRequest): void {
     this.isRetrievingData = true;
+    this.dataSource.data = [];
 
     this._orderService
       .getOrders(request)
