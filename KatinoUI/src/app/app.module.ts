@@ -23,6 +23,8 @@ import { registerLocaleData } from '@angular/common';
 import localeUk from '@angular/common/locales/uk';
 import { DateAdapter } from '@angular/material/core';
 import { AppDateAdapter } from './core/adapters/app-date-adapter';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { PaginatorIntlService } from './core/services/paginator-intl.service';
 
 registerLocaleData(localeUk);
 
@@ -55,6 +57,7 @@ registerLocaleData(localeUk);
   providers: [
     { provide: LOCALE_ID, useValue: 'uk' },
     { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MatPaginatorIntl, useClass: PaginatorIntlService },
   ],
   bootstrap: [AppComponent],
 })

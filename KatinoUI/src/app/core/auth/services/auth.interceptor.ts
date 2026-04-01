@@ -13,23 +13,25 @@ import { TokenService } from './token.service';
 import { UserResponseCode } from '../../http/request/response-codes.enum';
 import { AuthService } from './auth.service';
 import { RouteConstants } from '../../constants/route-constants';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private _tokenService: TokenService,
     private _router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _dialog: MatDialog,
   ) {}
 
   public intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const request = req.clone({
       headers: req.headers.set(
         'Authorization',
-        `Bearer ${this._tokenService.token}`
+        `Bearer ${this._tokenService.token}`,
       ),
     });
 
@@ -38,13 +40,14 @@ export class AuthInterceptor implements HttpInterceptor {
         this._handleError(error);
 
         return of(error);
-      })
+      }),
     );
   }
 
   private _handleError(err: HttpErrorResponse): void {
     if (err.status === UserResponseCode.Unauthorized) {
       this._authService.unauthorize();
+      this._dialog.closeAll();
       this._router.navigate([RouteConstants.unauthorizedRedirection]);
     } else {
       throw err;

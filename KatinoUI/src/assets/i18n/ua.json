@@ -1,5 +1,14 @@
 
 {
+    "paginator": {
+        "itemsPerPage": "Рядків на сторінці:",
+        "nextPage": "Наступна сторінка",
+        "previousPage": "Попередня сторінка",
+        "firstPage": "Перша сторінка",
+        "lastPage": "Остання сторінка",
+        "rangeLabel": "{{startIndex}} – {{endIndex}} з {{length}}",
+        "rangeOfLabel": "0 з {{length}}"
+    },
     "common": {
         "signin": "Увійти",
         "signup": "Регістрація",
