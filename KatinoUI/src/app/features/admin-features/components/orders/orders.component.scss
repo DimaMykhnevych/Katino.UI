@@ -150,6 +150,14 @@
 .badge--purple { background: rgba(156, 39, 176, 0.14); }
 .badge--blue { background: rgba(2, 132, 199, 0.14); }
 .badge--fail { background: rgba(211, 47, 47, 0.18); }
+.badge--order-tag { background: rgba(11, 15, 245, 0.18); border-color: rgba(11, 15, 245, 0.28); }
+
+.order-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 2px;
+}
 
 .items-preview {
   display: flex;

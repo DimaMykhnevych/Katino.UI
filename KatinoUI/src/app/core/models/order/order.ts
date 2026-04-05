@@ -11,6 +11,7 @@ import { OrderAddressInfo } from './order-address-info';
 import { OrderItem } from './order-item';
 import { OrderNpOptionsSeat } from './order-np-options-seat';
 import { OrderRecipient } from './order-recipient';
+import { OrderTag } from './order-tag';
 
 export interface Order {
   id: string;
@@ -42,6 +43,7 @@ export interface Order {
 
   orderItems: OrderItem[];
   orderNpOptionsSeats: OrderNpOptionsSeat[];
+  tags: OrderTag[];
 
   senderNpWarehouse: NpWarehouse;
   recipientNpWarehouse?: NpWarehouse;
@@ -50,4 +52,5 @@ export interface Order {
   senderContactPerson: NpContactPerson;
   orderRecipient: OrderRecipient;
   addressInfo?: OrderAddressInfo;
+  generalOrderInfo?: string;
 }

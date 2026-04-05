@@ -12,6 +12,7 @@ import { OrderInternetDocStatus } from 'src/app/core/enums/order-internet-doc-st
 import { CustomTranslateService } from 'src/app/core/services/custom-translate.service';
 import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
 import { TranslateService } from '@ngx-translate/core';
+import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 
 @Component({
   selector: 'app-order-details-dialog',
@@ -21,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class OrderDetailsDialogComponent {
   public readonly DeliveryType = DeliveryType;
   public readonly OrderItemStatus = OrderItemStatus;
+  public readonly OrderTagType = OrderTagType;
 
   public showDetailsClicked: boolean = false;
 
@@ -80,6 +82,10 @@ export class OrderDetailsDialogComponent {
 
   public getNpStatusTextKey(v: OrderInternetDocStatus): string {
     return this._customTranslate.getNpStatusTextKey(v);
+  }
+
+  public getOrderTagTextKey(type: OrderTagType): string {
+    return this._customTranslate.getOrderTagTextKey(type);
   }
 
   public getUpdateDetailsText(updateDetails: string): string {

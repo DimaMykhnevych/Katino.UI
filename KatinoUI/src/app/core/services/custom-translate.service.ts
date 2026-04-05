@@ -7,6 +7,7 @@ import { OrderItemStatus } from '../enums/order-item-status';
 import { PayerType } from '../enums/payer-type';
 import { PaymentMethod } from '../enums/payment-method';
 import { OrderInternetDocStatus } from '../enums/order-internet-doc-status';
+import { OrderTagType } from '../enums/order-tag-type';
 
 @Injectable({
   providedIn: 'root',
@@ -203,6 +204,15 @@ export class CustomTranslateService {
 
       default:
         return 'orders.npStatus.notProcessed';
+    }
+  }
+
+  public getOrderTagTextKey(type: OrderTagType): string {
+    switch (type) {
+      case OrderTagType.notNpOrder:
+        return 'orders.tags.notNpOrder';
+      default:
+        return '';
     }
   }
 }

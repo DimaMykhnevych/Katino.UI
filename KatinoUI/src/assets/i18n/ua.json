@@ -271,11 +271,17 @@
             "afterpayment": "Сума післяплати",
             "sendUntilDate": "Відправити до",
             "description": "Опис",
-            "comment": "Коментар"
+            "comment": "Коментар",
+            "generalOrderInfo": "Інформація про доставку",
+            "tags": "Теги"
+        },
+        "tags": {
+            "notNpOrder": "Не НП"
         },
         "deliveryType": {
             "warehouseOrPost": "Відділення/Поштомат",
-            "address": "Адресна"
+            "address": "Адресна",
+            "notNovaPost": "Не Нова Пошта"
         },
         "payerType": {
             "sender": "Відправник",
@@ -414,6 +420,7 @@
         "hints": {
             "searchingPhones": "Пошук...",
             "saleTypeLocked": "Тип продажу не можна змінювати під час редагування",
+            "deliveryTypeLocked": "Тип доставки не можна змінювати для замовлень",
             "afterpaymentDefault": "За замовчуванням: загальна вартість − {{amount}}"
         },
         "validation": {

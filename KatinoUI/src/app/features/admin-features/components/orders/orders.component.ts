@@ -36,6 +36,8 @@ import { CurrentUserService } from 'src/app/core/permission/services';
 import { Roles } from 'src/app/core/models/roles';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
 import { OrderSort } from 'src/app/core/enums/order-sort';
+import { DeliveryType } from 'src/app/core/enums/delivery-type';
+import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 
 @Component({
   selector: 'app-orders',
@@ -44,6 +46,8 @@ import { OrderSort } from 'src/app/core/enums/order-sort';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
+  public readonly DeliveryType = DeliveryType;
+  public readonly OrderTagType = OrderTagType;
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
   public readonly orderSortOptions: { value: OrderSort; labelKey: string }[] = [
     {
@@ -306,7 +310,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.statusLoading.add(o.id);
 
     this._orderService
-      .getNextManualStatus(o.orderStatus)
+      .getNextManualStatus(o.id)
       .pipe(
         catchError(() => of([] as OrderStatus[])),
         finalize(() => this.statusLoading.delete(o.id)),
@@ -397,6 +401,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public getTtnSuffix(ttn: string | null | undefined): string {
     if (!ttn) return '';
     return ttn.slice(-4);
+  }
+
+  public getOrderTagTextKey(type: OrderTagType): string {
+    return this._customTranslate.getOrderTagTextKey(type);
   }
 
   get orderSearchString() {

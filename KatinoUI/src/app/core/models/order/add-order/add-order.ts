@@ -32,4 +32,5 @@ export interface AddOrder {
   senderContactPerson: NpContactPerson;
   orderRecipient: AddOrderRecipient;
   addressInfo: AddOrderAddressInfo | null;
+  generalOrderInfo?: string;
 }

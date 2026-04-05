@@ -271,11 +271,17 @@
             "afterpayment": "Afterpayment amount",
             "sendUntilDate": "Send until",
             "description": "Description",
-            "comment": "Comment"        
+            "comment": "Comment",
+            "generalOrderInfo": "Delivery information",
+            "tags": "Tags"
+        },
+        "tags": {
+            "notNpOrder": "Not NP"
         },
         "deliveryType": {
             "warehouseOrPost": "Warehouse/Postomat",
-            "address": "Address"
+            "address": "Address",
+            "notNovaPost": "Not Nova Post"
         },
         "payerType": {
             "sender": "Sender",
@@ -414,6 +420,7 @@
         "hints": {
             "searchingPhones": "Searching...",
             "saleTypeLocked": "Sale type cannot be changed while editing",
+            "deliveryTypeLocked": "Delivery type cannot be changed for orders",
             "afterpaymentDefault": "Default: total cost − {{amount}}"
         },
         "validation": {

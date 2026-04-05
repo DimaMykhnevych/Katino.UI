@@ -55,6 +55,17 @@
 
       <div class="k">{{ "orders.details.comment" | translate }}</div>
       <div class="v">{{ order.comment ? order.comment : "-" }}</div>
+
+      <ng-container *ngIf="order.tags.length">
+        <div class="k">{{ "orders.labels.tags" | translate }}</div>
+        <div class="v">
+          <div class="tags-row">
+            <span class="badge badge--order-tag" *ngFor="let tag of order.tags">
+              {{ getOrderTagTextKey(tag.type) | translate }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 
@@ -110,30 +121,42 @@
     </div>
 
     <div class="kv">
-      <div class="k">{{ "orders.details.name" | translate }}</div>
-      <div class="v">
-        {{ order.orderRecipient.npContactPerson.lastName }}
-        {{ order.orderRecipient.npContactPerson.firstName }}
-        {{ order.orderRecipient.npContactPerson.middleName }}
-      </div>
+      <ng-container
+        *ngIf="
+          order.deliveryType === DeliveryType.notNovaPost;
+          else npRecipientTpl
+        "
+      >
+        <div class="k">{{ "orders.labels.generalOrderInfo" | translate }}</div>
+        <div class="v">{{ order.generalOrderInfo || "—" }}</div>
+      </ng-container>
 
-      <div class="k">{{ "orders.details.phone" | translate }}</div>
-      <div class="v">
-        {{ order.orderRecipient.npContactPerson.phones || "—" }}
-      </div>
+      <ng-template #npRecipientTpl>
+        <div class="k">{{ "orders.details.name" | translate }}</div>
+        <div class="v">
+          {{ order.orderRecipient?.npContactPerson?.lastName }}
+          {{ order.orderRecipient?.npContactPerson?.firstName }}
+          {{ order.orderRecipient?.npContactPerson?.middleName }}
+        </div>
 
-      <div class="k">Instagram</div>
-      <div class="v">
-        <a
-          *ngIf="order.orderRecipient.instUrl"
-          [href]="order.orderRecipient.instUrl"
-          target="_blank"
-          rel="noopener"
-        >
-          {{ order.orderRecipient.instUrl }}
-        </a>
-        <span *ngIf="!order.orderRecipient.instUrl">—</span>
-      </div>
+        <div class="k">{{ "orders.details.phone" | translate }}</div>
+        <div class="v">
+          {{ order.orderRecipient?.npContactPerson?.phones || "—" }}
+        </div>
+
+        <div class="k">Instagram</div>
+        <div class="v">
+          <a
+            *ngIf="order.orderRecipient?.instUrl"
+            [href]="order.orderRecipient.instUrl"
+            target="_blank"
+            rel="noopener"
+          >
+            {{ order.orderRecipient.instUrl }}
+          </a>
+          <span *ngIf="!order.orderRecipient?.instUrl">—</span>
+        </div>
+      </ng-template>
     </div>
   </div>
 
@@ -147,47 +170,50 @@
       <div class="k">{{ "orders.labels.deliveryType" | translate }}</div>
       <div class="v">
         <span class="badge badge--neutral">
-          {{
-            order.deliveryType === 0
-              ? ("orders.deliveryType.warehouseOrPost" | translate)
-              : ("orders.deliveryType.address" | translate)
-          }}
+          <ng-container [ngSwitch]="order.deliveryType">
+            <ng-container *ngSwitchCase="DeliveryType.warehouseOrPost">
+              {{ "orders.deliveryType.warehouseOrPost" | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="DeliveryType.address">
+              {{ "orders.deliveryType.address" | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="DeliveryType.notNovaPost">
+              {{ "orders.deliveryType.notNovaPost" | translate }}
+            </ng-container>
+          </ng-container>
         </span>
       </div>
 
-      <div class="k">{{ "orders.labels.city" | translate }}</div>
-      <div class="v">
-        {{
-          order.recipientNpCity?.present ||
-            order.addressInfo?.recipientCity ||
-            "-"
-        }}
-      </div>
+      <ng-container *ngIf="order.deliveryType === DeliveryType.warehouseOrPost">
+        <div class="k">{{ "orders.labels.city" | translate }}</div>
+        <div class="v">{{ order.recipientNpCity?.present || "—" }}</div>
 
-      <ng-container *ngIf="order.deliveryType === 0; else addressBlock">
         <div class="k">{{ "orders.labels.warehouse" | translate }}</div>
         <div class="v">
           {{ order.recipientNpWarehouse?.description || "—" }}
         </div>
       </ng-container>
 
-      <ng-template #addressBlock>
+      <ng-container *ngIf="order.deliveryType === DeliveryType.address">
+        <div class="k">{{ "orders.labels.city" | translate }}</div>
+        <div class="v">{{ order.addressInfo?.recipientCity || "—" }}</div>
+
         <div class="k">{{ "orders.labels.address" | translate }}</div>
         <div class="v">
-          {{ order.addressInfo!.recipientAddressName || "" }}
-          {{ order.addressInfo!.recipientHouse || "" }}
+          {{ order.addressInfo?.recipientAddressName || "" }}
+          {{ order.addressInfo?.recipientHouse || "" }}
           {{
-            order.addressInfo!.recipientFlat
-              ? "/" + order.addressInfo!.recipientFlat
+            order.addressInfo?.recipientFlat
+              ? "/" + order.addressInfo?.recipientFlat
               : ""
           }}
         </div>
 
         <div class="k">{{ "orders.labels.note" | translate }}</div>
         <div class="v">
-          {{ order.addressInfo!.recipientAddressNote || "—" }}
+          {{ order.addressInfo?.recipientAddressNote || "—" }}
         </div>
-      </ng-template>
+      </ng-container>
     </div>
   </div>
 

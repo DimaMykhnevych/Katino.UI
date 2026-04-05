@@ -27,11 +27,9 @@ export class OrderService {
     });
   }
 
-  public getNextManualStatus(
-    currentStatus: OrderStatus,
-  ): Observable<OrderStatus[]> {
+  public getNextManualStatus(orderId: string): Observable<OrderStatus[]> {
     let httpParams = new HttpParams();
-    httpParams = httpParams.append('CurrentOrderStatus', currentStatus);
+    httpParams = httpParams.append('OrderId', orderId);
     return this._http.get<OrderStatus[]>(
       `${AppSettings.apiHost}/Order/manual-status/get-next`,
       {

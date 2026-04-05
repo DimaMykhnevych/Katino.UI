@@ -408,6 +408,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       },
 
       addressInfo: safeAddressInfo,
+      generalOrderInfo:
+        dt === DeliveryType.notNovaPost
+          ? (this.generalOrderInfo?.value ?? '')
+          : undefined,
     };
 
     return model;
@@ -502,6 +506,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
               recipientFlat: this.addressInfoGroup.value.recipientFlat ?? '',
             }
           : null,
+      generalOrderInfo:
+        dt === DeliveryType.notNovaPost
+          ? (this.generalOrderInfo?.value ?? '')
+          : undefined,
     };
   }
 
@@ -538,7 +546,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     ).subscribe((dt: DeliveryType) => {
       const middle = this.recipientMiddleName!;
 
-      if (dt === DeliveryType.warehouseOrPost) {
+      if (
+        dt === DeliveryType.warehouseOrPost ||
+        dt === DeliveryType.notNovaPost
+      ) {
         middle.clearValidators();
       } else {
         middle.setValidators([Validators.required]);
@@ -546,7 +557,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
       middle.updateValueAndValidity({ emitEvent: false });
 
-      if (dt === DeliveryType.address) {
+      if (dt === DeliveryType.address || dt === DeliveryType.notNovaPost) {
         this.initialRecipientCity = null;
         this.initialRecipientWarehouse = null;
         this.recipientNpSelection = { city: null, warehouse: null };
@@ -634,8 +645,9 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     const currentDeliveryType: DeliveryType =
       this.data?.order?.deliveryType ?? DeliveryType.warehouseOrPost;
+    const isNotNp = currentDeliveryType === DeliveryType.notNovaPost;
     const middleNameValidators =
-      currentDeliveryType === DeliveryType.warehouseOrPost
+      currentDeliveryType === DeliveryType.warehouseOrPost || isNotNp
         ? []
         : [Validators.required];
 
@@ -659,15 +671,17 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       deliveryType: new FormControl(currentDeliveryType, [Validators.required]),
       recipientPhones: new FormControl(
         this.data?.order?.orderRecipient?.npContactPerson?.phones,
-        [Validators.required, Validators.pattern(this.PHONE_PATTERN)],
+        isNotNp
+          ? []
+          : [Validators.required, Validators.pattern(this.PHONE_PATTERN)],
       ),
       recipientLastName: new FormControl(
         this.data?.order?.orderRecipient?.npContactPerson?.lastName,
-        [Validators.required],
+        isNotNp ? [] : [Validators.required],
       ),
       recipientFirstName: new FormControl(
         this.data?.order?.orderRecipient?.npContactPerson?.firstName,
-        [Validators.required],
+        isNotNp ? [] : [Validators.required],
       ),
       recipientMiddleName: new FormControl(
         this.data?.order?.orderRecipient?.npContactPerson?.middleName,
@@ -675,7 +689,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       ),
       instUrl: new FormControl(
         this.data?.order?.orderRecipient?.instUrl ?? '',
-        [Validators.required],
+        isNotNp ? [] : [Validators.required],
       ),
       addressInfo: this._builder.group({
         recipientAddressNote: new FormControl(
@@ -731,10 +745,18 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         this.data?.order?.description ?? this.DEFAULT_DESCRIPTION,
       ),
       comment: new FormControl(this.data?.order?.comment ?? ''),
+      generalOrderInfo: new FormControl(
+        this.data?.order?.generalOrderInfo ?? '',
+        isNotNp ? [Validators.required] : [],
+      ),
     });
 
     if (!this.data?.isAdding) {
       this.saleType?.disable({ emitEvent: false });
+    }
+
+    if (!this.data?.isAdding) {
+      this.deliveryType?.disable({ emitEvent: false });
     }
 
     this.applyPrepaymentValidators(this.isPrepayment?.value === true);
@@ -930,6 +952,32 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     house.updateValueAndValidity({ emitEvent: false });
     flat.updateValueAndValidity({ emitEvent: false });
     note.updateValueAndValidity({ emitEvent: false });
+
+    const isNotNp = dt === DeliveryType.notNovaPost;
+
+    if (isNotNp) {
+      this.instUrl?.clearValidators();
+      this.recipientPhones?.clearValidators();
+      this.recipientLastName?.clearValidators();
+      this.recipientFirstName?.clearValidators();
+      this.generalOrderInfo?.setValidators([Validators.required]);
+    } else {
+      this.instUrl?.setValidators([Validators.required]);
+      this.recipientPhones?.setValidators([
+        Validators.required,
+        Validators.pattern(this.PHONE_PATTERN),
+      ]);
+      this.recipientLastName?.setValidators([Validators.required]);
+      this.recipientFirstName?.setValidators([Validators.required]);
+      this.generalOrderInfo?.clearValidators();
+      this.generalOrderInfo?.setValue('', { emitEvent: false });
+    }
+
+    this.instUrl?.updateValueAndValidity({ emitEvent: false });
+    this.recipientPhones?.updateValueAndValidity({ emitEvent: false });
+    this.recipientLastName?.updateValueAndValidity({ emitEvent: false });
+    this.recipientFirstName?.updateValueAndValidity({ emitEvent: false });
+    this.generalOrderInfo?.updateValueAndValidity({ emitEvent: false });
   }
 
   private _t(key: string): string {
@@ -996,5 +1044,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
   get comment() {
     return this.form.get('comment');
+  }
+  get generalOrderInfo() {
+    return this.form.get('generalOrderInfo');
   }
 }
