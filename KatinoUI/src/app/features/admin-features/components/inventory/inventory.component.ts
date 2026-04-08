@@ -174,7 +174,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     };
     const dialogRef = this._dialogService.openAddEditProductVariantDialog(data);
     dialogRef.afterClosed().subscribe(() => {
-      this.getFreshData();
+      this.refreshData();
     });
   }
 
@@ -318,6 +318,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   private getFreshData(): void {
     this.clearForm();
+    this.getCategories();
+    this.resetPagination();
+    this.getProductVariants(this.buildSearchParams(1));
+  }
+
+  private refreshData(): void {
     this.getCategories();
     this.resetPagination();
     this.getProductVariants(this.buildSearchParams(1));
