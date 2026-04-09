@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { MaterialModule } from 'src/app/layout/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -51,6 +52,7 @@ import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.com
     DialogsModule,
     CommonComponentsModule,
     FormsModule,
+    ImageCropperModule,
   ],
   providers: [DatePipe],
 })

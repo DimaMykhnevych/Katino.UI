@@ -37,6 +37,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateProductVariant } from '../../models/update-product-variant';
 import { PhotoItem } from '../../models/photo-item';
+import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-product-variant-dialog',
@@ -61,6 +62,13 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
   public isUploadingPhoto: boolean = false;
   public maxPhotos: number = 10;
   public maxPhotoSizeMb: number = 25;
+
+  public showCropper: boolean = false;
+  public cropperImageFile?: File;
+  public croppedBase64: string | null = null;
+  public pendingFilesTotal: number = 0;
+  private pendingFilesToCrop: File[] = [];
+  private editingPhotoIndex: number = -1;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -204,6 +212,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       files.splice(availableSlots);
     }
 
+    const validFiles: File[] = [];
     files.forEach((file) => {
       if (!this.isValidImageFile(file)) {
         this._translate
@@ -213,31 +222,86 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           });
         return;
       }
-
-      try {
-        const reader = new FileReader();
-
-        reader.readAsDataURL(file);
-        reader.onload = (_event) => {
-          const photoItem: PhotoItem = {
-            file: file,
-            photoUrl: reader.result as string,
-            displayOrder: this.photos.length,
-            isExisting: false,
-          };
-
-          this.photos.push(photoItem);
-        };
-      } catch (error) {
-        this._translate
-          .get('validation.failedLoadingImagePreview')
-          .subscribe((msg: string) => {
-            this._toastr.error(msg);
-          });
-      }
+      validFiles.push(file);
     });
 
     input.value = '';
+
+    if (validFiles.length > 0) {
+      this.pendingFilesToCrop = validFiles;
+      this.pendingFilesTotal = validFiles.length;
+      this.editingPhotoIndex = -1;
+      this.croppedBase64 = null;
+      this.cropperImageFile = validFiles[0];
+      this.showCropper = true;
+    }
+  }
+
+  public onEditPhotoClick(index: number): void {
+    const photo = this.photos[index];
+    if (photo.isExisting || !photo.file) return;
+
+    this.editingPhotoIndex = index;
+    this.pendingFilesToCrop = [];
+    this.pendingFilesTotal = 0;
+    this.croppedBase64 = null;
+    this.cropperImageFile = photo.file;
+    this.showCropper = true;
+  }
+
+  public onImageCropped(event: ImageCroppedEvent): void {
+    this.croppedBase64 = event.base64 ?? null;
+  }
+
+  public onApplyCrop(): void {
+    if (!this.croppedBase64) return;
+
+    const blob = base64ToFile(this.croppedBase64);
+    const croppedFile = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
+    const photoUrl = this.croppedBase64;
+
+    if (this.editingPhotoIndex >= 0) {
+      const photo = this.photos[this.editingPhotoIndex];
+      photo.file = croppedFile;
+      photo.photoUrl = photoUrl;
+      this.editingPhotoIndex = -1;
+      this.closeCropper();
+    } else {
+      this.photos.push({
+        file: croppedFile,
+        photoUrl,
+        displayOrder: this.photos.length,
+        isExisting: false,
+      });
+
+      this.pendingFilesToCrop.shift();
+      if (this.pendingFilesToCrop.length > 0) {
+        this.cropperImageFile = undefined;
+        setTimeout(() => {
+          this.cropperImageFile = this.pendingFilesToCrop[0];
+          this.croppedBase64 = null;
+        });
+      } else {
+        this.closeCropper();
+      }
+    }
+  }
+
+  public onCancelCrop(): void {
+    this.pendingFilesToCrop = [];
+    this.editingPhotoIndex = -1;
+    this.closeCropper();
+  }
+
+  public get currentPendingFileNumber(): number {
+    return this.pendingFilesTotal - this.pendingFilesToCrop.length + 1;
+  }
+
+  private closeCropper(): void {
+    this.showCropper = false;
+    this.cropperImageFile = undefined;
+    this.croppedBase64 = null;
+    this.pendingFilesTotal = 0;
   }
 
   public onRemovePhoto(index: number): void {

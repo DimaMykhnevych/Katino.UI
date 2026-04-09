@@ -1,16 +1,32 @@
 <h1 mat-dialog-title>
-  <div *ngIf="data.isAdding">
+  <div *ngIf="!showCropper && data.isAdding">
     {{ "adminFeatures.addingProductVariant" | translate }}
   </div>
-  <div *ngIf="!data.isAdding">
+  <div *ngIf="!showCropper && !data.isAdding">
     {{ "adminFeatures.updatingProductVariant" | translate }}
+  </div>
+  <div *ngIf="showCropper" class="cropper-title">
+    {{ "inventory.editPhoto" | translate }}
+    <span *ngIf="pendingFilesTotal > 1" class="cropper-progress">
+      ({{ currentPendingFileNumber }}/{{ pendingFilesTotal }})
+    </span>
   </div>
 </h1>
 <div mat-dialog-content>
-  <ng-container *ngIf="isRetrievingData">
+  <!-- Cropper view -->
+  <ng-container *ngIf="showCropper">
+    <image-cropper
+      [imageFile]="cropperImageFile!"
+      [maintainAspectRatio]="false"
+      format="jpeg"
+      (imageCropped)="onImageCropped($event)"
+    ></image-cropper>
+  </ng-container>
+
+  <ng-container *ngIf="isRetrievingData && !showCropper">
     <app-spinner [diameter]="50"></app-spinner>
   </ng-container>
-  <ng-container *ngIf="!isRetrievingData">
+  <ng-container *ngIf="!isRetrievingData && !showCropper">
     <form [formGroup]="form">
       <div class="row mb-3">
         <div class="col-lg-5 col-md-5 col-10">
@@ -380,6 +396,17 @@
                   <mat-icon>close</mat-icon>
                 </button>
 
+                <button
+                  *ngIf="!photo.markedForDeletion && !photo.isExisting"
+                  type="button"
+                  mat-icon-button
+                  class="edit-photo-btn"
+                  (click)="onEditPhotoClick(i)"
+                  [matTooltip]="'common.edit' | translate"
+                >
+                  <mat-icon>crop</mat-icon>
+                </button>
+
                 <div
                   class="photo-restore-overlay"
                   *ngIf="photo.markedForDeletion"
@@ -449,35 +476,59 @@
   </ng-container>
 </div>
 <div mat-dialog-actions>
-  <button
-    mat-stroked-button
-    color="warn"
-    mat-dialog-close="false"
-    [disabled]="isUpdatingData"
-  >
-    {{ "common.close" | translate }}
-  </button>
-  <button
-    type="submit"
-    mat-button
-    [disabled]="!isFormValid() || isUpdatingData"
-    (click)="onAddEditClick()"
-  >
-    <ng-container *ngIf="!isUpdatingData">
-      <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
-      <span *ngIf="!data?.isAdding">{{
-        "common.update" | translate
-      }}</span></ng-container
+  <!-- Cropper actions -->
+  <ng-container *ngIf="showCropper">
+    <button
+      mat-stroked-button
+      color="warn"
+      type="button"
+      (click)="onCancelCrop()"
     >
+      {{ "common.cancel" | translate }}
+    </button>
+    <button
+      mat-button
+      color="primary"
+      type="button"
+      [disabled]="!croppedBase64"
+      (click)="onApplyCrop()"
+    >
+      {{ "common.save" | translate }}
+    </button>
+  </ng-container>
 
-    <div *ngIf="isUpdatingData" class="spinner-container">
-      <mat-spinner diameter="20" color="accent"></mat-spinner>
-      <span *ngIf="data?.isAdding" class="loading-text">{{
-        "common.addingButtonText" | translate
-      }}</span>
-      <span *ngIf="!data?.isAdding" class="loading-text">{{
-        "common.updatingButtonText" | translate
-      }}</span>
-    </div>
-  </button>
+  <!-- Normal form actions -->
+  <ng-container *ngIf="!showCropper">
+    <button
+      mat-stroked-button
+      color="warn"
+      mat-dialog-close="false"
+      [disabled]="isUpdatingData"
+    >
+      {{ "common.close" | translate }}
+    </button>
+    <button
+      type="submit"
+      mat-button
+      [disabled]="!isFormValid() || isUpdatingData"
+      (click)="onAddEditClick()"
+    >
+      <ng-container *ngIf="!isUpdatingData">
+        <span *ngIf="data?.isAdding">{{ "common.add" | translate }}</span>
+        <span *ngIf="!data?.isAdding">{{
+          "common.update" | translate
+        }}</span></ng-container
+      >
+
+      <div *ngIf="isUpdatingData" class="spinner-container">
+        <mat-spinner diameter="20" color="accent"></mat-spinner>
+        <span *ngIf="data?.isAdding" class="loading-text">{{
+          "common.addingButtonText" | translate
+        }}</span>
+        <span *ngIf="!data?.isAdding" class="loading-text">{{
+          "common.updatingButtonText" | translate
+        }}</span>
+      </div>
+    </button>
+  </ng-container>
 </div>
