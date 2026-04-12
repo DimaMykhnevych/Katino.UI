@@ -42,6 +42,12 @@
         letter-spacing: 0.5px;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
+
+      .easter-logo {
+        margin-left: -4px;
+        opacity: 0.9;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+      }
     }
   }
 
