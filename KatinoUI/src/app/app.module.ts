@@ -17,6 +17,7 @@ import { NavbarModule } from './layout/navbar/navbar.module';
 import { SidenavModule } from './layout/sidenav/sidenav.module';
 import { SpinnerModule } from './layout/spinner/spinner.module';
 import { DialogsModule } from './layout/dialogs/dialogs.module';
+import { ConfettiModule } from './layout/confetti/confetti.module';
 import { CommonComponentsModule } from './features/common-components/common-components.module';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -53,6 +54,7 @@ registerLocaleData(localeUk);
     SpinnerModule,
     DialogsModule,
     CommonComponentsModule,
+    ConfettiModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'uk' },

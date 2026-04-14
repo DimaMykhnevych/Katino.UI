@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/auth';
 import { RouteConstants } from 'src/app/core/constants/route-constants';
 import { Roles } from 'src/app/core/models/roles';
 import { CurrentUserService } from 'src/app/core/permission/services';
+import { EventPeriodService } from 'src/app/core/services/event-period.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,12 +16,15 @@ import { CurrentUserService } from 'src/app/core/permission/services';
 export class NavbarComponent implements OnInit {
   public userName: string | undefined = '';
   public userRole: string | undefined = '';
+  public showBirthdayLogo = false;
+
   constructor(
     private _authService: AuthService,
     private router: Router,
     private _userService: CurrentUserService,
     private _translate: TranslateService,
     private _dateAdapter: DateAdapter<Date>,
+    private _eventPeriod: EventPeriodService,
   ) {}
 
   public get currentLanguage(): string | null {
@@ -31,6 +35,7 @@ export class NavbarComponent implements OnInit {
     const currentUserInfo = this._userService.userInfo;
     this.userName = currentUserInfo.userName;
     this.userRole = currentUserInfo.role;
+    this.showBirthdayLogo = this._eventPeriod.isBirthdayPeriod();
   }
 
   public OnLogOutButtonCLick(): void {
