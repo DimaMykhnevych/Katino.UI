@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 import { Order } from 'src/app/core/models/order/order';
 import { OrderItemStatus } from 'src/app/core/enums/order-item-status';
@@ -13,6 +15,8 @@ import { CustomTranslateService } from 'src/app/core/services/custom-translate.s
 import { StyleClassHelper } from 'src/app/layout/helpers/style-class-helper';
 import { TranslateService } from '@ngx-translate/core';
 import { OrderTagType } from 'src/app/core/enums/order-tag-type';
+import { OrderTag } from 'src/app/core/models/order/order-tag';
+import { OrderTagService } from '../../services/order-tag.service';
 
 @Component({
   selector: 'app-order-details-dialog',
@@ -31,6 +35,8 @@ export class OrderDetailsDialogComponent {
     private _ref: MatDialogRef<OrderDetailsDialogComponent>,
     private _customTranslate: CustomTranslateService,
     private _t: TranslateService,
+    private _orderTagService: OrderTagService,
+    private _toastr: ToastrService,
   ) {}
 
   public close(): void {
@@ -86,6 +92,26 @@ export class OrderDetailsDialogComponent {
 
   public getOrderTagTextKey(type: OrderTagType): string {
     return this._customTranslate.getOrderTagTextKey(type);
+  }
+
+  public onDetachTag(tag: OrderTag): void {
+    this.order.tags = this.order.tags.filter((t) => t.id !== tag.id);
+    this._orderTagService
+      .detachOrderTag(this.order.id, tag.id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this._toastr.success(
+            this._t.instant('orders.toastr.tagDetached'),
+          );
+        },
+        error: () => {
+          this.order.tags = [...this.order.tags, tag];
+          this._toastr.error(
+            this._t.instant('orders.toastr.tagDetachFailed'),
+          );
+        },
+      });
   }
 
   public getUpdateDetailsText(updateDetails: string): string {

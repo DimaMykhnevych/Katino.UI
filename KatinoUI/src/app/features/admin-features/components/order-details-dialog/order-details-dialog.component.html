@@ -62,6 +62,15 @@
           <div class="tags-row">
             <span class="badge badge--order-tag" *ngFor="let tag of order.tags">
               {{ getOrderTagTextKey(tag.type) | translate }}
+              <button
+                *ngIf="tag.canBeDeleted"
+                class="tag-delete-btn"
+                type="button"
+                (click)="onDetachTag(tag)"
+                [attr.aria-label]="'common.delete' | translate"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
             </span>
           </div>
         </div>

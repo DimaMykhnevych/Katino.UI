@@ -276,7 +276,8 @@
       "tags": "Tags"
     },
     "tags": {
-      "notNpOrder": "Not NP"
+      "notNpOrder": "Not NP",
+      "refundMoney": "Refund money"
     },
     "deliveryType": {
       "warehouseOrPost": "Warehouse/Postomat",
@@ -395,7 +396,9 @@
       "docNotCreated": "Order saved, but the TTN was not created.",
       "docNotUpdated": "Order updated, but the TTN was not updated.",
       "scanSheetCreated": "Scan sheet created successfully",
-      "scanSheetFailed": "An error occurred furing scan sheet creation"
+      "scanSheetFailed": "An error occurred furing scan sheet creation",
+      "tagDetached": "Tag removed successfully",
+      "tagDetachFailed": "Failed to remove tag"
     },
     "filters": {
       "statuses": "Statuses",

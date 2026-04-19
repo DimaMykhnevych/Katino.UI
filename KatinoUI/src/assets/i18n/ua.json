@@ -276,7 +276,8 @@
       "tags": "Теги"
     },
     "tags": {
-      "notNpOrder": "Не НП"
+      "notNpOrder": "Не НП",
+      "refundMoney": "Повернення коштів"
     },
     "deliveryType": {
       "warehouseOrPost": "Відділення/Поштомат",
@@ -395,7 +396,9 @@
       "docNotCreated": "Замовлення збережено, але ТТН не створено.",
       "docNotUpdated": "Замовлення оновлено, але ТТН не оновлено.",
       "scanSheetCreated": "Реєстр успішно створено",
-      "scanSheetFailed": "Виникла помилка під час створення реєстру"
+      "scanSheetFailed": "Виникла помилка під час створення реєстру",
+      "tagDetached": "Тег успішно видалено",
+      "tagDetachFailed": "Не вдалося видалити тег"
     },
     "filters": {
       "statuses": "Статуси",

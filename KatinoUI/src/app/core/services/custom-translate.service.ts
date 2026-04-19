@@ -211,6 +211,8 @@ export class CustomTranslateService {
     switch (type) {
       case OrderTagType.notNpOrder:
         return 'orders.tags.notNpOrder';
+      case OrderTagType.refundMoney:
+        return 'orders.tags.refundMoney';
       default:
         return '';
     }

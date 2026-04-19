@@ -188,6 +188,15 @@
               <div class="order-tags" *ngIf="o.tags?.length">
                 <span class="badge badge--order-tag" *ngFor="let tag of o.tags">
                   {{ getOrderTagTextKey(tag.type) | translate }}
+                  <button
+                    *ngIf="tag.canBeDeleted"
+                    class="tag-delete-btn"
+                    type="button"
+                    (click)="onDetachTag(o, tag, $event)"
+                    [attr.aria-label]="'common.delete' | translate"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
                 </span>
               </div>
 

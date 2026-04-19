@@ -118,7 +118,36 @@
 }
 
 .badge--blue { background: rgba(2, 132, 199, 0.14); }
-.badge--order-tag { background: rgba(11, 15, 245, 0.18); border-color: rgba(11, 15, 245, 0.28); }
+.badge--order-tag {
+  background: rgba(11, 15, 245, 0.18);
+  border-color: rgba(11, 15, 245, 0.28);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+
+  .tag-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 2px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    line-height: 1;
+
+    &:hover { opacity: 1; }
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+    }
+  }
+}
 
 .badge--subtle {
   opacity: 0.85;

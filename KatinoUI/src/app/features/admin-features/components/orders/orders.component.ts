@@ -38,6 +38,8 @@ import { NovaPostService } from 'src/app/features/common-services/nova-post.serv
 import { OrderSort } from 'src/app/core/enums/order-sort';
 import { DeliveryType } from 'src/app/core/enums/delivery-type';
 import { OrderTagType } from 'src/app/core/enums/order-tag-type';
+import { OrderTag } from 'src/app/core/models/order/order-tag';
+import { OrderTagService } from '../../services/order-tag.service';
 
 @Component({
   selector: 'app-orders',
@@ -106,6 +108,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _userService: CurrentUserService,
     private _novaPostService: NovaPostService,
     private datePipe: DatePipe,
+    private _orderTagService: OrderTagService,
   ) {}
 
   public ngOnInit(): void {
@@ -405,6 +408,27 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   public getOrderTagTextKey(type: OrderTagType): string {
     return this._customTranslate.getOrderTagTextKey(type);
+  }
+
+  public onDetachTag(order: Order, tag: OrderTag, event: MouseEvent): void {
+    event.stopPropagation();
+    order.tags = order.tags.filter((t) => t.id !== tag.id);
+    this._orderTagService
+      .detachOrderTag(order.id, tag.id)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe({
+        next: () => {
+          this._toastr.success(
+            this._translate.instant('orders.toastr.tagDetached'),
+          );
+        },
+        error: () => {
+          order.tags = [...order.tags, tag];
+          this._toastr.error(
+            this._translate.instant('orders.toastr.tagDetachFailed'),
+          );
+        },
+      });
   }
 
   get orderSearchString() {
