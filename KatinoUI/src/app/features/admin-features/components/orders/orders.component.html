@@ -52,7 +52,33 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 2: sort + creation date range -->
+        <!-- Row 2: tags -->
+        <div class="form-row">
+          <mat-form-field
+            class="form-control status-field"
+            appearance="outline"
+          >
+            <mat-label>{{ "orders.filters.tags" | translate }}</mat-label>
+
+            <mat-select formControlName="orderTags" multiple>
+              <ng-container *ngIf="translatedAllTagsOption$ | async as allLabel">
+                <mat-option
+                  [value]="ALL_TAGS_VALUE"
+                  (onSelectionChange)="onAllTagsToggled($event)"
+                >
+                  {{ allLabel }}
+                </mat-option></ng-container
+              >
+
+              <mat-divider></mat-divider>
+              <mat-option *ngFor="let tag of allTags" [value]="tag.id">
+                {{ getOrderTagTextKey(tag.type) | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: sort + creation date range -->
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-control">
             <mat-label>{{ "orders.filters.sort" | translate }}</mat-label>

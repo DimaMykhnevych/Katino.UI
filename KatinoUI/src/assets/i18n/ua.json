@@ -409,7 +409,9 @@
       "clearDates": "Відчистити",
       "sort": "Сортування",
       "sortByCreationDate": "За датою створення",
-      "sortByUrgency": "За терміновістю"
+      "sortByUrgency": "За терміновістю",
+      "tags": "Теги",
+      "allTags": "Усі теги"
     },
     "addingOrder": {
       "dialogTitle": "Додавання Замовлення"

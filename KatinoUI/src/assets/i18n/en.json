@@ -409,7 +409,9 @@
       "clearDates": "Clear",
       "sort": "Sort",
       "sortByCreationDate": "By creation date",
-      "sortByUrgency": "By urgency"
+      "sortByUrgency": "By urgency",
+      "tags": "Tags",
+      "allTags": "All tags"
     },
     "addingOrder": {
       "dialogTitle": "Adding Order"

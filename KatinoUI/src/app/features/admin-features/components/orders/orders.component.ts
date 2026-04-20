@@ -51,6 +51,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public readonly DeliveryType = DeliveryType;
   public readonly OrderTagType = OrderTagType;
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
+  public readonly ALL_TAGS_VALUE = DefaultOptions.allSelectionOptionId;
   public readonly orderSortOptions: { value: OrderSort; labelKey: string }[] = [
     {
       value: OrderSort.byCreationDate,
@@ -59,6 +60,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     { value: OrderSort.byUrgency, labelKey: 'orders.filters.sortByUrgency' },
   ];
   public translatedAllOption$?: Observable<string>;
+  public translatedAllTagsOption$?: Observable<string>;
+  public allTags: OrderTag[] = [];
 
   public userRole: string | undefined = '';
   public form: FormGroup = this._builder.group({});
@@ -118,6 +121,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.translatedAllOption$ = this._translate.stream(
       'orders.filters.allStatuses',
     );
+    this.translatedAllTagsOption$ = this._translate.stream(
+      'orders.filters.allTags',
+    );
+    this._orderTagService
+      .getOrderTags()
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((tags) => {
+        this.allTags = tags;
+      });
     this.subscribeOnFormValueChanges();
 
     this.fetchOrders();
@@ -379,6 +391,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onAllTagsToggled(e: MatOptionSelectionChange): void {
+    if (!e.isUserInput) return;
+
+    if (e.source.selected) {
+      this.orderTagsControl!.setValue([this.ALL_TAGS_VALUE], {
+        emitEvent: true,
+      });
+    } else {
+      this.orderTagsControl!.setValue([], { emitEvent: true });
+    }
+  }
+
   public onAllStatusesToggled(e: MatOptionSelectionChange): void {
     if (!e.isUserInput) return;
 
@@ -421,6 +445,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
           this._toastr.success(
             this._translate.instant('orders.toastr.tagDetached'),
           );
+          this.fetchOrders();
         },
         error: () => {
           order.tags = [...order.tags, tag];
@@ -451,6 +476,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return this.form.get('orderSort');
   }
 
+  get orderTagsControl() {
+    return this.form.get('orderTags');
+  }
+
   private fetchOrders(sort?: OrderSort): void {
     const values = (this.orderStatuses!.value ?? []) as (
       | OrderStatus
@@ -470,6 +499,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       pageSize: this.pageSize,
       search: (this.form.value.orderSearchString || '').trim(),
       orderStatuses: isAll ? [] : (values as OrderStatus[]),
+      tagIds: this.getSelectedTagIds(),
       createdFrom: this.toUtcStartOfDay(this.form.value.createdFrom),
       createdTo: this.toUtcEndOfDay(this.form.value.createdTo),
       sort: sort ?? this.form.value.orderSort ?? OrderSort.byCreationDate,
@@ -537,6 +567,29 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return Math.round((bDate - aDate) / (1000 * 60 * 60 * 24));
   }
 
+  private getSelectedTagIds(): string[] {
+    const values = (this.orderTagsControl!.value ?? []) as string[];
+    const isAll = values.includes(this.ALL_TAGS_VALUE);
+    return isAll ? [] : values;
+  }
+
+  private applyAllTagsRules(values: string[]): void {
+    const ctrl = this.orderTagsControl!;
+    const hasAll = values.includes(this.ALL_TAGS_VALUE);
+
+    if (hasAll && values.length > 1) {
+      ctrl.setValue(
+        values.filter((v) => v !== this.ALL_TAGS_VALUE),
+        { emitEvent: false },
+      );
+      return;
+    }
+
+    if (!hasAll && values.length === 0) {
+      ctrl.setValue([this.ALL_TAGS_VALUE], { emitEvent: false });
+    }
+  }
+
   private applyAllStatusesRules(values: (OrderStatus | string)[]): void {
     const ctrl = this.form.get('orderStatuses')!;
     const hasAll = values.includes(this.ALL_STATUSES_VALUE);
@@ -586,6 +639,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.form = this._builder.group({
       orderSearchString: new FormControl(''),
       orderStatuses: new FormControl([this.ALL_STATUSES_VALUE]),
+      orderTags: new FormControl([this.ALL_TAGS_VALUE]),
       createdFrom: new FormControl(null),
       createdTo: new FormControl(null),
       orderSort: new FormControl(OrderSort.byCreationDate),
@@ -624,6 +678,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.pageIndex = 0;
         this.fetchOrders();
       });
+
+    this.orderTagsControl!.valueChanges.pipe(
+      auditTime(0),
+      takeUntil(this._destroy$),
+    ).subscribe(() => {
+      const values = (this.orderTagsControl!.value ?? []) as string[];
+      this.applyAllTagsRules(values);
+      this.pageIndex = 0;
+      this.fetchOrders();
+    });
 
     this.orderSort!.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(
       (sort: OrderSort) => {

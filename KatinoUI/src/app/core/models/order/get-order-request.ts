@@ -6,6 +6,7 @@ export interface GetOrderRequest {
   page: number;
   pageSize: number;
   orderStatuses: OrderStatus[];
+  tagIds: string[];
   createdFrom: string | null;
   createdTo: string | null;
   sort: OrderSort;
