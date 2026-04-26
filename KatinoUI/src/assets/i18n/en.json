@@ -145,7 +145,14 @@
     "updatingCategory": "Updating Category",
     "addingSize": "Adding Size",
     "addingColor": "Adding Color",
-    "updatingColor": "Updating Color"
+    "updatingColor": "Updating Color",
+    "sewingQueueVisibility": "Sewing queue visibility",
+    "sewers": "Sewers",
+    "visibility": {
+      "allSewers": "All sewers",
+      "noSewers": "No sewers",
+      "specific": "Specific sewers"
+    }
   },
   "toastrs": {
     "categoryAdded": "Category was successfully added",

@@ -317,6 +317,36 @@
 
       <hr />
       <div class="row">
+        <div class="col-lg-6 col-md-6 col-12">
+          <mat-form-field appearance="outline" class="w-100 product-variant-form-input">
+            <mat-label>{{ "adminFeatures.sewingQueueVisibility" | translate }}</mat-label>
+            <mat-select formControlName="sewingQueueVisibility" required>
+              <mat-option
+                *ngFor="let v of allSewingQueueVisibilities"
+                [value]="v"
+              >
+                {{ getSewingQueueVisibilityDisplayName(v) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12" *ngIf="isSpecificVisibility">
+          <mat-form-field appearance="outline" class="w-100 product-variant-form-input">
+            <mat-label>{{ "adminFeatures.sewers" | translate }}</mat-label>
+            <mat-select formControlName="sewerIds" multiple>
+              <mat-option *ngFor="let sewer of sewers" [value]="sewer.id">
+                {{ sewer.userName }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="sewerIds?.errors?.sewersRequired && sewerIds?.touched">
+              {{ "validation.requiredField" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row">
         <div class="col-12">
           <h4 class="photos-header mb-3">
             {{ "inventory.photos" | translate }}

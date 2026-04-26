@@ -96,7 +96,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       )
       .subscribe((resp: GetSewingQueueItems) => {
         const items = resp?.sewingQueueItems ?? [];
-        this.resultsAmount = resp?.resultsAmount ?? items.length;
+        this.resultsAmount = items.reduce((sum, item) => sum + (item.quantityToProduce ?? 0), 0);
         this.dataSource.data = items;
         this.rebuildActualForms(items);
       });

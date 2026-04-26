@@ -8,10 +8,13 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
 import { AddEditProductData } from '../../models/add-edit-product-data';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Product } from 'src/app/core/models/product';
@@ -38,6 +41,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateProductVariant } from '../../models/update-product-variant';
 import { PhotoItem } from '../../models/photo-item';
 import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
+import { SewingQueueVisibility } from 'src/app/core/enums/sewing-queue-visibility';
+import { Sewer } from 'src/app/core/models/sewer';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-add-product-variant-dialog',
@@ -57,6 +63,14 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     StatusConstants.allProductStatuses;
 
   public measurementTypesResponse?: GetMeasurementTypesResponse;
+
+  public sewers: Sewer[] = [];
+  public sewingQueueVisibilityEnum = SewingQueueVisibility;
+  public allSewingQueueVisibilities: SewingQueueVisibility[] = [
+    SewingQueueVisibility.allSewers,
+    SewingQueueVisibility.noSewers,
+    SewingQueueVisibility.specific,
+  ];
 
   public photos: PhotoItem[] = [];
   public isUploadingPhoto: boolean = false;
@@ -80,6 +94,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     private _sizeService: SizeService,
     private _colorService: ColorService,
     private _measurementTypeService: MeasurementTypeService,
+    private _userService: UserService,
     private _dialogService: DialogService,
     private _builder: FormBuilder,
     private _customTranslateService: CustomTranslateService,
@@ -93,6 +108,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     this.initializeForm();
     this.loadAllData();
     this.loadExistingPhotos();
+    this.subscribeToVisibilityChanges();
   }
 
   public ngOnDestroy(): void {
@@ -495,6 +511,15 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       );
     });
 
+    formData.append(
+      'ProductVariant.SewingQueueVisibility',
+      this.sewingQueueVisibility?.value.toString(),
+    );
+    const sewerIds: string[] = this.sewerIds?.value ?? [];
+    sewerIds.forEach((sewerId, index) => {
+      formData.append(`ProductVariant.SewerIds[${index}]`, sewerId);
+    });
+
     const newPhotos = this.photos.filter((p) => !p.isExisting && p.file);
     newPhotos.forEach((photo, _) => {
       formData.append('ProductVariant.Photos', photo.file!, photo.file!.name);
@@ -587,6 +612,15 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
       );
     });
 
+    formData.append(
+      'ProductVariant.SewingQueueVisibility',
+      this.sewingQueueVisibility?.value.toString(),
+    );
+    const sewerIds: string[] = this.sewerIds?.value ?? [];
+    sewerIds.forEach((sewerId, index) => {
+      formData.append(`ProductVariant.SewerIds[${index}]`, sewerId);
+    });
+
     const newPhotos = this.photos.filter((p) => !p.isExisting && p.file);
     newPhotos.forEach((photo) => {
       formData.append(
@@ -672,6 +706,33 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
     this._toastr.error(`${text}`);
   }
 
+  private subscribeToVisibilityChanges(): void {
+    this.updateSewersValidation(this.sewingQueueVisibility?.value);
+
+    this.sewingQueueVisibility?.valueChanges
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((visibility) => {
+        this.updateSewersValidation(visibility);
+      });
+  }
+
+  private updateSewersValidation(visibility: SewingQueueVisibility): void {
+    const control = this.sewerIds;
+    if (visibility === SewingQueueVisibility.specific) {
+      control?.setValidators([this.sewersNotEmptyValidator()]);
+    } else {
+      control?.clearValidators();
+    }
+    control?.updateValueAndValidity();
+  }
+
+  private sewersNotEmptyValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value: string[] = control.value;
+      return !value || value.length === 0 ? { sewersRequired: true } : null;
+    };
+  }
+
   private checkStatusValidity(): void {
     if (
       this.quantityInStock?.value <= 0 &&
@@ -734,6 +795,9 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           } as GetMeasurementTypesResponse);
         }),
       ),
+      sewers: this._userService.getSewers().pipe(
+        catchError(() => of([] as Sewer[])),
+      ),
     })
       .pipe(takeUntil(this._destroy$))
       .subscribe({
@@ -742,6 +806,7 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
           this.sizesResponse = responses.sizes;
           this.colorsResponse = responses.colors;
           this.measurementTypesResponse = responses.measurementTypes;
+          this.sewers = responses.sewers;
 
           if (responses.article !== null) {
             this.article?.setValue(responses.article);
@@ -797,6 +862,14 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
         [Validators.required],
       ),
       measurements: this._builder.array([]),
+      sewingQueueVisibility: new FormControl(
+        this.data?.productVariant?.sewingQueueVisibility ??
+          SewingQueueVisibility.allSewers,
+        [Validators.required],
+      ),
+      sewerIds: new FormControl(
+        this.data?.productVariant?.sewers?.map((s) => s.id) ?? [],
+      ),
     });
   }
 
@@ -852,6 +925,31 @@ export class AddProductVariantDialogComponent implements OnInit, OnDestroy {
 
   get measurements(): FormArray {
     return this.form.get('measurements') as FormArray;
+  }
+
+  get sewingQueueVisibility() {
+    return this.form.get('sewingQueueVisibility');
+  }
+
+  get sewerIds() {
+    return this.form.get('sewerIds');
+  }
+
+  get isSpecificVisibility(): boolean {
+    return (
+      this.sewingQueueVisibility?.value === SewingQueueVisibility.specific
+    );
+  }
+
+  public getSewingQueueVisibilityDisplayName(
+    visibility: SewingQueueVisibility,
+  ): string {
+    const keyMap: Record<SewingQueueVisibility, string> = {
+      [SewingQueueVisibility.allSewers]: 'adminFeatures.visibility.allSewers',
+      [SewingQueueVisibility.noSewers]: 'adminFeatures.visibility.noSewers',
+      [SewingQueueVisibility.specific]: 'adminFeatures.visibility.specific',
+    };
+    return this._translate.instant(keyMap[visibility]);
   }
 
   public getMeasurementGroup(index: number): FormGroup {

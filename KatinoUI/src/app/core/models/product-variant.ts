@@ -1,8 +1,10 @@
 import { ProductStatus } from '../enums/product-status';
+import { SewingQueueVisibility } from '../enums/sewing-queue-visibility';
 import { Color } from './color';
 import { GetProductVariantMeasurement } from './get-product-variant-measurement';
 import { Product } from './product';
 import { ProductPhoto } from './product-photo';
+import { Sewer } from './sewer';
 import { Size } from './size';
 
 export interface ProductVariant {
@@ -23,4 +25,6 @@ export interface ProductVariant {
   size: Size;
   measurements: GetProductVariantMeasurement[];
   photos: ProductPhoto[];
+  sewingQueueVisibility: SewingQueueVisibility;
+  sewers: Sewer[];
 }

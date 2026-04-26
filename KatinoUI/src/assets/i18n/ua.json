@@ -145,7 +145,14 @@
     "updatingCategory": "Оновлення Категорії",
     "addingSize": "Додавання Розміру",
     "addingColor": "Додавання Кольору",
-    "updatingColor": "Оновлення Кольору"
+    "updatingColor": "Оновлення Кольору",
+    "sewingQueueVisibility": "Видимість у черзі на шиття",
+    "sewers": "Швеї",
+    "visibility": {
+      "allSewers": "Всі швеї",
+      "noSewers": "Жодній швеї",
+      "specific": "Конкретні швеї"
+    }
   },
   "toastrs": {
     "categoryAdded": "Категорію успішно збережено",
