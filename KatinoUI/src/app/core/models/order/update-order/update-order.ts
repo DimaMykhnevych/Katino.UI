@@ -27,6 +27,7 @@ export interface UpdateOrder {
 
   orderItems: UpdateOrderItem[];
   orderNpOptionsSeats: AddOrderNpOptionsSeat[];
+  customTags: string[];
 
   senderNpCity: NpCityResponse;
   recipientNpCity?: NpCityResponse;

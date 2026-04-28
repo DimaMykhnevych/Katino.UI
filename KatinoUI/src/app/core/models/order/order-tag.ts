@@ -4,4 +4,5 @@ export interface OrderTag {
   id: string;
   type: OrderTagType;
   canBeDeleted: boolean;
+  value: string;
 }

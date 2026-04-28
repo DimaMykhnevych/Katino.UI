@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MaterialModule } from 'src/app/layout/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TagAutocompleteModule } from 'src/app/layout/tag-autocomplete/tag-autocomplete.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from 'src/app/core/core.module';
 import { LoginComponent } from './components/login/login.component';
@@ -53,6 +54,7 @@ import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.com
     CommonComponentsModule,
     FormsModule,
     ImageCropperModule,
+    TagAutocompleteModule,
   ],
   providers: [DatePipe],
 })

@@ -181,6 +181,11 @@
   }
 }
 
+.badge--custom-tag {
+  background: rgba(17, 191, 235, 0.18);
+  border-color: rgba(17, 191, 235, 0.35);
+}
+
 .order-tags {
   display: flex;
   flex-wrap: wrap;

@@ -43,6 +43,8 @@ import { ProductStatus } from 'src/app/core/enums/product-status';
 import { TranslateService } from '@ngx-translate/core';
 import { CrmUserSettings } from 'src/app/core/models/crm-user-settings';
 import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order';
+import { OrderTag } from 'src/app/core/models/order/order-tag';
+import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -62,6 +64,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
   public data: AddEditOrderData;
   public isUpdatingData: boolean = false;
+  public initialCustomTags: OrderTag[] = [];
+  public customTagValues: string[] = [];
   public phoneSuggestions: NpContactPerson[] = [];
   public isPhoneOptionSelected = false;
   public isSearchingPhones = false;
@@ -113,6 +117,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.initialCustomTags = (this.data?.order?.tags ?? []).filter(
+      (t) => t.type === OrderTagType.custom,
+    );
+    this.customTagValues = this.initialCustomTags.map((t) => t.value);
     this.initializeForm();
     this.applyInitialRecipientWarehouse();
     this.populateOrderItemsFromExistingOrder();
@@ -412,6 +420,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         dt === DeliveryType.notNovaPost
           ? (this.generalOrderInfo?.value ?? '')
           : undefined,
+
+      customTags: [...this.customTagValues],
     };
 
     return model;
@@ -510,6 +520,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         dt === DeliveryType.notNovaPost
           ? (this.generalOrderInfo?.value ?? '')
           : undefined,
+
+      customTags: [...this.customTagValues],
     };
   }
 

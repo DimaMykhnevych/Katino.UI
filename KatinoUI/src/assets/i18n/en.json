@@ -280,7 +280,8 @@
       "description": "Description",
       "comment": "Comment",
       "generalOrderInfo": "Delivery information",
-      "tags": "Tags"
+      "tags": "Tags",
+      "customTags": "Custom tags"
     },
     "tags": {
       "notNpOrder": "Not NP",

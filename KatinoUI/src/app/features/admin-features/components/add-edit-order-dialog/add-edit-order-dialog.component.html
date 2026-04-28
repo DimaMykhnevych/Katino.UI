@@ -703,6 +703,13 @@
                   ></textarea>
                 </mat-form-field>
               </div>
+
+              <div class="col-12">
+                <app-tag-autocomplete
+                  [initialTags]="initialCustomTags"
+                  (tagsChanged)="customTagValues = $event"
+                ></app-tag-autocomplete>
+              </div>
             </div>
           </div>
         </div>

@@ -72,7 +72,11 @@
 
               <mat-divider></mat-divider>
               <mat-option *ngFor="let tag of allTags" [value]="tag.id">
-                {{ getOrderTagTextKey(tag.type) | translate }}
+                {{
+                  tag.type === OrderTagType.custom
+                    ? tag.value
+                    : (getOrderTagTextKey(tag.type) | translate)
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -212,8 +216,16 @@
           <td mat-cell *matCellDef="let o">
             <div class="cell-stack">
               <div class="order-tags" *ngIf="o.tags?.length">
-                <span class="badge badge--order-tag" *ngFor="let tag of o.tags">
-                  {{ getOrderTagTextKey(tag.type) | translate }}
+                <span
+                  class="badge badge--order-tag"
+                  [class.badge--custom-tag]="tag.type === OrderTagType.custom"
+                  *ngFor="let tag of o.tags"
+                >
+                  {{
+                    tag.type === OrderTagType.custom
+                      ? tag.value
+                      : (getOrderTagTextKey(tag.type) | translate)
+                  }}
                   <button
                     *ngIf="tag.canBeDeleted"
                     class="tag-delete-btn"

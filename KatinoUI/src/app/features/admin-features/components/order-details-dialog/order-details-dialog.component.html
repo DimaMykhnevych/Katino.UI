@@ -60,8 +60,16 @@
         <div class="k">{{ "orders.labels.tags" | translate }}</div>
         <div class="v">
           <div class="tags-row">
-            <span class="badge badge--order-tag" *ngFor="let tag of order.tags">
-              {{ getOrderTagTextKey(tag.type) | translate }}
+            <span
+              class="badge badge--order-tag"
+              [class.badge--custom-tag]="tag.type === OrderTagType.custom"
+              *ngFor="let tag of order.tags"
+            >
+              {{
+                tag.type === OrderTagType.custom
+                  ? tag.value
+                  : (getOrderTagTextKey(tag.type) | translate)
+              }}
               <button
                 *ngIf="tag.canBeDeleted"
                 class="tag-delete-btn"

@@ -280,7 +280,8 @@
       "description": "Опис",
       "comment": "Коментар",
       "generalOrderInfo": "Інформація про доставку",
-      "tags": "Теги"
+      "tags": "Теги",
+      "customTags": "Кастомні теги"
     },
     "tags": {
       "notNpOrder": "Не НП",

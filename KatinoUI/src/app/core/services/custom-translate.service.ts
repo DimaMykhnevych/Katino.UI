@@ -213,6 +213,8 @@ export class CustomTranslateService {
         return 'orders.tags.notNpOrder';
       case OrderTagType.refundMoney:
         return 'orders.tags.refundMoney';
+      case OrderTagType.custom:
+        return '';
       default:
         return '';
     }
