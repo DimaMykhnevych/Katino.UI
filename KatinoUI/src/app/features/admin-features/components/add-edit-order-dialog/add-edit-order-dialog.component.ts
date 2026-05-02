@@ -363,6 +363,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         : this.data?.order?.saleType) as SaleType,
 
       sendUntilDate: this.asLocalNoon(this.form.value.sendUntilDate),
+      creationDateTime: this.withCurrentTime(this.form.value.creationDateTime),
       weight: Number(this.seatGroup.get('weight')?.value ?? 2),
       deliveryType: dt,
       seatsAmount: 1,
@@ -753,6 +754,12 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         Validators.required,
         FormValidators.notInPastDateValidator(),
       ]),
+      creationDateTime: new FormControl(
+        this.data?.order?.creationDateTime
+          ? new Date(this.data.order.creationDateTime)
+          : new Date(),
+        [Validators.required],
+      ),
       description: new FormControl(
         this.data?.order?.description ?? this.DEFAULT_DESCRIPTION,
       ),
@@ -769,6 +776,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
     if (!this.data?.isAdding) {
       this.deliveryType?.disable({ emitEvent: false });
+      this.creationDateTime?.disable({ emitEvent: false });
     }
 
     this.applyPrepaymentValidators(this.isPrepayment?.value === true);
@@ -1002,6 +1010,13 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     return x;
   }
 
+  private withCurrentTime(d: Date): Date {
+    const result = new Date(d);
+    const now = new Date();
+    result.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), 0);
+    return result;
+  }
+
   get deliveryType() {
     return this.form.get('deliveryType');
   }
@@ -1050,6 +1065,9 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
   get sendUntilDate() {
     return this.form.get('sendUntilDate');
+  }
+  get creationDateTime() {
+    return this.form.get('creationDateTime');
   }
   get description() {
     return this.form.get('description');

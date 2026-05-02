@@ -277,6 +277,7 @@
       "prepayment": "Prepayment",
       "afterpayment": "Afterpayment amount",
       "sendUntilDate": "Send until",
+      "creationDateTime": "Creation date",
       "description": "Description",
       "comment": "Comment",
       "generalOrderInfo": "Delivery information",

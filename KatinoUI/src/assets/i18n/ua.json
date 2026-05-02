@@ -277,6 +277,7 @@
       "prepayment": "Передоплата",
       "afterpayment": "Сума післяплати",
       "sendUntilDate": "Відправити до",
+      "creationDateTime": "Дата створення",
       "description": "Опис",
       "comment": "Коментар",
       "generalOrderInfo": "Інформація про доставку",

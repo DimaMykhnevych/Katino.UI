@@ -15,6 +15,7 @@ export interface AddOrder {
   payerType: PayerType;
   paymentMethod: PaymentMethod;
   saleType: SaleType;
+  creationDateTime: Date;
   sendUntilDate: Date;
   weight: number;
   deliveryType: DeliveryType;
