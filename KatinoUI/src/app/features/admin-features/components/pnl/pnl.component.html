@@ -115,7 +115,19 @@
         </div>
 
         <ng-container *ngIf="!isLoading">
-          <div class="mat-table-container">
+          <!-- Historical year screenshot -->
+          <div class="screenshot-container" *ngIf="screenshotUrl">
+            <img [src]="screenshotUrl" class="report-screenshot" [alt]="selectedYear.toString()" />
+          </div>
+
+          <!-- Screenshot load error -->
+          <div class="screenshot-error" *ngIf="screenshotError">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ "pnl.screenshotError" | translate }}</span>
+          </div>
+
+          <!-- Normal table (2026+) -->
+          <div class="mat-table-container" *ngIf="!isScreenshotYear">
             <table mat-table [dataSource]="dataSource" class="w-100 pnl-table">
               <!-- Title -->
               <ng-container matColumnDef="title">
@@ -231,7 +243,7 @@
       </mat-tab>
 
       <!-- TAB 2: Expenses -->
-      <mat-tab [label]="'pnl.tabs.expenses' | translate">
+      <mat-tab [label]="'pnl.tabs.expenses' | translate" [disabled]="isScreenshotYear">
         <app-pnl-expenses
           [year]="selectedYear"
           [expenseCategories]="expenseCategories"

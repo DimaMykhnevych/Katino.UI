@@ -501,6 +501,7 @@
   "pnl": {
     "pnlHeader": "Profit and Loss",
     "year": "Year",
+    "screenshotError": "Failed to load report",
     "tabs": {
       "report": "Report",
       "expenses": "Expenses"

@@ -12,6 +12,7 @@ import { FinanceCategoryService } from '../../services/finance-category.service'
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pnl',
@@ -19,10 +20,19 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
   styleUrls: ['./pnl.component.scss'],
 })
 export class PnlComponent implements OnInit, OnDestroy {
+  public readonly SCREENSHOT_YEARS = [2023, 2024, 2025];
+
   public isLoading = false;
 
   public selectedYear!: number;
   public yearOptions: number[] = [];
+
+  public screenshotUrl: SafeUrl | null = null;
+  public screenshotError = false;
+
+  public get isScreenshotYear(): boolean {
+    return this.SCREENSHOT_YEARS.includes(this.selectedYear);
+  }
 
   public report?: PnlReport;
 
@@ -56,6 +66,7 @@ export class PnlComponent implements OnInit, OnDestroy {
 
   public readonly PnlRowKind = PnlRowKind;
 
+  private _screenshotObjectUrl: string | null = null;
   private _destroy$ = new Subject<void>();
 
   constructor(
@@ -63,23 +74,25 @@ export class PnlComponent implements OnInit, OnDestroy {
     private _financeCategoryService: FinanceCategoryService,
     private _toastr: ToastrService,
     private _translate: TranslateService,
+    private _sanitizer: DomSanitizer,
   ) {}
 
   public ngOnInit(): void {
     this.buildYearOptions();
     this.selectedYear = this.yearOptions[this.yearOptions.length - 1];
-    this.loadReport(this.selectedYear);
+    this.loadForYear(this.selectedYear);
     this.loadExpenseCategories();
   }
 
   public ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+    this._revokeScreenshotUrl();
   }
 
   public onYearChanged(year: number): void {
     this.selectedYear = year;
-    this.loadReport(year);
+    this.loadForYear(year);
   }
 
   public getRowTitle(row: PnlRow): string {
@@ -201,12 +214,53 @@ export class PnlComponent implements OnInit, OnDestroy {
 
   public onTabChanged(e: MatTabChangeEvent): void {
     if (e.index === this.REPORT_TAB_INDEX) {
-      this.loadReport(this.selectedYear);
+      this.loadForYear(this.selectedYear);
+    }
+  }
+
+  private loadForYear(year: number): void {
+    if (this.SCREENSHOT_YEARS.includes(year)) {
+      this.loadScreenshot(year);
+    } else {
+      this.screenshotUrl = null;
+      this.screenshotError = false;
+      this.loadReport(year);
+    }
+  }
+
+  private loadScreenshot(year: number): void {
+    this.isLoading = true;
+    this.screenshotUrl = null;
+    this.screenshotError = false;
+
+    this._pnlService
+      .getPnlScreenshot(year)
+      .pipe(
+        takeUntil(this._destroy$),
+        catchError(() => {
+          this.screenshotError = true;
+          return of(null);
+        }),
+        finalize(() => (this.isLoading = false)),
+      )
+      .subscribe((blob) => {
+        if (blob) {
+          this._revokeScreenshotUrl();
+          this._screenshotObjectUrl = URL.createObjectURL(blob);
+          this.screenshotUrl = this._sanitizer.bypassSecurityTrustUrl(this._screenshotObjectUrl);
+        }
+      });
+  }
+
+  private _revokeScreenshotUrl(): void {
+    if (this._screenshotObjectUrl) {
+      URL.revokeObjectURL(this._screenshotObjectUrl);
+      this._screenshotObjectUrl = null;
     }
   }
 
   private buildYearOptions(): void {
-    const MIN_YEAR = 2026;
+    const MIN_YEAR = 2023;
     const now = new Date();
     const currentYear = now.getFullYear();
     const maxYear = Math.max(currentYear, MIN_YEAR);

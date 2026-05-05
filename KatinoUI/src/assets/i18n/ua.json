@@ -501,6 +501,7 @@
   "pnl": {
     "pnlHeader": "Дохід та Витрати",
     "year": "Рік",
+    "screenshotError": "Не вдалося завантажити звіт",
     "tabs": {
       "report": "Звіт",
       "expenses": "Витрати"

@@ -23,4 +23,11 @@ export class FinanceReportService {
       },
     );
   }
+
+  public getPnlScreenshot(year: number): Observable<Blob> {
+    return this._http.get(
+      `${AppSettings.apiHost}/FinanceReport/pnl-screenshot/${year}`,
+      { responseType: 'blob' },
+    );
+  }
 }
