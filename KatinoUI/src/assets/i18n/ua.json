@@ -92,7 +92,28 @@
     "orders": "Замовлення",
     "crm-settings": "Налаштування CRM",
     "sewing-queue": "Черга На Шиття",
-    "pnl": "P&L"
+    "pnl": "P&L",
+    "employees": "Співробітники"
+  },
+  "employees": {
+    "header": "Співробітники",
+    "empty": "Немає співробітників",
+    "activate": "Активувати",
+    "deactivate": "Деактивувати",
+    "statusActive": "Активний",
+    "statusInactive": "Неактивний",
+    "table": {
+      "userName": "Користувач",
+      "email": "Email",
+      "role": "Роль",
+      "registryDate": "Дата реєстрації",
+      "status": "Статус",
+      "actions": "Дії"
+    },
+    "toastr": {
+      "activationSuccess": "Статус успішно оновлено",
+      "activationFailed": "Не вдалося оновити статус"
+    }
   },
   "inventory": {
     "availability": "Наявність",

@@ -10,6 +10,7 @@ import { OrdersComponent } from './features/admin-features/components/orders/ord
 import { CrmSettingsComponent } from './features/admin-features/components/crm-settings/crm-settings.component';
 import { SewingQueueComponent } from './features/admin-features/components/sewing-queue/sewing-queue.component';
 import { PnlComponent } from './features/admin-features/components/pnl/pnl.component';
+import { EmployeesComponent } from './features/admin-features/components/employees/employees.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,13 @@ const routes: Routes = [
         component: OrdersComponent,
         data: {
           roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
+        },
+      },
+      {
+        path: 'employees',
+        component: EmployeesComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner],
         },
       },
       {

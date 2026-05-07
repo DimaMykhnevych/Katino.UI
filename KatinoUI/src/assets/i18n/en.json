@@ -92,7 +92,28 @@
     "orders": "Orders",
     "crm-settings": "CRM Settings",
     "sewing-queue": "Sewing Queue",
-    "pnl": "P&L"
+    "pnl": "P&L",
+    "employees": "Employees"
+  },
+  "employees": {
+    "header": "Employees",
+    "empty": "No employees found",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "table": {
+      "userName": "Username",
+      "email": "Email",
+      "role": "Role",
+      "registryDate": "Registration date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "toastr": {
+      "activationSuccess": "Status updated successfully",
+      "activationFailed": "Failed to update status"
+    }
   },
   "inventory": {
     "availability": "Availability",

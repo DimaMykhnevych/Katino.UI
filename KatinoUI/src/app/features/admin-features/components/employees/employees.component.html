@@ -1,0 +1,109 @@
+<div class="main container-fluid p-3">
+  <div class="table-header">
+    <div class="header-content">
+      <h2 class="table-title">
+        <mat-icon class="title-icon">group</mat-icon>
+        {{ "employees.header" | translate }}
+      </h2>
+    </div>
+  </div>
+
+  <div class="mat-elevation-z8 table-wrapper">
+    <div class="loading" *ngIf="isLoading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+      <div class="empty" *ngIf="dataSource.data.length === 0">
+        <mat-icon class="empty-icon">group_off</mat-icon>
+        <span class="empty-title">{{ "employees.empty" | translate }}</span>
+      </div>
+
+      <div class="mat-table-container" *ngIf="dataSource.data.length > 0">
+        <mat-table [dataSource]="dataSource" class="employees-table">
+
+          <ng-container matColumnDef="userName">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.userName" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <div class="user-cell">
+                <span class="user-name">{{ user.userName }}</span>
+                <span class="user-sub mobile-only">{{ user.email }}</span>
+                <span class="user-sub mobile-only">({{ user.registryDate | date: 'dd.MM.yyyy' }})</span>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.email" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.role" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <div class="role-cell">
+                <span>{{ getRoleTranslationKey(user.role) | translate }}</span>
+                <span class="status-badge mobile-only" [class.active]="user.isActive" [class.inactive]="!user.isActive">
+                  {{ (user.isActive ? "employees.statusActive" : "employees.statusInactive") | translate }}
+                </span>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="registryDate">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.registryDate" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.registryDate | date: 'dd.MM.yyyy' }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.status" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <span class="status-badge" [class.active]="user.isActive" [class.inactive]="!user.isActive">
+                {{ (user.isActive ? "employees.statusActive" : "employees.statusInactive") | translate }}
+              </span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>{{ "employees.table.actions" | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <button
+                mat-stroked-button
+                color="primary"
+                *ngIf="!user.isActive"
+                [disabled]="isUpdating(user.userId)"
+                (click)="toggleActivation(user)"
+              >
+                <ng-container *ngIf="!isUpdating(user.userId)">
+                  {{ "employees.activate" | translate }}
+                </ng-container>
+                <div *ngIf="isUpdating(user.userId)" class="spinner-container">
+                  <mat-spinner diameter="16" color="accent"></mat-spinner>
+                  <span class="loading-text">{{ "employees.activate" | translate }}</span>
+                </div>
+              </button>
+              <button
+                mat-stroked-button
+                color="warn"
+                *ngIf="user.isActive"
+                [disabled]="isUpdating(user.userId)"
+                (click)="toggleActivation(user)"
+              >
+                <ng-container *ngIf="!isUpdating(user.userId)">
+                  {{ "employees.deactivate" | translate }}
+                </ng-container>
+                <div *ngIf="isUpdating(user.userId)" class="spinner-container">
+                  <mat-spinner diameter="16" color="accent"></mat-spinner>
+                  <span class="loading-text">{{ "employees.deactivate" | translate }}</span>
+                </div>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </ng-container>
+  </div>
+</div>

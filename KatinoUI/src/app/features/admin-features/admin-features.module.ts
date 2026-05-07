@@ -24,6 +24,7 @@ import { AddEditOrderDialogComponent } from './components/add-edit-order-dialog/
 import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.component';
 import { PnlComponent } from './components/pnl/pnl.component';
 import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.component';
+import { EmployeesComponent } from './components/employees/employees.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.com
     SewingQueueComponent,
     PnlComponent,
     PnlExpensesComponent,
+    EmployeesComponent,
   ],
   imports: [
     CommonModule,

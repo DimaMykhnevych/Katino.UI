@@ -20,6 +20,7 @@ export class SidenavComponent implements OnInit {
     Roles.DirectManager,
   ];
   public ordersPage: string[] = [Roles.Admin, Roles.Owner, Roles.DirectManager];
+  public employeesPage: string[] = [Roles.Admin, Roles.Owner];
   public crmSettingsPage: string[] = [Roles.Admin, Roles.Owner];
   public sewingQueuePage: string[] = [Roles.Admin, Roles.Owner, Roles.Sewer];
   public pnlPage: string[] = [Roles.Admin, Roles.Owner];
@@ -45,6 +46,8 @@ export class SidenavComponent implements OnInit {
         return this.inventoryPage.includes(this.userInfo.role || '');
       case 'orders':
         return this.ordersPage.includes(this.userInfo.role || '');
+      case 'employees':
+        return this.employeesPage.includes(this.userInfo.role || '');
       case 'crm-settings':
         return this.crmSettingsPage.includes(this.userInfo.role || '');
       case 'sewing-queue':
