@@ -350,36 +350,11 @@
               {{ "orders.sections.items" | translate }}
             </div>
 
-            <mat-form-field class="order-form-input" appearance="outline">
-              <mat-label>{{
-                "orders.labels.addProduct" | translate
-              }}</mat-label>
-              <input
-                matInput
-                [formControl]="productSearchCtrl"
-                [matAutocomplete]="productAuto"
-              />
-              <mat-autocomplete
-                #productAuto="matAutocomplete"
-                [displayWith]="displayProductVariant"
-                (optionSelected)="onProductSelected($event.option.value)"
-              >
-                <mat-option *ngFor="let pv of productVariants" [value]="pv">
-                  <div class="d-flex flex-column">
-                    <div class="d-flex">
-                      <strong>{{ pv.product.name }}</strong>
-                      <div
-                        class="product-status-indicator"
-                        [class]="getProductStatusClass(pv.status)"
-                      ></div>
-                    </div>
-                    <small class="text-muted">
-                      {{ pv.color.name }} • {{ pv.size.name }}
-                    </small>
-                  </div>
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
+            <app-product-variant-autocomplete
+              [label]="'orders.labels.addProduct' | translate"
+              [showStatus]="true"
+              (productSelected)="onProductSelected($event)"
+            ></app-product-variant-autocomplete>
 
             <div class="table-responsive" *ngIf="orderItems.length">
               <table class="table table-sm align-middle">

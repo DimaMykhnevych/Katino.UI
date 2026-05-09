@@ -1,0 +1,24 @@
+<mat-form-field class="pv-autocomplete-field" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <input matInput [formControl]="searchCtrl" [matAutocomplete]="pvAuto" />
+  <mat-spinner *ngIf="isSearching" matSuffix diameter="18"></mat-spinner>
+  <mat-autocomplete
+    #pvAuto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="onOptionSelected($event.option.value)"
+  >
+    <mat-option *ngFor="let pv of productVariants" [value]="pv">
+      <div class="d-flex flex-column">
+        <div class="d-flex align-items-center">
+          <strong>{{ pv.product.name }}</strong>
+          <div
+            *ngIf="showStatus"
+            class="product-status-indicator"
+            [class]="getStatusClass(pv.status)"
+          ></div>
+        </div>
+        <small class="text-muted">{{ pv.color.name }} • {{ pv.size.name }}</small>
+      </div>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

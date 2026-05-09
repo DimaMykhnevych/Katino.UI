@@ -31,7 +31,6 @@ import { AddOrderAddressInfo } from 'src/app/core/models/order/add-order/add-ord
 import { NpCityResponse } from 'src/app/core/models/nova-post/np-city-response';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
 import { ProductVariant } from 'src/app/core/models/product-variant';
-import { ProductVariantService } from '../../services/product-variant.service';
 import { SaleType } from 'src/app/core/enums/sale-type';
 import { PayerType } from 'src/app/core/enums/payer-type';
 import { PaymentMethod } from 'src/app/core/enums/payment-method';
@@ -58,7 +57,6 @@ export interface DeliveryTypeOption {
 })
 export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public readonly PREPAYMENT_AMOUNT = 200;
-  public readonly SEARCH_PRODUCTS_PAGE_SIZE = 1000;
   public form: FormGroup = this._builder.group({});
   public seatWeightOptions = [2, 4, 10];
 
@@ -76,9 +74,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   };
   public initialRecipientCity: NpCityResponse | null = null;
   public initialRecipientWarehouse: NpWarehouse | null = null;
-  public productSearchCtrl = new FormControl('');
-  public productVariants: ProductVariant[] = [];
-  public isSearchingProducts = false;
   public SaleType = SaleType;
 
   public deliveryTypeOptions: DeliveryTypeOption[] = Object.values(DeliveryType)
@@ -106,7 +101,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) data: AddEditOrderData,
     private _builder: FormBuilder,
     private _npService: NovaPostService,
-    private _productVariantService: ProductVariantService,
     private _crmSettingsService: CrmSettingsService,
     private _orderService: OrderService,
     private _toastr: ToastrService,
@@ -126,7 +120,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.populateOrderItemsFromExistingOrder();
     this.subscribeOnRecipientPhoneChanges();
     this.subscribeOnDeliveryTypeChanges();
-    this.subscribeOnProductSearch();
     this.subscribeOnPricingChanges();
   }
 
@@ -173,9 +166,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     this.recipientNpSelection = v;
   }
 
-  public displayProductVariant = (pv: ProductVariant): string =>
-    pv ? `${pv.product.name} • ${pv.color.name} • ${pv.size.name}` : '';
-
   public onProductSelected(pv: ProductVariant): void {
     this.orderItems.push(
       this._builder.group({
@@ -186,9 +176,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         quantity: [1, [Validators.required, Validators.min(1)]],
       }),
     );
-
-    this.productSearchCtrl.setValue('');
-    this.productVariants = [];
   }
 
   public isFormValid(): boolean {
@@ -297,20 +284,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
         this._dialogRef.close(true);
       });
-  }
-
-  public getProductStatusClass(productStatus: ProductStatus): string {
-    switch (productStatus) {
-      case ProductStatus.inStock:
-        return 'inStock';
-      case ProductStatus.onOrder:
-        return 'onOrder';
-      case ProductStatus.discontinued:
-        return 'discontinued';
-
-      default:
-        return '';
-    }
   }
 
   private normalizePhone(value: string): string {
@@ -582,32 +555,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
       this.applyDeliveryTypeValidators(dt);
     });
-  }
-
-  private subscribeOnProductSearch(): void {
-    this.productSearchCtrl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        filter((v) => typeof v === 'string' && v.length >= 2),
-        tap(() => (this.isSearchingProducts = true)),
-        switchMap((value: string) =>
-          this._productVariantService
-            .getProductVariants({
-              productName: value,
-              page: 1,
-              pageSize: this.SEARCH_PRODUCTS_PAGE_SIZE,
-            })
-            .pipe(
-              catchError(() => of({ productVariants: [], resultsAmount: 0 })),
-            ),
-        ),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((resp) => {
-        this.productVariants = resp.productVariants;
-        this.isSearchingProducts = false;
-      });
   }
 
   private subscribeOnPricingChanges(): void {

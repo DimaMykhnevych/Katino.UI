@@ -8,9 +8,15 @@ import { SpinnerModule } from 'src/app/layout/spinner/spinner.module';
 import { NpWarehouseSelectionComponent } from './components/np-warehouse-selection/np-warehouse-selection.component';
 import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.component';
 import { ScrollableTableComponent } from './components/scrollable-table/scrollable-table.component';
+import { ProductVariantAutocompleteComponent } from './components/product-variant-autocomplete/product-variant-autocomplete.component';
 
 @NgModule({
-  declarations: [NpWarehouseSelectionComponent, PhotoOverlayComponent, ScrollableTableComponent],
+  declarations: [
+    NpWarehouseSelectionComponent,
+    PhotoOverlayComponent,
+    ScrollableTableComponent,
+    ProductVariantAutocompleteComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -19,6 +25,11 @@ import { ScrollableTableComponent } from './components/scrollable-table/scrollab
     ReactiveFormsModule,
     SpinnerModule,
   ],
-  exports: [NpWarehouseSelectionComponent, PhotoOverlayComponent, ScrollableTableComponent],
+  exports: [
+    NpWarehouseSelectionComponent,
+    PhotoOverlayComponent,
+    ScrollableTableComponent,
+    ProductVariantAutocompleteComponent,
+  ],
 })
 export class CommonComponentsModule {}

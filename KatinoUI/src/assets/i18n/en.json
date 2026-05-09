@@ -503,6 +503,7 @@
     "toastr": {
       "submitted": "Report saved",
       "submittedBatch": "Sewn items saved",
+      "submittedExtra": "Extra items saved",
       "invalidBatch": "Please check entered values before saving",
       "submitFailed": "Failed to save report",
       "tooMuchCustom": "For custom items you cannot submit more than required"
@@ -517,6 +518,11 @@
     "batch": {
       "submit": "Save sewn items",
       "filledRows": "Filled rows"
+    },
+    "extraReport": {
+      "title": "Record sewn items (not from queue)",
+      "hint": "Items sewn outside the sewing queue",
+      "searchLabel": "Search product variant"
     }
   },
   "pnl": {

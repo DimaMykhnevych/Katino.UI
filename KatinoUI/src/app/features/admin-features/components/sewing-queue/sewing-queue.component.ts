@@ -20,6 +20,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { GroupedSewingQueueItem } from 'src/app/core/models/sewing-queue/grouped-sewing-queue-item';
 import { PhotoItem } from 'src/app/features/common-components/components/photo-overlay/photo-overlay.component';
 import { ProductPhoto } from 'src/app/core/models/product-photo';
+import { CurrentUserService } from 'src/app/core/permission/services/current-user.service';
+import { Roles } from 'src/app/core/models/roles';
+import { ProductVariant } from 'src/app/core/models/product-variant';
 
 @Component({
   selector: 'app-sewing-queue',
@@ -54,6 +57,12 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
   public currentPhotoIndex = 0;
   public showPhotoOverlay = false;
 
+  public extraItems: Array<{
+    productVariant: ProductVariant;
+    quantityCtrl: FormControl;
+  }> = [];
+  public isSubmittingExtra = false;
+
   private _destroy$ = new Subject<void>();
 
   constructor(
@@ -62,7 +71,13 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _translate: TranslateService,
     private _bp: BreakpointObserver,
+    private _currentUser: CurrentUserService,
   ) {}
+
+  public get isAdminOrOwner(): boolean {
+    const role = this._currentUser.userInfo?.role;
+    return role === Roles.Admin || role === Roles.Owner;
+  }
 
   public ngOnInit(): void {
     this._bp
@@ -96,7 +111,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       )
       .subscribe((resp: GetSewingQueueItems) => {
         const items = resp?.sewingQueueItems ?? [];
-        this.resultsAmount = items.reduce((sum, item) => sum + (item.quantityToProduce ?? 0), 0);
+        this.resultsAmount = items.reduce(
+          (sum, item) => sum + (item.quantityToProduce ?? 0),
+          0,
+        );
         this.dataSource.data = items;
         this.rebuildActualForms(items);
       });
@@ -188,6 +206,63 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
 
   public onPhotoIndexChange(index: number): void {
     this.currentPhotoIndex = index;
+  }
+
+  public onExtraProductSelected(pv: ProductVariant): void {
+    if (this.extraItems.some((i) => i.productVariant.id === pv.id)) return;
+    this.extraItems.push({
+      productVariant: pv,
+      quantityCtrl: new FormControl(null, [
+        Validators.required,
+        Validators.min(1),
+      ]),
+    });
+  }
+
+  public removeExtraItem(index: number): void {
+    this.extraItems.splice(index, 1);
+  }
+
+  public canSubmitExtra(): boolean {
+    if (this.isSubmittingExtra || this.extraItems.length === 0) return false;
+    return this.extraItems.every(
+      (i) => i.quantityCtrl.valid && i.quantityCtrl.value != null,
+    );
+  }
+
+  public submitExtra(): void {
+    this.extraItems.forEach((i) => i.quantityCtrl.markAsTouched());
+
+    if (this.extraItems.some((i) => i.quantityCtrl.invalid)) {
+      this._toastr.error(this._t('sewingQueue.toastr.invalidBatch'));
+      return;
+    }
+
+    const reportItems: SubmitSewedReport[] = this.extraItems.map((i) => ({
+      productVariantId: i.productVariant.id,
+      actualSewedQuantity: Number(i.quantityCtrl.value),
+      orderItemId: undefined,
+    }));
+
+    this.isSubmittingExtra = true;
+
+    this._service
+      .submitSewingReport({ reportItems })
+      .pipe(
+        catchError((err) => this.onSubmitError(err)),
+        finalize(() => (this.isSubmittingExtra = false)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((ok: boolean) => {
+        if (!ok) {
+          this._toastr.error(this._t('sewingQueue.toastr.submitFailed'));
+          return;
+        }
+        this._toastr.success(this._t('sewingQueue.toastr.submittedExtra'));
+        this.extraItems = [];
+        this.loadGrouped();
+        this.loadQueue();
+      });
   }
 
   public productTitle(row: SewingQueueItem): string {

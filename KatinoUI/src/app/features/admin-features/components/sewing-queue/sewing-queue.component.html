@@ -14,6 +14,76 @@
     </div>
   </div>
 
+  <mat-accordion *ngIf="isAdminOrOwner" class="extra-report-accordion">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="me-2">add_task</mat-icon>
+          {{ "sewingQueue.extraReport.title" | translate }}
+        </mat-panel-title>
+        <mat-panel-description class="d-none d-md-flex">
+          {{ "sewingQueue.extraReport.hint" | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="extra-report-body">
+        <app-product-variant-autocomplete
+          [label]="'sewingQueue.extraReport.searchLabel' | translate"
+          (productSelected)="onExtraProductSelected($event)"
+        ></app-product-variant-autocomplete>
+
+        <div class="extra-items-list" *ngIf="extraItems.length > 0">
+          <div
+            class="extra-item-row"
+            *ngFor="let item of extraItems; let i = index"
+          >
+            <div class="extra-item-name">
+              {{ item.productVariant.product.name }} •
+              {{ item.productVariant.color.name }} •
+              {{ item.productVariant.size.name }}
+            </div>
+            <div class="extra-item-controls">
+              <input
+                type="number"
+                class="actual-input"
+                [formControl]="item.quantityCtrl"
+                min="1"
+                [class.invalid]="
+                  item.quantityCtrl.invalid && item.quantityCtrl.touched
+                "
+                [placeholder]="'sewingQueue.placeholders.actual' | translate"
+              />
+              <button mat-icon-button color="warn" (click)="removeExtraItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="extra-submit-bar" *ngIf="extraItems.length > 0">
+          <button
+            mat-flat-button
+            color="primary"
+            class="batch-submit-btn"
+            [disabled]="!canSubmitExtra()"
+            (click)="submitExtra()"
+          >
+            <ng-container *ngIf="!isSubmittingExtra">
+              <mat-icon>done_all</mat-icon>
+              {{ "sewingQueue.batch.submit" | translate }}
+            </ng-container>
+            <div *ngIf="isSubmittingExtra" class="spinner-container">
+              <mat-spinner diameter="20"></mat-spinner>
+              <span class="loading-text">{{
+                "sewingQueue.batch.submit" | translate
+              }}</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <div class="mat-elevation-z8 table-wrapper p-0">
     <div class="loading" *ngIf="isLoading">
       <mat-spinner diameter="32"></mat-spinner>

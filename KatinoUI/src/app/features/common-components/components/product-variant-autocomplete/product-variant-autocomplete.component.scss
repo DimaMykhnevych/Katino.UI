@@ -1,0 +1,48 @@
+.pv-autocomplete-field {
+  width: 100%;
+
+    ::ng-deep {
+      .mat-form-field-outline {
+      color: rgba(148, 163, 184, 0.3);
+      }
+
+      .mat-form-field-outline-thick {
+      color: #06b6d4;
+      }
+
+      .mat-form-field-label {
+      color: #64748b;
+      }
+
+      .mat-select-arrow {
+      color: #64748b;
+      }
+  } 
+}
+
+::ng-deep  .mat-autocomplete-panel .mat-option {
+  height: auto !important;
+  line-height: 1.2 !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.product-status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin: 4px;
+  flex-shrink: 0;
+
+  &.inStock {
+    background-color: green;
+  }
+
+  &.onOrder {
+    background-color: blue;
+  }
+
+  &.discontinued {
+    background-color: red;
+  }
+}

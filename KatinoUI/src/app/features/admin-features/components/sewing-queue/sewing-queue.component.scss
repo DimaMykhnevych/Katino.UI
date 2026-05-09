@@ -36,6 +36,53 @@
   overflow: hidden;
 }
 
+.extra-report-accordion {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.extra-report-body {
+  padding-top: 8px;
+}
+
+.extra-items-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extra-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.extra-item-name {
+  font-weight: 700;
+  color: #0f172a;
+  flex: 1;
+  min-width: 0;
+}
+
+.extra-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.extra-submit-bar {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .batch-submit-bar {
   position: sticky;
   top: 0;
