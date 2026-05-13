@@ -93,7 +93,21 @@
     "crm-settings": "Налаштування CRM",
     "sewing-queue": "Черга На Шиття",
     "pnl": "P&L",
-    "employees": "Співробітники"
+    "employees": "Співробітники",
+    "statistics": "Статистика"
+  },
+  "statistics": {
+    "title": "Статистика",
+    "dateRange": "Період",
+    "dateFrom": "Від",
+    "dateTo": "До",
+    "apply": "Застосувати",
+    "topSellingProducts": {
+      "title": "Топ продаваних товарів",
+      "product": "Товар",
+      "totalSold": "Продано",
+      "empty": "Немає даних за обраний період"
+    }
   },
   "employees": {
     "header": "Співробітники",

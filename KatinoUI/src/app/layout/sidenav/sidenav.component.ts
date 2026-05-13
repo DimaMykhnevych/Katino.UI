@@ -24,6 +24,7 @@ export class SidenavComponent implements OnInit {
   public crmSettingsPage: string[] = [Roles.Admin, Roles.Owner];
   public sewingQueuePage: string[] = [Roles.Admin, Roles.Owner, Roles.Sewer];
   public pnlPage: string[] = [Roles.Admin, Roles.Owner];
+  public statisticsPage: string[] = [Roles.Admin, Roles.Owner];
   public isMobile = false;
   public isSidenavOpened = false;
 
@@ -54,6 +55,8 @@ export class SidenavComponent implements OnInit {
         return this.sewingQueuePage.includes(this.userInfo.role || '');
       case 'pnl':
         return this.pnlPage.includes(this.userInfo.role || '');
+      case 'statistics':
+        return this.statisticsPage.includes(this.userInfo.role || '');
       default:
         return false;
     }

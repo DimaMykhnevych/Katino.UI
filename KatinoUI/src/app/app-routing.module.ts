@@ -11,6 +11,7 @@ import { CrmSettingsComponent } from './features/admin-features/components/crm-s
 import { SewingQueueComponent } from './features/admin-features/components/sewing-queue/sewing-queue.component';
 import { PnlComponent } from './features/admin-features/components/pnl/pnl.component';
 import { EmployeesComponent } from './features/admin-features/components/employees/employees.component';
+import { StatisticsComponent } from './features/admin-features/components/statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,13 @@ const routes: Routes = [
       {
         path: 'pnl',
         component: PnlComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner],
+        },
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent,
         data: {
           roles: [Roles.Admin, Roles.Owner],
         },

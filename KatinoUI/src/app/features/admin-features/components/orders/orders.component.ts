@@ -12,6 +12,7 @@ import {
   auditTime,
 } from 'rxjs/operators';
 
+import { toUtcEndOfDay, toUtcStartOfDay } from 'src/app/core/helpers/date.helper';
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
 import { GetOrderResponse } from 'src/app/core/models/order/get-order-response';
 import { Order } from 'src/app/core/models/order/order';
@@ -500,8 +501,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
       search: (this.form.value.orderSearchString || '').trim(),
       orderStatuses: isAll ? [] : (values as OrderStatus[]),
       tagIds: this.getSelectedTagIds(),
-      createdFrom: this.toUtcStartOfDay(this.form.value.createdFrom),
-      createdTo: this.toUtcEndOfDay(this.form.value.createdTo),
+      createdFrom: toUtcStartOfDay(this.form.value.createdFrom),
+      createdTo: toUtcEndOfDay(this.form.value.createdTo),
       sort: sort ?? this.form.value.orderSort ?? OrderSort.byCreationDate,
     };
 
@@ -718,25 +719,4 @@ export class OrdersComponent implements OnInit, OnDestroy {
     );
   }
 
-  private toUtcStartOfDay(date: Date | null | undefined): string | null {
-    if (!date) return null;
-    return new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
-    ).toISOString();
-  }
-
-  private toUtcEndOfDay(date: Date | null | undefined): string | null {
-    if (!date) return null;
-    return new Date(
-      Date.UTC(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        23,
-        59,
-        59,
-        999,
-      ),
-    ).toISOString();
-  }
 }

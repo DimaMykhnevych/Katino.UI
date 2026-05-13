@@ -1,0 +1,94 @@
+.statistics-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.statistics-header {
+  margin-bottom: 24px;
+}
+
+.statistics-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 16px;
+  color: #333;
+}
+
+.filter-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 24px;
+}
+
+.filter-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.date-range-field {
+  flex: 1;
+  min-width: 260px;
+  max-width: 400px;
+  margin-bottom: 0;
+
+    ::ng-deep {
+      .mat-form-field-outline {
+      color: rgba(148, 163, 184, 0.3);
+      }
+
+      .mat-form-field-outline-thick {
+      color: #06b6d4;
+      }
+
+      .mat-form-field-label {
+      color: #64748b;
+      }
+
+      .mat-select-arrow {
+      color: #64748b;
+      }
+  }
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.statistics-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .statistics-container {
+    padding: 16px;
+  }
+
+  .statistics-title {
+    font-size: 20px;
+  }
+
+  .filter-card {
+    padding: 16px;
+  }
+
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-range-field {
+    max-width: 100%;
+  }
+
+  .filter-actions {
+    justify-content: flex-end;
+  }
+}

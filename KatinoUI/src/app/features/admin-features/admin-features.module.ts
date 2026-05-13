@@ -25,6 +25,9 @@ import { SewingQueueComponent } from './components/sewing-queue/sewing-queue.com
 import { PnlComponent } from './components/pnl/pnl.component';
 import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.component';
 import { EmployeesComponent } from './components/employees/employees.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { TopSellingProductsComponent } from './components/statistics/top-selling-products/top-selling-products.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,8 @@ import { EmployeesComponent } from './components/employees/employees.component';
     PnlComponent,
     PnlExpensesComponent,
     EmployeesComponent,
+    StatisticsComponent,
+    TopSellingProductsComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +62,7 @@ import { EmployeesComponent } from './components/employees/employees.component';
     FormsModule,
     ImageCropperModule,
     TagAutocompleteModule,
+    NgChartsModule,
   ],
   providers: [DatePipe],
 })

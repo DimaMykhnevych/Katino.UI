@@ -93,7 +93,21 @@
     "crm-settings": "CRM Settings",
     "sewing-queue": "Sewing Queue",
     "pnl": "P&L",
-    "employees": "Employees"
+    "employees": "Employees",
+    "statistics": "Statistics"
+  },
+  "statistics": {
+    "title": "Statistics",
+    "dateRange": "Period",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "apply": "Apply",
+    "topSellingProducts": {
+      "title": "Top Selling Products",
+      "product": "Product",
+      "totalSold": "Sold",
+      "empty": "No data for the selected period"
+    }
   },
   "employees": {
     "header": "Employees",

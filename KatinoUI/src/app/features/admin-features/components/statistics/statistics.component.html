@@ -1,0 +1,43 @@
+<div class="statistics-container">
+  <div class="statistics-header">
+    <h1 class="statistics-title">{{ "statistics.title" | translate }}</h1>
+
+    <div class="filter-card">
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline" class="date-range-field">
+          <mat-label>{{ "statistics.dateRange" | translate }}</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              matStartDate
+              formControlName="dateFrom"
+              [placeholder]="'statistics.dateFrom' | translate"
+            />
+            <input
+              matEndDate
+              formControlName="dateTo"
+              [placeholder]="'statistics.dateTo' | translate"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+        <div class="filter-actions">
+          <button mat-stroked-button type="button" (click)="resetFilters()">
+            {{ "common.reset" | translate }}
+          </button>
+          <button mat-raised-button color="primary" type="button" (click)="applyFilters()">
+            {{ "statistics.apply" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="statistics-sections">
+    <app-top-selling-products
+      [dateFrom]="appliedFrom"
+      [dateTo]="appliedTo"
+    ></app-top-selling-products>
+  </div>
+</div>
