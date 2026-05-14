@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ChartConfiguration, ChartData } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 import {
@@ -29,13 +30,14 @@ export class TopSellingProductsComponent
   @Input() public dateFrom: Date | null = null;
   @Input() public dateTo: Date | null = null;
 
+  public chartPlugins = [ChartDataLabels];
+
   public isLoading = false;
   public products: TopSellingProduct[] = [];
   public totalCount = 0;
   public pageIndex = 0;
   public pageSize = 20;
   public pageSizeOptions = [5, 10, 20];
-  public displayedColumns = ['rank', 'name', 'totalSold'];
 
   public chartData: ChartData<'bar'> = {
     labels: [],
@@ -56,12 +58,25 @@ export class TopSellingProductsComponent
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
-    events: ['click'],
+    layout: { padding: { right: 8 } },
     plugins: {
       legend: { display: false },
-      tooltip: {
-        mode: 'nearest',
-        intersect: true,
+      tooltip: { enabled: false },
+      datalabels: {
+        anchor: 'end',
+        align: (ctx: any) => {
+          const vals = ctx.dataset.data as number[];
+          const max = Math.max(...vals);
+          return max > 0 && vals[ctx.dataIndex] / max > 0.5 ? 'start' : 'end';
+        },
+        color: (ctx: any) => {
+          const vals = ctx.dataset.data as number[];
+          const max = Math.max(...vals);
+          return max > 0 && vals[ctx.dataIndex] / max > 0.5 ? '#fff' : '#3f51b5';
+        },
+        font: { size: 12, weight: 'bold' },
+        padding: 6,
+        formatter: (value: number) => value,
       },
     },
     scales: {

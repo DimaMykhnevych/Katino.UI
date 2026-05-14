@@ -23,6 +23,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "lodash": "^4.17.21",
     "ng2-charts": "^3.1.2",
     "ngx-image-cropper": "^5.0.1",

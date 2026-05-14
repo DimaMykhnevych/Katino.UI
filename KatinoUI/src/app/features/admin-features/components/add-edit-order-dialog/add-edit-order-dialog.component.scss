@@ -120,6 +120,51 @@
   }  
 }
 
+.prepayment-checkbox {
+  font-size: 16px;
+  font-weight: 600;
+
+  ::ng-deep {
+    .mat-checkbox-frame {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+    }
+
+    .mat-checkbox-background {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+    }
+
+    .mat-checkbox-inner-container {
+      width: 22px;
+      height: 22px;
+    }
+
+    .mat-checkbox-checkmark {
+      width: 22px;
+      height: 22px;
+    }
+
+    &.mat-checkbox-checked .mat-checkbox-background {
+      background-color: #16a34a !important;
+    }
+
+    &.mat-checkbox-indeterminate .mat-checkbox-background {
+      background-color: #16a34a !important;
+    }
+
+    .mat-checkbox-frame {
+      border-color: #16a34a;
+    }
+
+    .mat-ripple-element {
+      background-color: rgba(22, 163, 74, 0.15);
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .kv {
     grid-template-columns: 1fr;
