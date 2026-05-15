@@ -539,6 +539,31 @@
       "searchLabel": "Пошук варіанту товару"
     }
   },
+  "telegram": {
+    "title": "Telegram-сповіщення",
+    "subtitle": "Налаштуйте Telegram-бота для отримання сповіщень при додаванні звіту про пошиття",
+    "botToken": "Токен бота",
+    "validateBot": "Перевірити бота",
+    "changeToken": "Змінити токен",
+    "chatSelect": "Оберіть чат",
+    "findChats": "Знайти чати",
+    "findChatsHint": "Натисніть «Знайти чати» для завантаження",
+    "currentChat": "Поточний чат",
+    "changeChat": "Змінити чат",
+    "validateFirst": "Спочатку перевірте токен бота",
+    "enableNotifications": "Увімкнути сповіщення",
+    "sendTest": "Надіслати тест",
+    "privacyModeHint": "Щоб бот бачив повідомлення у групі, вимкніть Privacy Mode у @BotFather: /mybots → Bot Settings → Group Privacy → Turn off",
+    "toastr": {
+      "validateError": "Помилка перевірки токена",
+      "loadChatsError": "Не вдалося завантажити чати",
+      "noChatsWarning": "Бот не знайшов жодного чату. Переконайтесь, що вимкнено Privacy Mode і бот отримав хоча б одне повідомлення у групі",
+      "saveSuccess": "Telegram-налаштування збережено",
+      "saveError": "Не вдалося зберегти Telegram-налаштування",
+      "testSuccess": "Тестове повідомлення надіслано!",
+      "testError": "Не вдалося надіслати тестове повідомлення"
+    }
+  },
   "pnl": {
     "pnlHeader": "Дохід та Витрати",
     "year": "Рік",

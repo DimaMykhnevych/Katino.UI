@@ -539,6 +539,31 @@
       "searchLabel": "Search product variant"
     }
   },
+  "telegram": {
+    "title": "Telegram Notifications",
+    "subtitle": "Configure a Telegram bot to receive notifications when a sewing report is submitted",
+    "botToken": "Bot token",
+    "validateBot": "Validate bot",
+    "changeToken": "Change token",
+    "chatSelect": "Select chat",
+    "findChats": "Find chats",
+    "findChatsHint": "Click «Find chats» to load",
+    "currentChat": "Current chat",
+    "changeChat": "Change chat",
+    "validateFirst": "Validate the bot token first",
+    "enableNotifications": "Enable notifications",
+    "sendTest": "Send test",
+    "privacyModeHint": "For the bot to see group messages, disable Privacy Mode in @BotFather: /mybots → Bot Settings → Group Privacy → Turn off",
+    "toastr": {
+      "validateError": "Token validation error",
+      "loadChatsError": "Failed to load chats",
+      "noChatsWarning": "Bot did not find any chats. Make sure Privacy Mode is disabled and the bot received at least one message in the group",
+      "saveSuccess": "Telegram settings saved",
+      "saveError": "Failed to save Telegram settings",
+      "testSuccess": "Test message sent!",
+      "testError": "Failed to send test message"
+    }
+  },
   "pnl": {
     "pnlHeader": "Profit and Loss",
     "year": "Year",
