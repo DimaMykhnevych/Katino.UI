@@ -554,6 +554,11 @@
     "enableNotifications": "Увімкнути сповіщення",
     "sendTest": "Надіслати тест",
     "privacyModeHint": "Щоб бот бачив повідомлення у групі, вимкніть Privacy Mode у @BotFather: /mybots → Bot Settings → Group Privacy → Turn off",
+    "notificationType": {
+      "sewingReport": "Звіт про пошиття",
+      "orderRejection": "Відхилення замовлення",
+      "stockRedistribution": "Перерозподіл залишків"
+    },
     "toastr": {
       "validateError": "Помилка перевірки токена",
       "loadChatsError": "Не вдалося завантажити чати",

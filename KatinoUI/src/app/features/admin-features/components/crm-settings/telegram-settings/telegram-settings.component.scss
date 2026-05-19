@@ -1,0 +1,160 @@
+.telegram-card {
+  border-radius: 10px;
+
+  ::ng-deep .mat-spinner circle {
+    stroke: #06b6d4;
+  }
+}
+
+.telegram-icon {
+  color: #229ED9;
+  font-size: 26px;
+}
+
+.telegram-subtitle {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.telegram-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  .telegram-field {
+    flex: 1;
+    min-width: 0;
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper,
+    ::ng-deep .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    ::ng-deep {
+      .mat-form-field-outline {
+        color: rgba(148, 163, 184, 0.3);
+      }
+
+      .mat-form-field-outline-thick {
+        color: #06b6d4;
+      }
+
+      .mat-form-field-label {
+        color: #64748b;
+      }
+
+      .mat-select-arrow {
+        color: #64748b;
+      }
+    }
+  }
+
+  .telegram-action-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.find-chats-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.telegram-hint {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 4px;
+}
+
+.bot-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #2e7d32;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.chat-configs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.chat-config-section {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 12px 14px 10px;
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.chat-config-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.chat-config-toggle-row {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+
+  mat-slide-toggle {
+    width: 100%;
+
+    ::ng-deep .mdc-form-field {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    ::ng-deep .mdc-label {
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.7);
+      padding-right: 0;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .telegram-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+
+    .telegram-field {
+      min-width: unset;
+    }
+
+    .telegram-action-btn {
+      width: 100%;
+    }
+  }
+
+  .chat-configs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .find-chats-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

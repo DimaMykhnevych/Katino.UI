@@ -1,5 +1,6 @@
+import { TelegramChatConfig } from './telegram-chat-config';
+
 export interface UpdateTelegramSettingsCommand {
   botToken?: string;
-  chatId?: string;
-  notificationsEnabled: boolean;
+  chatConfigs: TelegramChatConfig[];
 }

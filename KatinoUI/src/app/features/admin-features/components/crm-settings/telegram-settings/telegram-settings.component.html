@@ -1,0 +1,158 @@
+<div class="mat-elevation-z8 telegram-card p-3">
+  <h2 class="mb-1">
+    <mat-icon class="telegram-icon">send</mat-icon>
+    {{ "telegram.title" | translate }}
+  </h2>
+  <p class="text-muted mb-3 telegram-subtitle">
+    {{ "telegram.subtitle" | translate }}
+  </p>
+
+  <div *ngIf="isLoadingTelegram" class="spinner-container my-3">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoadingTelegram && telegramForm" [formGroup]="telegramForm">
+    <!-- TOKEN: State A or editing token in State B -->
+    <ng-container *ngIf="!isConfigured || isEditingToken">
+      <div class="telegram-row">
+        <mat-form-field appearance="outline" class="telegram-field">
+          <mat-label>{{ "telegram.botToken" | translate }}</mat-label>
+          <input matInput formControlName="botToken" autocomplete="off" />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          class="telegram-action-btn"
+          (click)="onValidateBot()"
+          [disabled]="!canValidateToken"
+        >
+          <div class="btn-content">
+            <mat-spinner *ngIf="isValidatingToken" diameter="18" color="accent"></mat-spinner>
+            <span>{{ "telegram.validateBot" | translate }}</span>
+          </div>
+        </button>
+      </div>
+      <p class="telegram-hint mb-2">
+        {{ "telegram.privacyModeHint" | translate }}
+      </p>
+      <div class="mb-3">
+        <div *ngIf="validatedBotInfo" class="bot-info mt-2">
+          <mat-icon color="primary">check_circle</mat-icon>
+          <span>@{{ validatedBotInfo.username }} — {{ validatedBotInfo.firstName }}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- TOKEN: State B — masked read-only + change button -->
+    <ng-container *ngIf="isConfigured && !isEditingToken">
+      <div class="telegram-row mb-3">
+        <mat-form-field appearance="outline" class="telegram-field">
+          <mat-label>{{ "telegram.botToken" | translate }}</mat-label>
+          <input matInput [value]="telegramSettings?.botTokenMasked ?? ''" readonly />
+        </mat-form-field>
+        <button mat-stroked-button class="telegram-action-btn" (click)="onChangeToken()">
+          {{ "telegram.changeToken" | translate }}
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- FIND CHATS: State A or State B while editing a chat -->
+    <ng-container *ngIf="!isConfigured || isEditingChatIndex !== null">
+      <div class="find-chats-section mb-3">
+        <button
+          mat-raised-button
+          color="primary"
+          class="telegram-action-btn"
+          (click)="onLoadChats()"
+          [disabled]="!canFindChats"
+        >
+          <div class="btn-content">
+            <mat-spinner *ngIf="isLoadingChats" diameter="18" color="accent"></mat-spinner>
+            <span>{{ "telegram.findChats" | translate }}</span>
+          </div>
+        </button>
+        <p *ngIf="availableChats.length === 0" class="telegram-hint mb-0">
+          {{ "telegram.findChatsHint" | translate }}
+        </p>
+      </div>
+    </ng-container>
+
+    <!-- CHAT CONFIGS: one row per notification type -->
+    <div formArrayName="chatConfigs" class="chat-configs-grid mb-3">
+      <div
+        *ngFor="let type of notificationTypes; let i = index"
+        [formGroupName]="i"
+        class="chat-config-section"
+      >
+        <p class="chat-config-label mb-2">
+          {{ notificationTypeTranslationKeys[i] | translate }}
+        </p>
+
+        <!-- State B, not editing this row -->
+        <ng-container *ngIf="isConfigured && isEditingChatIndex !== i">
+          <div class="telegram-row">
+            <mat-form-field appearance="outline" class="telegram-field">
+              <mat-label>{{ "telegram.currentChat" | translate }}</mat-label>
+              <input matInput [value]="getChatNameDisplay(i)" readonly />
+            </mat-form-field>
+            <button mat-stroked-button class="telegram-action-btn" (click)="onChangeChat(i)">
+              {{ "telegram.changeChat" | translate }}
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- State A or editing this row in State B -->
+        <ng-container *ngIf="!isConfigured || isEditingChatIndex === i">
+          <div class="telegram-row">
+            <mat-form-field appearance="outline" class="telegram-field">
+              <mat-label>{{ "telegram.chatSelect" | translate }}</mat-label>
+              <mat-select formControlName="chatId">
+                <mat-option *ngFor="let chat of availableChats" [value]="chat.id.toString()">
+                  {{ chat.title }} ({{ chat.type }})
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <div class="chat-config-toggle-row">
+          <mat-slide-toggle
+            formControlName="notificationsEnabled"
+            color="primary"
+            labelPosition="before"
+          >
+            {{ "telegram.enableNotifications" | translate }}
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="d-flex gap-2 flex-wrap">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSaveTelegram()"
+        [disabled]="!canSaveTelegram"
+      >
+        <div class="btn-content">
+          <mat-spinner *ngIf="isSavingTelegram" diameter="18" color="accent"></mat-spinner>
+          <span>{{ "common.save" | translate }}</span>
+        </div>
+      </button>
+
+      <button
+        *ngIf="isConfigured"
+        mat-stroked-button
+        color="primary"
+        (click)="onSendTestMessage()"
+        [disabled]="isSendingTest"
+      >
+        <div class="btn-content">
+          <mat-spinner *ngIf="isSendingTest" diameter="18" color="accent"></mat-spinner>
+          <span>{{ "telegram.sendTest" | translate }}</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

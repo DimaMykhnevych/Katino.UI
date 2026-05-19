@@ -35,74 +35,6 @@
    line-height: 1.4;
   }
 
-  // Telegram section
-  .telegram-icon {
-    color: #229ED9;
-    font-size: 26px;
-  }
-
-  .tg-section {
-    ::ng-deep .mat-spinner circle {
-      stroke: #06b6d4;
-    }
-  }
-
-  .telegram-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-
-    .telegram-field {
-      flex: 1;
-      min-width: 200px;
-      max-width: 420px;
-
-      // Remove subscript reserved space — hints are rendered outside the field
-      ::ng-deep .mat-mdc-form-field-subscript-wrapper,
-      ::ng-deep .mat-form-field-subscript-wrapper {
-        display: none;
-      }
-
-      ::ng-deep {
-          .mat-form-field-outline {
-          color: rgba(148, 163, 184, 0.3);
-          }
-
-          .mat-form-field-outline-thick {
-          color: #06b6d4;
-          }
-
-          .mat-form-field-label {
-          color: #64748b;
-          }
-
-          .mat-select-arrow {
-          color: #64748b;
-          }
-      }
-    }
-
-    .telegram-action-btn {
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-  }
-
-  .telegram-hint {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    color: rgba(0, 0, 0, 0.6);
-    margin-top: 4px;
-  }
-
-  .bot-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
-    color: #2e7d32;
-  }
-
   .btn-content {
     display: flex;
     align-items: center;
@@ -144,22 +76,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  .main .telegram-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 4px;
-
-    .telegram-field {
-      min-width: unset;
-      max-width: 100%;
-    }
-
-    .telegram-action-btn {
-      width: 100%;
-    }
-  }
-}
 
 @media (max-width: 480px) {
   .main .table-header {

@@ -17,6 +17,7 @@ import { AddEditColorDialogComponent } from './components/add-edit-color-dialog/
 import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
 import { OrdersComponent } from './components/orders/orders.component';
 import { CrmSettingsComponent } from './components/crm-settings/crm-settings.component';
+import { TelegramSettingsComponent } from './components/crm-settings/telegram-settings/telegram-settings.component';
 import { CommonComponentsModule } from 'src/app/features/common-components/common-components.module';
 import { NpSyncHistoryComponent } from './components/np-sync-history/np-sync-history.component';
 import { OrderDetailsDialogComponent } from './components/order-details-dialog/order-details-dialog.component';
@@ -40,6 +41,7 @@ import { NgChartsModule } from 'ng2-charts';
     AddEditColorDialogComponent,
     OrdersComponent,
     CrmSettingsComponent,
+    TelegramSettingsComponent,
     NpSyncHistoryComponent,
     OrderDetailsDialogComponent,
     AddEditOrderDialogComponent,

@@ -554,6 +554,11 @@
     "enableNotifications": "Enable notifications",
     "sendTest": "Send test",
     "privacyModeHint": "For the bot to see group messages, disable Privacy Mode in @BotFather: /mybots → Bot Settings → Group Privacy → Turn off",
+    "notificationType": {
+      "sewingReport": "Sewing report",
+      "orderRejection": "Order rejection",
+      "stockRedistribution": "Stock redistribution"
+    },
     "toastr": {
       "validateError": "Token validation error",
       "loadChatsError": "Failed to load chats",
