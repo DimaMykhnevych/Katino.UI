@@ -11,6 +11,7 @@ import {
   takeUntil,
   auditTime,
 } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { toUtcEndOfDay, toUtcStartOfDay } from 'src/app/core/helpers/date.helper';
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
@@ -113,6 +114,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private _novaPostService: NovaPostService,
     private datePipe: DatePipe,
     private _orderTagService: OrderTagService,
+    private _route: ActivatedRoute,
+    private _router: Router,
   ) {}
 
   public ngOnInit(): void {
@@ -134,6 +137,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.subscribeOnFormValueChanges();
 
     this.fetchOrders();
+    this.openDialogFromRoute();
   }
 
   public ngOnDestroy(): void {
@@ -479,6 +483,25 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   get orderTagsControl() {
     return this.form.get('orderTags');
+  }
+
+  private openDialogFromRoute(): void {
+    const id = this._route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this._orderService
+      .getOrderById(id)
+      .pipe(
+        catchError(() => of(null)),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((order) => {
+        if (!order) return;
+        const ref = this._dialogService.openOrderDetailsDialog(order);
+        ref.afterClosed().subscribe(() => {
+          this._router.navigate(['/orders']);
+        });
+      });
   }
 
   private fetchOrders(sort?: OrderSort): void {

@@ -6,6 +6,7 @@ import { convertToHttpParams } from 'src/app/core/http/request/http-params.util'
 import { AddOrder } from 'src/app/core/models/order/add-order/add-order';
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
 import { GetOrderResponse } from 'src/app/core/models/order/get-order-response';
+import { Order } from 'src/app/core/models/order/order';
 import { SetManualOrderStatus } from 'src/app/core/models/order/set-manual-order-status';
 import { AppSettings } from 'src/app/core/settings';
 import { OrderCreationResult } from '../../core/models/order/add-order/order-creation-result';
@@ -57,6 +58,10 @@ export class OrderService {
       `${AppSettings.apiHost}/Order`,
       order,
     );
+  }
+
+  public getOrderById(id: string): Observable<Order> {
+    return this._http.get<Order>(`${AppSettings.apiHost}/Order/${id}`);
   }
 
   public deleteOrder(id: string): Observable<OrderDeleteResult> {

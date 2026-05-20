@@ -35,6 +35,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'orders/:id',
+        component: OrdersComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
+        },
+      },
+      {
         path: 'employees',
         component: EmployeesComponent,
         data: {
