@@ -12,6 +12,7 @@ import { SewingQueueComponent } from './features/admin-features/components/sewin
 import { PnlComponent } from './features/admin-features/components/pnl/pnl.component';
 import { EmployeesComponent } from './features/admin-features/components/employees/employees.component';
 import { StatisticsComponent } from './features/admin-features/components/statistics/statistics.component';
+import { CollectionsComponent } from './features/admin-features/components/collections/collections.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,13 @@ const routes: Routes = [
       {
         path: 'statistics',
         component: StatisticsComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner],
+        },
+      },
+      {
+        path: 'collections',
+        component: CollectionsComponent,
         data: {
           roles: [Roles.Admin, Roles.Owner],
         },

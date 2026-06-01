@@ -1,0 +1,96 @@
+.collection-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .collection-card-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0;
+
+    .collection-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 600;
+
+      .collection-icon {
+        color: #06b6d4;
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    .header-spacer {
+      flex: 1;
+    }
+
+    .delete-btn {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+  }
+
+  .collection-card-content {
+    padding-top: 12px;
+
+    .collection-description {
+      color: #64748b;
+      font-size: 14px;
+      margin: 0 0 16px;
+    }
+
+    .add-product-section {
+      margin-bottom: 16px;
+    }
+
+    .products-section {
+      .products-empty {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #94a3b8;
+        font-size: 14px;
+        padding: 8px 0;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      ::ng-deep .products-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        .product-chip,
+        .mat-chip {
+          background: rgba(6, 182, 212, 0.1) !important;
+          border: 1px solid rgba(6, 182, 212, 0.3) !important;
+          color: #0891b2 !important;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+
+  .collection-card-actions {
+    display: flex;
+    gap: 12px;
+    padding: 8px 16px 16px;
+
+    .btn-spinner {
+      display: inline-block;
+      margin-right: 6px;
+    }
+  }
+}
+

@@ -9,6 +9,7 @@ import { NpWarehouseSelectionComponent } from './components/np-warehouse-selecti
 import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.component';
 import { ScrollableTableComponent } from './components/scrollable-table/scrollable-table.component';
 import { ProductVariantAutocompleteComponent } from './components/product-variant-autocomplete/product-variant-autocomplete.component';
+import { ProductAutocompleteComponent } from './components/product-autocomplete/product-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProductVariantAutocompleteComponent } from './components/product-varian
     PhotoOverlayComponent,
     ScrollableTableComponent,
     ProductVariantAutocompleteComponent,
+    ProductAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { ProductVariantAutocompleteComponent } from './components/product-varian
     PhotoOverlayComponent,
     ScrollableTableComponent,
     ProductVariantAutocompleteComponent,
+    ProductAutocompleteComponent,
   ],
 })
 export class CommonComponentsModule {}

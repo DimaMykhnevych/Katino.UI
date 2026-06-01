@@ -13,10 +13,12 @@ import { UpdateProduct } from '../models/update-product';
 export class ProductService {
   constructor(private _http: HttpClient) {}
 
-  public getProducts(): Observable<GetProductsResponse> {
-    return this._http.get<GetProductsResponse>(
-      `${AppSettings.apiHost}/Product`
-    );
+  public getProducts(search?: string): Observable<GetProductsResponse> {
+    let url = `${AppSettings.apiHost}/Product`;
+    if (search) {
+      url = `${AppSettings.apiHost}/Product?Name=${search}`;
+    }
+    return this._http.get<GetProductsResponse>(url);
   }
 
   public addProduct(product: AddProduct): Observable<Product> {

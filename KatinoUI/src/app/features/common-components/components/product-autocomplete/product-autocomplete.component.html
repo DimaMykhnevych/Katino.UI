@@ -1,0 +1,14 @@
+<mat-form-field class="product-autocomplete-field" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <input #searchInput matInput [formControl]="searchCtrl" [matAutocomplete]="productAuto" (focus)="onFocus()" />
+  <mat-spinner *ngIf="isSearching" matSuffix diameter="18"></mat-spinner>
+  <mat-autocomplete
+    #productAuto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="onOptionSelected($event.option.value)"
+  >
+    <mat-option *ngFor="let p of products" [value]="p">
+      <strong>{{ p.name }}</strong>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

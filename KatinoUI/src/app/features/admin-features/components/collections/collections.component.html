@@ -1,0 +1,65 @@
+<div class="main container-fluid">
+  <!-- Header section (matches inventory style) -->
+  <div class="table-header">
+    <div class="header-content">
+      <h2 class="table-title">
+        <mat-icon class="title-icon">collections_bookmark</mat-icon>
+        {{ "collections.header" | translate }}
+      </h2>
+    </div>
+
+    <!-- Create collection form -->
+    <form [formGroup]="createForm" class="create-form" (ngSubmit)="onCreate()">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ "collections.collectionName" | translate }}</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="createForm.get('name')?.hasError('required')">
+          {{ "validation.requiredField" | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field form-field--description">
+        <mat-label>{{ "collections.collectionDescription" | translate }}</mat-label>
+        <textarea matInput formControlName="description" rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="create-actions">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="createForm.invalid || isCreating"
+        >
+          <mat-spinner *ngIf="isCreating" diameter="18" class="btn-spinner"></mat-spinner>
+          <span *ngIf="!isCreating">{{ "common.add" | translate }}</span>
+          <span *ngIf="isCreating">{{ "common.creatingButtonText" | translate }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Body -->
+  <div class="page-body">
+    <!-- Loading state -->
+    <div class="loading-container" *ngIf="isLoading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Collections list -->
+    <ng-container *ngIf="!isLoading">
+      <div class="empty-state" *ngIf="collections.length === 0">
+        <mat-icon class="empty-icon">collections_bookmark</mat-icon>
+        <span class="empty-text">{{ "collections.empty" | translate }}</span>
+      </div>
+
+      <div class="collections-grid" *ngIf="collections.length > 0">
+        <app-collection-item
+          *ngFor="let collection of collections; trackBy: trackById"
+          [collection]="collection"
+          (collectionDeleted)="onCollectionDeleted($event)"
+          (collectionUpdated)="onCollectionUpdated($event)"
+        ></app-collection-item>
+      </div>
+    </ng-container>
+  </div>
+</div>

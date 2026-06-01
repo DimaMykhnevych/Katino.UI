@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 import { UserInfo } from 'src/app/core/auth/models/user-info';
 import { Roles } from 'src/app/core/models/roles';
 import { CurrentUserService } from 'src/app/core/permission/services';
@@ -19,6 +20,8 @@ export class SidenavComponent implements OnInit {
     Roles.Owner,
     Roles.DirectManager,
   ];
+  public collectionsPage: string[] = [Roles.Admin, Roles.Owner];
+  public isInventoryExpanded = true;
   public ordersPage: string[] = [Roles.Admin, Roles.Owner, Roles.DirectManager];
   public employeesPage: string[] = [Roles.Admin, Roles.Owner];
   public crmSettingsPage: string[] = [Roles.Admin, Roles.Owner];
@@ -28,7 +31,10 @@ export class SidenavComponent implements OnInit {
   public isMobile = false;
   public isSidenavOpened = false;
 
-  constructor(private _currentUserService: CurrentUserService) {
+  constructor(
+    private _currentUserService: CurrentUserService,
+    private _router: Router,
+  ) {
     this.checkScreenSize();
   }
 
@@ -57,9 +63,26 @@ export class SidenavComponent implements OnInit {
         return this.pnlPage.includes(this.userInfo.role || '');
       case 'statistics':
         return this.statisticsPage.includes(this.userInfo.role || '');
+      case 'collections':
+        return this.collectionsPage.includes(this.userInfo.role || '');
       default:
         return false;
     }
+  }
+
+  public showInventoryDropdown(): boolean {
+    return this.collectionsPage.includes(this.userInfo.role || '');
+  }
+
+  public toggleInventoryExpanded(): void {
+    this.isInventoryExpanded = !this.isInventoryExpanded;
+  }
+
+  public isInventorySectionActive(): boolean {
+    return (
+      this._router.isActive('/inventory', false) ||
+      this._router.isActive('/collections', false)
+    );
   }
 
   public increase(sidenav: MatSidenav) {

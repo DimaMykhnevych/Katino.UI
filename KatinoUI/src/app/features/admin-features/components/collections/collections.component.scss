@@ -1,0 +1,148 @@
+.main {
+  .table-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+
+    .header-content {
+      margin-bottom: 20px;
+
+      .table-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+
+        .title-icon {
+          color: #06b6d4;
+          font-size: 28px;
+        }
+      }
+    }
+
+    .create-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+
+      .form-field {
+        flex: 1 1 200px;
+        min-width: 0;
+
+        ::ng-deep {
+          .mat-form-field-outline {
+            color: rgba(148, 163, 184, 0.3);
+          }
+          
+          .mat-form-field-outline-thick {
+            color: #06b6d4;
+          }
+          
+          .mat-form-field-label {
+            color: #64748b;
+          }
+          
+          .mat-select-arrow {
+            color: #64748b;
+          }
+        }   
+      }
+
+      .form-field--description {
+        flex: 2 1 280px;
+      }
+
+      .create-actions {
+        padding-top: 4px;
+
+        .btn-spinner {
+          display: inline-block;
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+
+  .page-body {
+    padding: 20px;
+
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      padding: 48px 0;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 48px 0;
+      color: #94a3b8;
+
+      .empty-icon {
+        font-size: 56px;
+        width: 56px;
+        height: 56px;
+      }
+
+      .empty-text {
+        font-size: 16px;
+      }
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    .table-header {
+      padding: 16px;
+
+      .header-content {
+        margin-bottom: 12px;
+
+        .table-title {
+          font-size: 20px;
+        }
+      }
+
+      .create-form {
+        flex-direction: column;
+        gap: 0;
+
+        .form-field,
+        .form-field--description {
+          width: 100%;
+          flex: none;
+        }
+
+        .create-actions {
+          width: 100%;
+          padding-top: 0;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .page-body {
+      padding: 12px;
+
+      .collections-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

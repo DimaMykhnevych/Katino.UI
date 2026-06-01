@@ -29,6 +29,8 @@ import { EmployeesComponent } from './components/employees/employees.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { TopSellingProductsComponent } from './components/statistics/top-selling-products/top-selling-products.component';
 import { NgChartsModule } from 'ng2-charts';
+import { CollectionsComponent } from './components/collections/collections.component';
+import { CollectionItemComponent } from './components/collections/collection-item/collection-item.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { NgChartsModule } from 'ng2-charts';
     EmployeesComponent,
     StatisticsComponent,
     TopSellingProductsComponent,
+    CollectionsComponent,
+    CollectionItemComponent,
   ],
   imports: [
     CommonModule,

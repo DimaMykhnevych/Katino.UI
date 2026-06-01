@@ -88,13 +88,37 @@
   },
   "navbar": {
     "menu": "Меню",
+    "products": "Товари",
     "availability": "Наявність",
     "orders": "Замовлення",
     "crm-settings": "Налаштування CRM",
     "sewing-queue": "Черга На Шиття",
     "pnl": "P&L",
     "employees": "Співробітники",
-    "statistics": "Статистика"
+    "statistics": "Статистика",
+    "collections": "Колекції"
+  },
+  "collections": {
+    "header": "Колекції",
+    "createCollection": "Створити колекцію",
+    "collectionName": "Назва колекції",
+    "collectionDescription": "Опис",
+    "addProduct": "Пошук товару для додавання",
+    "empty": "Колекцій поки немає",
+    "emptyProducts": "У цій колекції немає товарів",
+    "deleteCollection": "Видалити колекцію",
+    "toastr": {
+      "collectionCreated": "Колекцію успішно створено",
+      "collectionCreateFailed": "Не вдалося створити колекцію",
+      "collectionUpdated": "Колекцію успішно оновлено",
+      "collectionUpdateFailed": "Не вдалося оновити колекцію",
+      "collectionDeleted": "Колекцію успішно видалено",
+      "collectionDeleteFailed": "Не вдалося видалити колекцію"
+    },
+    "dialog": {
+      "deleteTitle": "Видалення Колекції",
+      "deleteContent": "Ви впевнені, що бажаєте видалити колекцію \"{{name}}\"?"
+    }
   },
   "statistics": {
     "title": "Статистика",

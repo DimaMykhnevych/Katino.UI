@@ -88,13 +88,37 @@
   },
   "navbar": {
     "menu": "Menu",
+    "products": "Products",
     "availability": "Availability",
     "orders": "Orders",
     "crm-settings": "CRM Settings",
     "sewing-queue": "Sewing Queue",
     "pnl": "P&L",
     "employees": "Employees",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "collections": "Collections"
+  },
+  "collections": {
+    "header": "Collections",
+    "createCollection": "Create collection",
+    "collectionName": "Collection name",
+    "collectionDescription": "Description",
+    "addProduct": "Search product to add",
+    "empty": "No collections yet",
+    "emptyProducts": "No products in this collection",
+    "deleteCollection": "Delete collection",
+    "toastr": {
+      "collectionCreated": "Collection created successfully",
+      "collectionCreateFailed": "Failed to create collection",
+      "collectionUpdated": "Collection updated successfully",
+      "collectionUpdateFailed": "Failed to update collection",
+      "collectionDeleted": "Collection deleted successfully",
+      "collectionDeleteFailed": "Failed to delete collection"
+    },
+    "dialog": {
+      "deleteTitle": "Delete Collection",
+      "deleteContent": "Are you sure you want to delete collection \"{{name}}\"?"
+    }
   },
   "statistics": {
     "title": "Statistics",

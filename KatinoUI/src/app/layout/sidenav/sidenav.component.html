@@ -33,10 +33,75 @@
       </div>
 
       <mat-nav-list class="nav-list">
+        <!-- Inventory dropdown section (Admin/Owner, expanded sidenav) -->
+        <ng-container
+          *ngIf="
+            showTab('inventory') && showInventoryDropdown() && sidenavWidth > 6
+          "
+        >
+          <mat-list-item
+            class="nav-item nav-section-header"
+            [class.active]="isInventorySectionActive()"
+            (click)="toggleInventoryExpanded()"
+          >
+            <div class="nav-item-content">
+              <div class="nav-icon"><mat-icon>inventory</mat-icon></div>
+              <div class="nav-label nav-label-with-expand">
+                <span class="nav-text">{{
+                  "navbar.products" | translate
+                }}</span>
+                <mat-icon class="expand-icon">{{
+                  isInventoryExpanded ? "expand_less" : "expand_more"
+                }}</mat-icon>
+              </div>
+            </div>
+          </mat-list-item>
+          <div class="nav-sub-items" *ngIf="isInventoryExpanded">
+            <mat-list-item
+              routerLink="/inventory"
+              routerLinkActive="active"
+              class="nav-item nav-sub-item"
+              (click)="isMobile && closeMobileSidenav(sidenav)"
+            >
+              <div class="nav-item-content">
+                <div class="nav-icon nav-sub-icon">
+                  <mat-icon>checklist</mat-icon>
+                </div>
+                <div class="nav-label">
+                  <span class="nav-text">{{
+                    "navbar.availability" | translate
+                  }}</span>
+                </div>
+              </div>
+            </mat-list-item>
+            <mat-list-item
+              routerLink="/collections"
+              routerLinkActive="active"
+              class="nav-item nav-sub-item"
+              (click)="isMobile && closeMobileSidenav(sidenav)"
+            >
+              <div class="nav-item-content">
+                <div class="nav-icon nav-sub-icon">
+                  <mat-icon>collections_bookmark</mat-icon>
+                </div>
+                <div class="nav-label">
+                  <span class="nav-text">{{
+                    "navbar.collections" | translate
+                  }}</span>
+                </div>
+              </div>
+            </mat-list-item>
+          </div>
+        </ng-container>
+
+        <!-- Inventory icon-only (Admin/Owner collapsed) OR DirectManager (any) -->
         <mat-list-item
           routerLink="/inventory"
           routerLinkActive="active"
-          *ngIf="showTab('inventory')"
+          *ngIf="
+            showTab('inventory') &&
+            (!showInventoryDropdown() || sidenavWidth <= 6)
+          "
           class="nav-item"
           (click)="isMobile && closeMobileSidenav(sidenav)"
         >
@@ -125,7 +190,9 @@
               <mat-icon>insights</mat-icon>
             </div>
             <div *ngIf="sidenavWidth > 6" class="nav-label">
-              <span class="nav-text">{{ "navbar.statistics" | translate }}</span>
+              <span class="nav-text">{{
+                "navbar.statistics" | translate
+              }}</span>
             </div>
           </div>
           <div class="nav-indicator" *ngIf="sidenavWidth <= 6"></div>
