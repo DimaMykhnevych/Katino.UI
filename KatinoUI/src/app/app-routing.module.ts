@@ -13,6 +13,7 @@ import { PnlComponent } from './features/admin-features/components/pnl/pnl.compo
 import { EmployeesComponent } from './features/admin-features/components/employees/employees.component';
 import { StatisticsComponent } from './features/admin-features/components/statistics/statistics.component';
 import { CollectionsComponent } from './features/admin-features/components/collections/collections.component';
+import { DiscountsComponent } from './features/admin-features/components/discounts/discounts.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,13 @@ const routes: Routes = [
         component: CollectionsComponent,
         data: {
           roles: [Roles.Admin, Roles.Owner],
+        },
+      },
+      {
+        path: 'discounts',
+        component: DiscountsComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
         },
       },
     ],

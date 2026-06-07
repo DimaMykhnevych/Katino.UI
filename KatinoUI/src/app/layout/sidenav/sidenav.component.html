@@ -77,6 +77,7 @@
             <mat-list-item
               routerLink="/collections"
               routerLinkActive="active"
+              *ngIf="showTab('collections')"
               class="nav-item nav-sub-item"
               (click)="isMobile && closeMobileSidenav(sidenav)"
             >
@@ -87,6 +88,24 @@
                 <div class="nav-label">
                   <span class="nav-text">{{
                     "navbar.collections" | translate
+                  }}</span>
+                </div>
+              </div>
+            </mat-list-item>
+            <mat-list-item
+              routerLink="/discounts"
+              routerLinkActive="active"
+              *ngIf="showTab('discounts')"
+              class="nav-item nav-sub-item"
+              (click)="isMobile && closeMobileSidenav(sidenav)"
+            >
+              <div class="nav-item-content">
+                <div class="nav-icon nav-sub-icon">
+                  <mat-icon>sell</mat-icon>
+                </div>
+                <div class="nav-label">
+                  <span class="nav-text">{{
+                    "navbar.discounts" | translate
                   }}</span>
                 </div>
               </div>
@@ -103,6 +122,7 @@
             (!showInventoryDropdown() || sidenavWidth <= 6)
           "
           class="nav-item"
+          [class.active]="isInventorySectionActive()"
           (click)="isMobile && closeMobileSidenav(sidenav)"
         >
           <div class="nav-item-content">

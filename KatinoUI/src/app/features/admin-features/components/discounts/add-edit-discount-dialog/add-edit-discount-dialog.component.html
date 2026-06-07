@@ -1,0 +1,248 @@
+<h1 mat-dialog-title>
+  <span *ngIf="data.isAdding">{{
+    "discounts.dialog.addTitle" | translate
+  }}</span>
+  <span *ngIf="!data.isAdding">{{
+    "discounts.dialog.editTitle" | translate
+  }}</span>
+</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" class="discount-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ "discounts.form.name" | translate }}</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="name?.hasError('required')">
+        {{ "validation.requiredField" | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>{{ "discounts.form.type" | translate }}</mat-label>
+      <mat-select formControlName="type" (selectionChange)="onTypeChanged()">
+        <mat-option [value]="discountType.productSpecific">{{
+          "discounts.type.productSpecific" | translate
+        }}</mat-option>
+        <mat-option [value]="discountType.collection">{{
+          "discounts.type.collection" | translate
+        }}</mat-option>
+        <mat-option [value]="discountType.global">{{
+          "discounts.type.global" | translate
+        }}</mat-option>
+        <mat-option [value]="discountType.bundle">{{
+          "discounts.type.bundle" | translate
+        }}</mat-option>
+      </mat-select>
+      <mat-hint *ngIf="!data.isAdding">{{
+        "discounts.form.typeLockedHint" | translate
+      }}</mat-hint>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field form-field--half">
+        <mat-label>{{ "discounts.form.valueType" | translate }}</mat-label>
+        <mat-select formControlName="valueType">
+          <mat-option [value]="discountValueType.fixed">{{
+            "discounts.valueType.fixed" | translate
+          }}</mat-option>
+          <mat-option [value]="discountValueType.percentage">{{
+            "discounts.valueType.percentage" | translate
+          }}</mat-option>
+        </mat-select>
+        <mat-hint *ngIf="isBundle">{{
+          "discounts.form.valueTypeLockedHint" | translate
+        }}</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field form-field--half">
+        <mat-label>{{ "discounts.form.value" | translate }}</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="value"
+          min="0.01"
+          step="0.01"
+        />
+        <span matSuffix>{{
+          valueType?.value === discountValueType.percentage ? "%" : "₴"
+        }}</span>
+        <mat-error *ngIf="value?.hasError('required')">
+          {{ "validation.requiredField" | translate }}
+        </mat-error>
+        <mat-error *ngIf="value?.hasError('min')">
+          {{ "validation.mustBeGreaterThanZero" | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field form-field--half">
+        <mat-label>{{ "discounts.form.startDate" | translate }}</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          formControlName="startDate"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="startPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field form-field--half">
+        <mat-label>{{ "discounts.form.endDate" | translate }}</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="endPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="toggle-row">
+      <mat-slide-toggle formControlName="isActive" color="primary">
+        {{ "discounts.form.isActive" | translate }}
+      </mat-slide-toggle>
+    </div>
+
+    <!-- ProductSpecific selection -->
+    <div class="selection-section" *ngIf="isProductSpecific">
+      <span class="selection-label">{{
+        "discounts.form.selectProducts" | translate
+      }}</span>
+      <app-product-autocomplete
+        [label]="'discounts.form.searchProduct' | translate"
+        (productSelected)="onProductSelected($event)"
+      ></app-product-autocomplete>
+
+      <div class="selection-empty" *ngIf="selectedProducts.length === 0">
+        {{ "discounts.form.noProductsSelected" | translate }}
+      </div>
+      <mat-chip-list
+        class="selection-chips"
+        *ngIf="selectedProducts.length > 0"
+      >
+        <mat-chip
+          *ngFor="let p of selectedProducts"
+          [removable]="true"
+          (removed)="removeProduct(p.id)"
+        >
+          {{ p.name }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <!-- Collection selection -->
+    <div class="selection-section" *ngIf="isCollection">
+      <span class="selection-label">{{
+        "discounts.form.selectCollections" | translate
+      }}</span>
+      <app-collection-autocomplete
+        [label]="'discounts.form.searchCollection' | translate"
+        (collectionSelected)="onCollectionSelected($event)"
+      ></app-collection-autocomplete>
+
+      <div class="selection-empty" *ngIf="selectedCollections.length === 0">
+        {{ "discounts.form.noCollectionsSelected" | translate }}
+      </div>
+      <mat-chip-list
+        class="selection-chips"
+        *ngIf="selectedCollections.length > 0"
+      >
+        <mat-chip
+          *ngFor="let c of selectedCollections"
+          [removable]="true"
+          (removed)="removeCollection(c.id)"
+        >
+          {{ c.name }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <!-- Bundle selection -->
+    <div class="selection-section" *ngIf="isBundle">
+      <span class="selection-label">{{
+        "discounts.form.selectBundleProducts" | translate
+      }}</span>
+      <app-product-autocomplete
+        [label]="'discounts.form.searchProduct' | translate"
+        (productSelected)="onProductSelected($event)"
+      ></app-product-autocomplete>
+
+      <div class="selection-empty" *ngIf="selectedProducts.length === 0">
+        {{ "discounts.form.noProductsSelected" | translate }}
+      </div>
+      <mat-chip-list
+        class="selection-chips"
+        *ngIf="selectedProducts.length > 0"
+      >
+        <mat-chip
+          *ngFor="let p of selectedProducts"
+          [removable]="true"
+          (removed)="removeProduct(p.id)"
+        >
+          {{ p.name }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <div
+        class="selection-warning"
+        *ngIf="selectedProducts.length > 0 && selectedProducts.length < 2"
+      >
+        <mat-icon>warning</mat-icon>
+        <span>{{ "discounts.form.bundleMinProductsHint" | translate }}</span>
+      </div>
+      <div class="selection-hint">
+        <mat-icon>info</mat-icon>
+        <span>{{ "discounts.form.bundleValueHint" | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Global hint -->
+    <div class="info-banner" *ngIf="isGlobal">
+      <mat-icon>info</mat-icon>
+      <span>{{ "discounts.form.globalHint" | translate }}</span>
+    </div>
+
+    <div class="info-banner">
+      <mat-icon>priority_high</mat-icon>
+      <span>{{ "discounts.priorityHint" | translate }}</span>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button
+    mat-stroked-button
+    color="warn"
+    (click)="onClose()"
+    [disabled]="isSaving"
+  >
+    {{ "common.close" | translate }}
+  </button>
+  <button
+    type="submit"
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid || !isSelectionValid || isSaving"
+    (click)="onSubmit()"
+  >
+    <ng-container *ngIf="!isSaving">
+      <span *ngIf="data.isAdding">{{ "common.add" | translate }}</span>
+      <span *ngIf="!data.isAdding">{{ "common.update" | translate }}</span>
+    </ng-container>
+    <div *ngIf="isSaving" class="spinner-container">
+      <mat-spinner diameter="20" color="primary"></mat-spinner>
+      <span *ngIf="data.isAdding">{{
+        "common.addingButtonText" | translate
+      }}</span>
+      <span *ngIf="!data.isAdding">{{
+        "common.updatingButtonText" | translate
+      }}</span>
+    </div>
+  </button>
+</div>

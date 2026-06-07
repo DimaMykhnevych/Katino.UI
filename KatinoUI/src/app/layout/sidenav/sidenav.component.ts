@@ -21,6 +21,11 @@ export class SidenavComponent implements OnInit {
     Roles.DirectManager,
   ];
   public collectionsPage: string[] = [Roles.Admin, Roles.Owner];
+  public discountsPage: string[] = [
+    Roles.Admin,
+    Roles.Owner,
+    Roles.DirectManager,
+  ];
   public isInventoryExpanded = true;
   public ordersPage: string[] = [Roles.Admin, Roles.Owner, Roles.DirectManager];
   public employeesPage: string[] = [Roles.Admin, Roles.Owner];
@@ -65,13 +70,15 @@ export class SidenavComponent implements OnInit {
         return this.statisticsPage.includes(this.userInfo.role || '');
       case 'collections':
         return this.collectionsPage.includes(this.userInfo.role || '');
+      case 'discounts':
+        return this.discountsPage.includes(this.userInfo.role || '');
       default:
         return false;
     }
   }
 
   public showInventoryDropdown(): boolean {
-    return this.collectionsPage.includes(this.userInfo.role || '');
+    return this.inventoryPage.includes(this.userInfo.role || '');
   }
 
   public toggleInventoryExpanded(): void {
@@ -81,7 +88,8 @@ export class SidenavComponent implements OnInit {
   public isInventorySectionActive(): boolean {
     return (
       this._router.isActive('/inventory', false) ||
-      this._router.isActive('/collections', false)
+      this._router.isActive('/collections', false) ||
+      this._router.isActive('/discounts', false)
     );
   }
 

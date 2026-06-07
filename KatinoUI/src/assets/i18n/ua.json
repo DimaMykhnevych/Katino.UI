@@ -96,7 +96,8 @@
     "pnl": "P&L",
     "employees": "Співробітники",
     "statistics": "Статистика",
-    "collections": "Колекції"
+    "collections": "Колекції",
+    "discounts": "Знижки"
   },
   "collections": {
     "header": "Колекції",
@@ -118,6 +119,71 @@
     "dialog": {
       "deleteTitle": "Видалення Колекції",
       "deleteContent": "Ви впевнені, що бажаєте видалити колекцію \"{{name}}\"?"
+    }
+  },
+  "discounts": {
+    "header": "Знижки",
+    "addDiscount": "Додати знижку",
+    "deleteDiscount": "Видалити знижку",
+    "empty": "Знижок поки немає",
+    "active": "Активна",
+    "inactive": "Неактивна",
+    "from": "з",
+    "to": "по",
+    "products": "Товари",
+    "collections": "Колекції",
+    "bundleProducts": "Товари набору",
+    "noItems": "Нічого не вибрано",
+    "globalHint": "Застосовується автоматично до всіх товарів",
+    "bundleValueHint": "Сума віднімається від усього замовлення, а не від кожного товару",
+    "priorityHint": "Пріоритет застосування знижок: товар → колекція → глобальна → набір. На товар/замовлення спрацьовує лише одна знижка, тому знижки, що перетинаються, не підсумовуються.",
+    "type": {
+      "productSpecific": "Конкретні товари",
+      "collection": "Колекція",
+      "global": "Усі товари (глобальна)",
+      "bundle": "Набір"
+    },
+    "valueType": {
+      "fixed": "Фіксована сума (₴)",
+      "percentage": "Відсоток (%)"
+    },
+    "toastr": {
+      "discountCreated": "Знижку успішно створено",
+      "discountCreateFailed": "Не вдалося створити знижку",
+      "discountUpdated": "Знижку успішно оновлено",
+      "discountUpdateFailed": "Не вдалося оновити знижку",
+      "discountDeleted": "Знижку успішно видалено",
+      "discountDeleteFailed": "Не вдалося видалити знижку",
+      "discountActivated": "Знижку активовано",
+      "discountDeactivated": "Знижку деактивовано",
+      "discountStatusFailed": "Не вдалося змінити статус знижки"
+    },
+    "dialog": {
+      "deleteTitle": "Видалення знижки",
+      "deleteContent": "Ви впевнені, що бажаєте видалити знижку \"{{name}}\"?",
+      "addTitle": "Додати знижку",
+      "editTitle": "Редагувати знижку"
+    },
+    "form": {
+      "name": "Назва",
+      "type": "Тип",
+      "typeLockedHint": "Тип не можна змінити після створення",
+      "valueType": "Тип значення",
+      "valueTypeLockedHint": "Знижки на набір завжди використовують фіксовану суму",
+      "value": "Значення",
+      "startDate": "Дата початку",
+      "endDate": "Дата завершення",
+      "isActive": "Активна",
+      "selectProducts": "Виберіть товари",
+      "selectCollections": "Виберіть колекції",
+      "selectBundleProducts": "Виберіть товари набору (мінімум 2)",
+      "searchProduct": "Пошук товару для додавання",
+      "searchCollection": "Пошук колекції для додавання",
+      "noProductsSelected": "Товари не вибрано",
+      "noCollectionsSelected": "Колекції не вибрано",
+      "bundleMinProductsHint": "Набір повинен містити щонайменше 2 товари",
+      "bundleValueHint": "Значення — це фіксована сума, що віднімається від усього замовлення",
+      "globalHint": "Ця знижка автоматично застосовується до всіх товарів. Одночасно може діяти лише одна активна глобальна знижка."
     }
   },
   "statistics": {

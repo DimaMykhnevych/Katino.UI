@@ -10,6 +10,7 @@ import { PhotoOverlayComponent } from './components/photo-overlay/photo-overlay.
 import { ScrollableTableComponent } from './components/scrollable-table/scrollable-table.component';
 import { ProductVariantAutocompleteComponent } from './components/product-variant-autocomplete/product-variant-autocomplete.component';
 import { ProductAutocompleteComponent } from './components/product-autocomplete/product-autocomplete.component';
+import { CollectionAutocompleteComponent } from './components/collection-autocomplete/collection-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ProductAutocompleteComponent } from './components/product-autocomplete/
     ScrollableTableComponent,
     ProductVariantAutocompleteComponent,
     ProductAutocompleteComponent,
+    CollectionAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { ProductAutocompleteComponent } from './components/product-autocomplete/
     ScrollableTableComponent,
     ProductVariantAutocompleteComponent,
     ProductAutocompleteComponent,
+    CollectionAutocompleteComponent,
   ],
 })
 export class CommonComponentsModule {}

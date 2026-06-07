@@ -13,6 +13,8 @@ import { Order } from 'src/app/core/models/order/order';
 import { OrderDetailsDialogComponent } from '../admin-features/components/order-details-dialog/order-details-dialog.component';
 import { AddEditOrderDialogComponent } from '../admin-features/components/add-edit-order-dialog/add-edit-order-dialog.component';
 import { AddEditOrderData } from '../admin-features/models/order/add-edit-order-data';
+import { AddEditDiscountData } from '../admin-features/models/add-edit-discount-data';
+import { AddEditDiscountDialogComponent } from '../admin-features/components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -87,6 +89,18 @@ export class DialogService {
   ): MatDialogRef<AddEditOrderDialogComponent> {
     return this.dialog.open(AddEditOrderDialogComponent, {
       width: '800px',
+      disableClose: true,
+      data: data,
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  public openAddEditDiscountDialog(
+    data: AddEditDiscountData,
+  ): MatDialogRef<AddEditDiscountDialogComponent> {
+    return this.dialog.open(AddEditDiscountDialogComponent, {
+      width: '600px',
       disableClose: true,
       data: data,
       autoFocus: false,

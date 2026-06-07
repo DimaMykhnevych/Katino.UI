@@ -1,0 +1,52 @@
+<div class="main container-fluid">
+  <div class="table-header">
+    <div class="header-content">
+      <h2 class="table-title">
+        <mat-icon class="title-icon">sell</mat-icon>
+        {{ "discounts.header" | translate }}
+      </h2>
+
+      <button
+        *ngIf="canManage"
+        mat-flat-button
+        color="primary"
+        class="add-btn"
+        (click)="onAddDiscount()"
+      >
+        <mat-icon>add</mat-icon>
+        <span>{{ "discounts.addDiscount" | translate }}</span>
+      </button>
+    </div>
+
+    <div class="priority-hint">
+      <mat-icon class="hint-icon">info</mat-icon>
+      <span>{{ "discounts.priorityHint" | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="page-body">
+    <!-- Loading state -->
+    <div class="loading-container" *ngIf="isLoading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+
+    <!-- Discounts list -->
+    <ng-container *ngIf="!isLoading">
+      <div class="empty-state" *ngIf="discounts.length === 0">
+        <mat-icon class="empty-icon">sell</mat-icon>
+        <span class="empty-text">{{ "discounts.empty" | translate }}</span>
+      </div>
+
+      <div class="discounts-grid" *ngIf="discounts.length > 0">
+        <app-discount-item
+          *ngFor="let discount of discounts; trackBy: trackById"
+          [discount]="discount"
+          [canManage]="canManage"
+          (discountDeleted)="onDiscountDeleted($event)"
+          (discountUpdated)="onDiscountUpdated($event)"
+        ></app-discount-item>
+      </div>
+    </ng-container>
+  </div>
+</div>

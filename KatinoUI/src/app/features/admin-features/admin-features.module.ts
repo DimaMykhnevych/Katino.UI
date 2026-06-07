@@ -31,6 +31,9 @@ import { TopSellingProductsComponent } from './components/statistics/top-selling
 import { NgChartsModule } from 'ng2-charts';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { CollectionItemComponent } from './components/collections/collection-item/collection-item.component';
+import { DiscountsComponent } from './components/discounts/discounts.component';
+import { DiscountItemComponent } from './components/discounts/discount-item/discount-item.component';
+import { AddEditDiscountDialogComponent } from './components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,9 @@ import { CollectionItemComponent } from './components/collections/collection-ite
     TopSellingProductsComponent,
     CollectionsComponent,
     CollectionItemComponent,
+    DiscountsComponent,
+    DiscountItemComponent,
+    AddEditDiscountDialogComponent,
   ],
   imports: [
     CommonModule,

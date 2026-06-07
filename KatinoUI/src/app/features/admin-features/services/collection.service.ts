@@ -12,8 +12,12 @@ import { UpdateCollectionRequest } from 'src/app/core/models/collection/update-c
 export class CollectionService {
   constructor(private _http: HttpClient) {}
 
-  public getCollections(): Observable<Collection[]> {
-    return this._http.get<Collection[]>(`${AppSettings.apiHost}/Collection`);
+  public getCollections(search?: string): Observable<Collection[]> {
+    let url = `${AppSettings.apiHost}/Collection`;
+    if (search) {
+      url = `${AppSettings.apiHost}/Collection?Name=${search}`;
+    }
+    return this._http.get<Collection[]>(url);
   }
 
   public addCollection(

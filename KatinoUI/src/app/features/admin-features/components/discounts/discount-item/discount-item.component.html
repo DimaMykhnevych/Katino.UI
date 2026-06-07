@@ -1,0 +1,124 @@
+<mat-card class="discount-card" [class.inactive]="!discount.isActive">
+  <mat-card-header class="discount-card-header">
+    <mat-card-title class="discount-title">
+      <mat-icon class="discount-icon">sell</mat-icon>
+      <span>{{ discount.name }}</span>
+    </mat-card-title>
+    <span class="header-spacer"></span>
+    <button
+      *ngIf="canManage"
+      mat-icon-button
+      class="edit-btn"
+      (click)="onEdit()"
+      [title]="'common.edit' | translate"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      *ngIf="canManage"
+      mat-icon-button
+      color="warn"
+      class="delete-btn"
+      [disabled]="isDeleting"
+      (click)="onDelete()"
+      [title]="'discounts.deleteDiscount' | translate"
+    >
+      <mat-spinner *ngIf="isDeleting" diameter="20"></mat-spinner>
+      <mat-icon *ngIf="!isDeleting">delete</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <mat-card-content class="discount-card-content">
+    <div class="badges-row">
+      <span class="badge badge-type">{{ typeKey | translate }}</span>
+      <span class="badge badge-value">{{ valueText }}</span>
+      <span
+        class="badge"
+        [class.badge-active]="discount.isActive"
+        [class.badge-inactive]="!discount.isActive"
+      >
+        {{
+          (discount.isActive ? "discounts.active" : "discounts.inactive")
+            | translate
+        }}
+      </span>
+    </div>
+
+    <div class="dates-row" *ngIf="discount.startDate || discount.endDate">
+      <mat-icon class="dates-icon">event</mat-icon>
+      <span *ngIf="discount.startDate">
+        {{ "discounts.from" | translate }}
+        {{ discount.startDate | date: "dd.MM.yyyy" }}
+      </span>
+      <span *ngIf="discount.endDate">
+        {{ "discounts.to" | translate }}
+        {{ discount.endDate | date: "dd.MM.yyyy" }}
+      </span>
+    </div>
+
+    <div
+      class="items-section"
+      *ngIf="discount.type === discountType.productSpecific"
+    >
+      <span class="items-label">{{ "discounts.products" | translate }}</span>
+      <mat-chip-list class="items-chips" *ngIf="discount.products.length">
+        <mat-chip *ngFor="let p of discount.products" class="item-chip">{{
+          p.name
+        }}</mat-chip>
+      </mat-chip-list>
+      <span class="items-empty" *ngIf="!discount.products.length">{{
+        "discounts.noItems" | translate
+      }}</span>
+    </div>
+
+    <div
+      class="items-section"
+      *ngIf="discount.type === discountType.collection"
+    >
+      <span class="items-label">{{ "discounts.collections" | translate }}</span>
+      <mat-chip-list class="items-chips" *ngIf="discount.collections.length">
+        <mat-chip *ngFor="let c of discount.collections" class="item-chip">{{
+          c.name
+        }}</mat-chip>
+      </mat-chip-list>
+      <span class="items-empty" *ngIf="!discount.collections.length">{{
+        "discounts.noItems" | translate
+      }}</span>
+    </div>
+
+    <div class="items-section" *ngIf="discount.type === discountType.bundle">
+      <span class="items-label">{{
+        "discounts.bundleProducts" | translate
+      }}</span>
+      <mat-chip-list class="items-chips" *ngIf="discount.bundleProducts.length">
+        <mat-chip *ngFor="let p of discount.bundleProducts" class="item-chip">{{
+          p.name
+        }}</mat-chip>
+      </mat-chip-list>
+      <span class="items-empty" *ngIf="!discount.bundleProducts.length">{{
+        "discounts.noItems" | translate
+      }}</span>
+      <span class="bundle-hint">{{
+        "discounts.bundleValueHint" | translate
+      }}</span>
+    </div>
+
+    <div class="items-section" *ngIf="discount.type === discountType.global">
+      <span class="items-empty">{{ "discounts.globalHint" | translate }}</span>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions class="discount-card-actions" *ngIf="canManage">
+    <mat-slide-toggle
+      color="primary"
+      [checked]="discount.isActive"
+      [disabled]="isTogglingActive"
+      (change)="onToggleActive()"
+    >
+      {{
+        (discount.isActive ? "discounts.active" : "discounts.inactive")
+          | translate
+      }}
+    </mat-slide-toggle>
+  </mat-card-actions>
+</mat-card>

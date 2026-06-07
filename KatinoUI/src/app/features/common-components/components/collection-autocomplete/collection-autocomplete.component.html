@@ -1,0 +1,20 @@
+<mat-form-field class="collection-autocomplete-field" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    #searchInput
+    matInput
+    [formControl]="searchCtrl"
+    [matAutocomplete]="collectionAuto"
+    (focus)="onFocus()"
+  />
+  <mat-spinner *ngIf="isSearching" matSuffix diameter="18"></mat-spinner>
+  <mat-autocomplete
+    #collectionAuto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="onOptionSelected($event.option.value)"
+  >
+    <mat-option *ngFor="let c of collections" [value]="c">
+      <strong>{{ c.name }}</strong>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

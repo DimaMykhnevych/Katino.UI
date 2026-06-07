@@ -96,7 +96,8 @@
     "pnl": "P&L",
     "employees": "Employees",
     "statistics": "Statistics",
-    "collections": "Collections"
+    "collections": "Collections",
+    "discounts": "Discounts"
   },
   "collections": {
     "header": "Collections",
@@ -118,6 +119,71 @@
     "dialog": {
       "deleteTitle": "Delete Collection",
       "deleteContent": "Are you sure you want to delete collection \"{{name}}\"?"
+    }
+  },
+  "discounts": {
+    "header": "Discounts",
+    "addDiscount": "Add discount",
+    "deleteDiscount": "Delete discount",
+    "empty": "No discounts yet",
+    "active": "Active",
+    "inactive": "Inactive",
+    "from": "from",
+    "to": "to",
+    "products": "Products",
+    "collections": "Collections",
+    "bundleProducts": "Bundle products",
+    "noItems": "Nothing selected",
+    "globalHint": "Applies automatically to all products",
+    "bundleValueHint": "The amount is subtracted from the whole order, not from each product",
+    "priorityHint": "Discount priority: product → collection → global → bundle. Only one discount is applied per product/order, so overlapping discounts will not be combined.",
+    "type": {
+      "productSpecific": "Specific products",
+      "collection": "Collection",
+      "global": "All products (global)",
+      "bundle": "Bundle"
+    },
+    "valueType": {
+      "fixed": "Fixed amount (₴)",
+      "percentage": "Percentage (%)"
+    },
+    "toastr": {
+      "discountCreated": "Discount created successfully",
+      "discountCreateFailed": "Failed to create discount",
+      "discountUpdated": "Discount updated successfully",
+      "discountUpdateFailed": "Failed to update discount",
+      "discountDeleted": "Discount deleted successfully",
+      "discountDeleteFailed": "Failed to delete discount",
+      "discountActivated": "Discount activated",
+      "discountDeactivated": "Discount deactivated",
+      "discountStatusFailed": "Failed to change discount status"
+    },
+    "dialog": {
+      "deleteTitle": "Delete Discount",
+      "deleteContent": "Are you sure you want to delete discount \"{{name}}\"?",
+      "addTitle": "Add discount",
+      "editTitle": "Edit discount"
+    },
+    "form": {
+      "name": "Name",
+      "type": "Type",
+      "typeLockedHint": "Type cannot be changed after creation",
+      "valueType": "Value type",
+      "valueTypeLockedHint": "Bundle discounts always use a fixed amount",
+      "value": "Value",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "isActive": "Active",
+      "selectProducts": "Select products",
+      "selectCollections": "Select collections",
+      "selectBundleProducts": "Select bundle products (at least 2)",
+      "searchProduct": "Search product to add",
+      "searchCollection": "Search collection to add",
+      "noProductsSelected": "No products selected",
+      "noCollectionsSelected": "No collections selected",
+      "bundleMinProductsHint": "A bundle must contain at least 2 products",
+      "bundleValueHint": "The value is a fixed amount subtracted from the whole order",
+      "globalHint": "This discount will apply automatically to all products. Only one active global discount is allowed at a time."
     }
   },
   "statistics": {
