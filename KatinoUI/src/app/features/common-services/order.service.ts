@@ -13,6 +13,8 @@ import { OrderCreationResult } from '../../core/models/order/add-order/order-cre
 import { OrderUpdateResult } from 'src/app/core/models/order/update-order/order-update-result';
 import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order';
 import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-delete-result';
+import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing-result';
+import { PreviewOrderCostRequest } from 'src/app/core/models/order/cost/preview-order-cost-request';
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +69,15 @@ export class OrderService {
   public deleteOrder(id: string): Observable<OrderDeleteResult> {
     return this._http.delete<OrderDeleteResult>(
       `${AppSettings.apiHost}/Order/${id}`,
+    );
+  }
+
+  public previewCost(
+    previewOrderCostQuery: PreviewOrderCostRequest,
+  ): Observable<OrderPricingResult> {
+    return this._http.post<OrderPricingResult>(
+      `${AppSettings.apiHost}/Order/preview-cost`,
+      previewOrderCostQuery,
     );
   }
 }
