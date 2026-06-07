@@ -553,6 +553,11 @@
     "updatingOrder": {
       "dialogTitle": "Оновлення Замовлення"
     },
+    "pricingPreview": {
+      "baseTotal": "Сума без знижки",
+      "totalDiscount": "Знижка",
+      "finalTotal": "Підсумкова сума"
+    },
     "hints": {
       "searchingPhones": "Пошук...",
       "saleTypeLocked": "Тип продажу не можна змінювати під час редагування",

@@ -553,6 +553,11 @@
     "updatingOrder": {
       "dialogTitle": "Updating Order"
     },
+    "pricingPreview": {
+      "baseTotal": "Base total",
+      "totalDiscount": "Discount",
+      "finalTotal": "Final total"
+    },
     "hints": {
       "searchingPhones": "Searching...",
       "saleTypeLocked": "Sale type cannot be changed while editing",

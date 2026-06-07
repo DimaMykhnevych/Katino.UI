@@ -13,7 +13,10 @@ import {
 } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { toUtcEndOfDay, toUtcStartOfDay } from 'src/app/core/helpers/date.helper';
+import {
+  toUtcEndOfDay,
+  toUtcStartOfDay,
+} from 'src/app/core/helpers/date.helper';
 import { GetOrderRequest } from 'src/app/core/models/order/get-order-request';
 import { GetOrderResponse } from 'src/app/core/models/order/get-order-response';
 import { Order } from 'src/app/core/models/order/order';
@@ -146,7 +149,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   public isCreateScanSheetControlVisible(): boolean {
-    return this.userRole === Roles.Admin || this.userRole === Roles.Owner;
+    return (
+      this.userRole === Roles.Admin ||
+      this.userRole === Roles.Owner ||
+      this.userRole === Roles.DirectManager
+    );
   }
 
   public onAddOrderClick(): void {
@@ -741,5 +748,4 @@ export class OrdersComponent implements OnInit, OnDestroy {
       },
     );
   }
-
 }

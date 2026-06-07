@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { DeliveryType } from 'src/app/core/enums/delivery-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { EMPTY, Subject, of } from 'rxjs';
+import { EMPTY, Subject, merge, of } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -44,6 +44,9 @@ import { CrmUserSettings } from 'src/app/core/models/crm-user-settings';
 import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order';
 import { OrderTag } from 'src/app/core/models/order/order-tag';
 import { OrderTagType } from 'src/app/core/enums/order-tag-type';
+import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing-result';
+import { OrderPricingRequest } from 'src/app/core/models/order/cost/order-pricing-request';
+import { DiscountType } from 'src/app/core/enums/discount-type';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -75,6 +78,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public initialRecipientCity: NpCityResponse | null = null;
   public initialRecipientWarehouse: NpWarehouse | null = null;
   public SaleType = SaleType;
+  public DiscountType = DiscountType;
+  public pricingResult: OrderPricingResult | null = null;
 
   public deliveryTypeOptions: DeliveryTypeOption[] = Object.values(DeliveryType)
     .filter((v) => typeof v === 'number')
@@ -84,8 +89,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     }));
 
   private _destroy$ = new Subject<void>();
-  private _costManuallyEdited = false;
-  private _afterpaymentManuallyEdited = false;
   private readonly PHONE_PATTERN = /^380\d{9}$/;
   private readonly DEFAULT_DESCRIPTION = 'Одяг KATINO';
   private readonly SEAT_DEFAULTS: Record<
@@ -176,6 +179,19 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         quantity: [1, [Validators.required, Validators.min(1)]],
       }),
     );
+  }
+
+  public getDiscountedItemLabel(productVariantId: string): string {
+    const ctrl = (this.orderItems.controls as FormGroup[]).find(
+      (c) => c.get('productVariantId')?.value === productVariantId,
+    );
+    const pv = ctrl?.get('productVariant')?.value as ProductVariant | undefined;
+
+    if (!pv) return productVariantId;
+
+    return [pv.product?.name, pv.color?.name, pv.size?.name]
+      .filter(Boolean)
+      .join(' • ');
   }
 
   public isFormValid(): boolean {
@@ -558,48 +574,79 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   private subscribeOnPricingChanges(): void {
-    this.cost!.valueChanges.pipe(
-      takeUntil(this._destroy$),
-      distinctUntilChanged(),
-    ).subscribe(() => {
-      if (this.cost?.dirty) {
-        this._costManuallyEdited = true;
-      }
-
-      this.recalculateAfterpaymentIfNeeded(false);
-    });
-
-    this.afterpaymentOnGoodsCost!.valueChanges.pipe(
-      takeUntil(this._destroy$),
-      distinctUntilChanged(),
-    ).subscribe(() => {
-      if (this.afterpaymentOnGoodsCost?.dirty)
-        this._afterpaymentManuallyEdited = true;
-    });
-
-    this.saleType!.valueChanges.pipe(
-      takeUntil(this._destroy$),
-      distinctUntilChanged(),
-    ).subscribe(() => {
-      this.recalculateCostIfNeeded(false);
-      this.recalculateAfterpaymentIfNeeded(false);
-    });
+    merge(
+      this.orderItems.valueChanges,
+      this.saleType!.valueChanges.pipe(distinctUntilChanged()),
+    )
+      .pipe(
+        takeUntil(this._destroy$),
+        debounceTime(150),
+        switchMap(() => this.requestPricingPreview()),
+      )
+      .subscribe((result) => {
+        this.pricingResult = result;
+        this.applyPricingResultToForm();
+      });
 
     this.isPrepayment!.valueChanges.pipe(
       takeUntil(this._destroy$),
       distinctUntilChanged(),
     ).subscribe((v: boolean) => {
-      this._afterpaymentManuallyEdited = false;
       this.applyPrepaymentValidators(v);
-      this.recalculateAfterpaymentIfNeeded(true);
+      this.applyPricingResultToForm();
     });
+  }
 
-    this.orderItems.valueChanges
-      .pipe(takeUntil(this._destroy$), debounceTime(150))
-      .subscribe(() => {
-        this.recalculateCostIfNeeded(false);
-        this.recalculateAfterpaymentIfNeeded(false);
+  private requestPricingPreview() {
+    const items = this.buildPricingRequestItems();
+
+    if (!items.length) {
+      this.pricingResult = null;
+      return of(null as OrderPricingResult | null);
+    }
+
+    const saleType = (
+      this.saleType?.enabled
+        ? this.saleType.value
+        : (this.data?.order?.saleType ?? SaleType.retail)
+    ) as SaleType;
+
+    return this._orderService
+      .previewCost({ items, saleType })
+      .pipe(catchError(() => of(null as OrderPricingResult | null)));
+  }
+
+  private buildPricingRequestItems(): OrderPricingRequest[] {
+    const items: OrderPricingRequest[] = [];
+
+    for (const ctrl of this.orderItems.controls as FormGroup[]) {
+      const productVariantId = ctrl.get('productVariantId')?.value;
+      const quantity = Number(ctrl.get('quantity')?.value ?? 0);
+
+      if (!productVariantId || quantity <= 0) continue;
+
+      items.push({
+        productVariantId,
+        quantity,
+        isCustomTailoring: !!ctrl.get('isCustomTailoring')?.value,
       });
+    }
+
+    return items;
+  }
+
+  private applyPricingResultToForm(): void {
+    const finalTotal = this.pricingResult?.finalTotal ?? 0;
+
+    this.cost?.setValue(finalTotal, { emitEvent: false });
+    this.cost?.markAsPristine();
+
+    if (this.isPrepayment?.value === true) {
+      const v = Math.max(finalTotal - this.PREPAYMENT_AMOUNT, 0);
+
+      this.afterpaymentOnGoodsCost?.setValue(v, { emitEvent: false });
+      this.afterpaymentOnGoodsCost?.markAsPristine();
+    }
   }
 
   private initializeForm(): void {
@@ -799,56 +846,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getUnitPriceBySaleType(
-    pv: ProductVariant,
-    saleType: SaleType,
-  ): number {
-    const p = pv?.product;
-    if (!p) return 0;
-
-    switch (saleType) {
-      case SaleType.drop:
-        return Number(p.dropPrice ?? 0);
-      case SaleType.wholesale:
-        return Number(p.wholesalePrice ?? 0);
-      case SaleType.retail:
-      default:
-        return Number(p.price ?? 0);
-    }
-  }
-
-  private computeAutoCost(): number {
-    const saleType = (
-      this.saleType?.enabled
-        ? this.saleType.value
-        : (this.data?.order?.saleType ?? SaleType.retail)
-    ) as SaleType;
-
-    let total = 0;
-
-    for (const ctrl of this.orderItems.controls as FormGroup[]) {
-      const qty = Number(ctrl.get('quantity')?.value ?? 0);
-      const pv = ctrl.get('productVariant')?.value;
-
-      if (!pv || qty <= 0) continue;
-
-      total += this.getUnitPriceBySaleType(pv, saleType) * qty;
-    }
-
-    return Math.round(total);
-  }
-
-  private recalculateCostIfNeeded(force: boolean): void {
-    if (!force && this._costManuallyEdited) {
-      return;
-    }
-
-    const autoCost = this.computeAutoCost();
-
-    this.cost?.setValue(autoCost, { emitEvent: false });
-    this.cost?.markAsPristine();
-  }
-
   private applyPrepaymentValidators(isPrepayment: boolean): void {
     const ctrl = this.afterpaymentOnGoodsCost!;
 
@@ -858,26 +855,9 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
       ctrl.clearValidators();
       ctrl.setValue(null, { emitEvent: false });
       ctrl.markAsPristine();
-      this._afterpaymentManuallyEdited = false;
     }
 
     ctrl.updateValueAndValidity({ emitEvent: false });
-  }
-
-  private recalculateAfterpaymentIfNeeded(force: boolean): void {
-    if (this.isPrepayment?.value !== true) {
-      return;
-    }
-
-    if (!force && this._afterpaymentManuallyEdited) {
-      return;
-    }
-
-    const cost = Number(this.cost?.value ?? 0);
-    const v = Math.max(cost - this.PREPAYMENT_AMOUNT, 0);
-
-    this.afterpaymentOnGoodsCost?.setValue(v, { emitEvent: false });
-    this.afterpaymentOnGoodsCost?.markAsPristine();
   }
 
   private applyDeliveryTypeValidators(dt: DeliveryType): void {

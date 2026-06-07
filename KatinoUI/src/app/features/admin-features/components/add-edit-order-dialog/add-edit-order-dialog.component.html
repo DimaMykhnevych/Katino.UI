@@ -490,6 +490,30 @@
                 </mat-form-field>
               </div>
 
+              <div class="col-12" *ngIf="pricingResult as pricing">
+                <div class="text-muted small mb-2">
+                  <div>
+                    {{ "orders.pricingPreview.baseTotal" | translate }}:
+                    {{ pricing.baseTotal }}
+                  </div>
+                  <div *ngIf="pricing.totalDiscount">
+                    {{ "orders.pricingPreview.totalDiscount" | translate }}:
+                    -{{ pricing.totalDiscount }}
+                  </div>
+                  <div>
+                    {{ "orders.pricingPreview.finalTotal" | translate }}:
+                    {{ pricing.finalTotal }}
+                  </div>
+                  <ng-container *ngFor="let item of pricing.itemResults">
+                    <div *ngIf="item.discountAmount">
+                      {{ getDiscountedItemLabel(item.productVariantId) }} —
+                      {{ "discounts.type." + DiscountType[item.appliedDiscountType] | translate }}:
+                      -{{ item.discountAmount }}
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
               <div class="col-12">
                 <mat-checkbox formControlName="isPrepayment" color="primary" class="prepayment-checkbox">
                   {{ "orders.labels.prepayment" | translate }}
