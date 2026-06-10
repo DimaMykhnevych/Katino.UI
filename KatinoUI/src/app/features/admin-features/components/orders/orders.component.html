@@ -61,7 +61,9 @@
             <mat-label>{{ "orders.filters.tags" | translate }}</mat-label>
 
             <mat-select formControlName="orderTags" multiple>
-              <ng-container *ngIf="translatedAllTagsOption$ | async as allLabel">
+              <ng-container
+                *ngIf="translatedAllTagsOption$ | async as allLabel"
+              >
                 <mat-option
                   [value]="ALL_TAGS_VALUE"
                   (onSelectionChange)="onAllTagsToggled($event)"
@@ -335,10 +337,7 @@
                     {{ "orders.table.custom" | translate }}
                   </span>
 
-                  <span
-                    class="custom-comment"
-                    *ngIf="it.isCustomTailoring && it.comment"
-                  >
+                  <span class="custom-comment" *ngIf="it.comment">
                     "{{ getCustomCommentShort(it.comment) }}"
                   </span>
                 </div>
