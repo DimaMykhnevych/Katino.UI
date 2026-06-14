@@ -5,6 +5,7 @@ import { GetSewingQueueItems } from 'src/app/core/models/sewing-queue/get-sewing
 import { GroupedSewingQueueItem } from 'src/app/core/models/sewing-queue/grouped-sewing-queue-item';
 import { SubmitSewedReportCommand } from 'src/app/core/models/sewing-queue/submit-sewed-report-command';
 import { AppSettings } from 'src/app/core/settings';
+import { convertToHttpParams } from 'src/app/core/http/request/http-params.util';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +13,21 @@ import { AppSettings } from 'src/app/core/settings';
 export class OrderItemService {
   constructor(private _http: HttpClient) {}
 
-  public getSewingQueue(): Observable<GetSewingQueueItems> {
+  public getSewingQueue(
+    sewerId?: string | null,
+  ): Observable<GetSewingQueueItems> {
     return this._http.get<GetSewingQueueItems>(
       `${AppSettings.apiHost}/OrderItem/sewing-queue`,
+      { params: convertToHttpParams({ sewerId }) },
     );
   }
 
-  public getSewingQueueGrouped(): Observable<GroupedSewingQueueItem[]> {
+  public getSewingQueueGrouped(
+    sewerId?: string | null,
+  ): Observable<GroupedSewingQueueItem[]> {
     return this._http.get<GroupedSewingQueueItem[]>(
       `${AppSettings.apiHost}/OrderItem/sewing-queue-grouped`,
+      { params: convertToHttpParams({ sewerId }) },
     );
   }
 

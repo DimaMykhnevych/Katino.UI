@@ -6,6 +6,32 @@
 
     .header-content {
       margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      .sewer-filter {
+        min-width: 220px;
+          ::ng-deep {
+              .mat-form-field-outline {
+              color: rgba(148, 163, 184, 0.3);
+              }
+
+              .mat-form-field-outline-thick {
+              color: #06b6d4;
+              }
+
+              .mat-form-field-label {
+              color: #64748b;
+              }
+
+              .mat-select-arrow {
+              color: #64748b;
+              }
+          }
+      }
 
       .table-title {
         display: flex;

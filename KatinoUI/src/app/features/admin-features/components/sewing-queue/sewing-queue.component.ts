@@ -23,6 +23,8 @@ import { ProductPhoto } from 'src/app/core/models/product-photo';
 import { CurrentUserService } from 'src/app/core/permission/services/current-user.service';
 import { Roles } from 'src/app/core/models/roles';
 import { ProductVariant } from 'src/app/core/models/product-variant';
+import { Sewer } from 'src/app/core/models/sewer';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-sewing-queue',
@@ -63,6 +65,9 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
   }> = [];
   public isSubmittingExtra = false;
 
+  public sewers: Sewer[] = [];
+  public selectedSewerId: string | null = null;
+
   private _destroy$ = new Subject<void>();
 
   constructor(
@@ -72,6 +77,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     private _translate: TranslateService,
     private _bp: BreakpointObserver,
     private _currentUser: CurrentUserService,
+    private _userService: UserService,
   ) {}
 
   public get isAdminOrOwner(): boolean {
@@ -90,6 +96,28 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
           : this.DESKTOP_COLUMNS;
       });
 
+    if (this.isAdminOrOwner) {
+      this.loadSewers();
+    }
+
+    this.loadQueue();
+    this.loadGrouped();
+  }
+
+  public loadSewers(): void {
+    this._userService
+      .getSewers()
+      .pipe(
+        catchError(() => of([] as Sewer[])),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((sewers) => {
+        this.sewers = sewers ?? [];
+      });
+  }
+
+  public onSewerChange(sewerId: string | null): void {
+    this.selectedSewerId = sewerId;
     this.loadQueue();
     this.loadGrouped();
   }
@@ -103,7 +131,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this._service
-      .getSewingQueue()
+      .getSewingQueue(this.selectedSewerId)
       .pipe(
         catchError((err) => this.onCatchError(err)),
         finalize(() => (this.isLoading = false)),
@@ -296,7 +324,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     this.isGroupedLoading = true;
 
     this._service
-      .getSewingQueueGrouped()
+      .getSewingQueueGrouped(this.selectedSewerId)
       .pipe(
         catchError(() => of([] as GroupedSewingQueueItem[])),
         finalize(() => (this.isGroupedLoading = false)),

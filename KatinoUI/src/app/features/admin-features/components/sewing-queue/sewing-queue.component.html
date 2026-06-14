@@ -11,6 +11,25 @@
           {{ "common.totalItems" | translate }}: {{ resultsAmount }}
         </div>
       </div>
+
+      <mat-form-field
+        *ngIf="isAdminOrOwner"
+        appearance="outline"
+        class="sewer-filter"
+      >
+        <mat-label>{{ "adminFeatures.sewers" | translate }}</mat-label>
+        <mat-select
+          [value]="selectedSewerId"
+          (selectionChange)="onSewerChange($event.value)"
+        >
+          <mat-option [value]="null">
+            {{ "common.allOption" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let sewer of sewers" [value]="sewer.id">
+            {{ sewer.userName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
 
