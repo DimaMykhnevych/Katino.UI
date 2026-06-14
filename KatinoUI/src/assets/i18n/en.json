@@ -197,6 +197,13 @@
       "product": "Product",
       "totalSold": "Sold",
       "empty": "No data for the selected period"
+    },
+    "sewingStatistics": {
+      "title": "Sewing Statistics",
+      "product": "Product",
+      "totalSewed": "Quantity",
+      "sewer": "Sewn by",
+      "empty": "No data for the selected period"
     }
   },
   "employees": {

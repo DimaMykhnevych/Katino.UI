@@ -1,0 +1,53 @@
+<mat-expansion-panel class="section-card" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <span class="section-title">{{ "statistics.sewingStatistics.title" | translate }}</span>
+      <app-spinner *ngIf="isLoading" [diameter]="20"></app-spinner>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <ng-container *ngIf="!isLoading || items.length > 0">
+    <ng-container *ngIf="items.length > 0; else emptyState">
+      <table mat-table [dataSource]="items" class="sewing-statistics-table">
+        <ng-container matColumnDef="productName">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "statistics.sewingStatistics.product" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let item">{{ item.productName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalSewed">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "statistics.sewingStatistics.totalSewed" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let item">{{ item.totalSewed }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="sewerName">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "statistics.sewingStatistics.sewer" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let item">{{ item.sewerName }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [length]="totalCount"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChanged($event)"
+      ></mat-paginator>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div class="empty-state" *ngIf="!isLoading">
+        <mat-icon class="empty-icon">bar_chart</mat-icon>
+        <p>{{ "statistics.sewingStatistics.empty" | translate }}</p>
+      </div>
+    </ng-template>
+  </ng-container>
+</mat-expansion-panel>

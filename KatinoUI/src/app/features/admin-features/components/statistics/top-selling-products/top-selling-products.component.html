@@ -1,8 +1,10 @@
-<div class="section-card">
-  <div class="section-header">
-    <h2 class="section-title">{{ "statistics.topSellingProducts.title" | translate }}</h2>
-    <app-spinner *ngIf="isLoading" [diameter]="28"></app-spinner>
-  </div>
+<mat-expansion-panel class="section-card" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <span class="section-title">{{ "statistics.topSellingProducts.title" | translate }}</span>
+      <app-spinner *ngIf="isLoading" [diameter]="20"></app-spinner>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
 
   <ng-container *ngIf="!isLoading || products.length > 0">
     <ng-container *ngIf="products.length > 0; else emptyState">
@@ -32,4 +34,4 @@
       </div>
     </ng-template>
   </ng-container>
-</div>
+</mat-expansion-panel>
