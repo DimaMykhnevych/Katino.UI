@@ -25,7 +25,20 @@
               formControlName="orderSearchString"
               placeholder="{{ 'orders.searchHelpText' | translate }}"
             />
-            <mat-icon matSuffix>search</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="date-clear-btn"
+              *ngIf="orderSearchString?.value"
+              (click)="orderSearchString?.setValue('')"
+              [attr.aria-label]="'common.clear' | translate"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon *ngIf="!orderSearchString?.value" matSuffix
+              >search</mat-icon
+            >
           </mat-form-field>
 
           <mat-form-field
@@ -252,6 +265,10 @@
               </ng-container>
               <ng-template #npTtnTpl>
                 <div class="mobile-recipient d-md-none mb-3">
+                  {{ o.orderRecipient?.npContactPerson?.lastName }}
+                  {{ o.orderRecipient?.npContactPerson?.firstName }}
+                </div>
+                <div class="mobile-recipient d-none d-md-block mb-1">
                   {{ o.orderRecipient?.npContactPerson?.lastName }}
                   {{ o.orderRecipient?.npContactPerson?.firstName }}
                 </div>

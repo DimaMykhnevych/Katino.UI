@@ -24,7 +24,18 @@
               formControlName="productName"
               placeholder="{{ 'inventory.productName' | translate }}"
             />
-            <mat-icon matSuffix>search</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="search-clear-btn"
+              *ngIf="productName?.value"
+              (click)="productName?.setValue('')"
+              [attr.aria-label]="'common.clear' | translate"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon *ngIf="!productName?.value" matSuffix>search</mat-icon>
           </mat-form-field>
         </div>
 
@@ -85,7 +96,9 @@
             mat-raised-button
             *ngIf="showCopyLastAddedButton()"
             (click)="onCopyLastProductVariantClick()"
-            [disabled]="isRetrievingData || retrievingLastAddedProductVariantInfo"
+            [disabled]="
+              isRetrievingData || retrievingLastAddedProductVariantInfo
+            "
           >
             <ng-container *ngIf="!retrievingLastAddedProductVariantInfo">
               <span>

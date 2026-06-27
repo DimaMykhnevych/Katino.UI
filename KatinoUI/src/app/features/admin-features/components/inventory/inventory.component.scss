@@ -85,6 +85,24 @@ td, th {
         }
       }
 
+      .search-clear-btn.mat-icon-button {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        color: rgba(0, 0, 0, 0.45);
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+        }
+
+        &:hover {
+          color: rgba(0, 0, 0, 0.75);
+        }
+      }
+
       .filter-controls {
         display: flex;
         gap: 12px;
