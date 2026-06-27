@@ -249,7 +249,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
                 return EMPTY;
               }
 
-              const senderContactPerson = persons[0];
+              const senderContactPerson =
+                persons.length > 1
+                  ? persons[persons.length - 2]
+                  : persons[0];
 
               if (this.data?.isAdding) {
                 const model = this.buildAddOrderModel(
