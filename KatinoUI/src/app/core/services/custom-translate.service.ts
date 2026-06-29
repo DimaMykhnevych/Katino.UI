@@ -8,6 +8,7 @@ import { PayerType } from '../enums/payer-type';
 import { PaymentMethod } from '../enums/payment-method';
 import { OrderInternetDocStatus } from '../enums/order-internet-doc-status';
 import { OrderTagType } from '../enums/order-tag-type';
+import { ProductVariantQuantityChangeReason } from '../enums/product-variant-quantity-change-reason';
 
 @Injectable({
   providedIn: 'root',
@@ -215,8 +216,31 @@ export class CustomTranslateService {
         return 'orders.tags.refundMoney';
       case OrderTagType.custom:
         return '';
+      case OrderTagType.pendingIncomingReturn:
+        return 'orders.tags.pendingIncomingReturn';
       default:
         return '';
+    }
+  }
+
+  public getRedistributionReasonTextKey(
+    reason: ProductVariantQuantityChangeReason,
+  ): string {
+    switch (reason) {
+      case ProductVariantQuantityChangeReason.manualEdit:
+        return 'orders.redistributionHistory.reason.manualEdit';
+      case ProductVariantQuantityChangeReason.orderRejected:
+        return 'orders.redistributionHistory.reason.orderRejected';
+      case ProductVariantQuantityChangeReason.orderDeleted:
+        return 'orders.redistributionHistory.reason.orderDeleted';
+      case ProductVariantQuantityChangeReason.orderEdited:
+        return 'orders.redistributionHistory.reason.orderEdited';
+      case ProductVariantQuantityChangeReason.sewing:
+        return 'orders.redistributionHistory.reason.sewing';
+      case ProductVariantQuantityChangeReason.urgentReallocation:
+        return 'orders.redistributionHistory.reason.urgentReallocation';
+      default:
+        return 'orders.redistributionHistory.reason.manualEdit';
     }
   }
 }

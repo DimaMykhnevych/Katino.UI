@@ -419,7 +419,8 @@
     },
     "tags": {
       "notNpOrder": "Not NP",
-      "refundMoney": "Refund money"
+      "refundMoney": "Refund money",
+      "pendingIncomingReturn": "Pending incoming return"
     },
     "deliveryType": {
       "warehouseOrPost": "Warehouse/Postomat",
@@ -540,7 +541,25 @@
       "scanSheetCreated": "Scan sheet created successfully",
       "scanSheetFailed": "An error occurred furing scan sheet creation",
       "tagDetached": "Tag removed successfully",
-      "tagDetachFailed": "Failed to remove tag"
+      "tagDetachFailed": "Failed to remove tag",
+      "redistributionOrderNotFound": "Order not found, it may have been deleted"
+    },
+    "redistributionHistory": {
+      "title": "Redistribution history",
+      "qty": "Qty",
+      "wentToStock": "Went to stock",
+      "direction": {
+        "outgoing": "Sent to",
+        "incoming": "Received from"
+      },
+      "reason": {
+        "manualEdit": "Manual edit",
+        "orderRejected": "Order rejected",
+        "orderDeleted": "Order deleted",
+        "orderEdited": "Order edited",
+        "sewing": "Sewing",
+        "urgentReallocation": "Taken from another order"
+      }
     },
     "filters": {
       "statuses": "Statuses",

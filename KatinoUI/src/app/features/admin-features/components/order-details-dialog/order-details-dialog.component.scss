@@ -220,6 +220,68 @@
   }
 }
 
+.redistribution-history {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.redistribution-history-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.redistribution-entry {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.redistribution-timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10px;
+  flex-shrink: 0;
+}
+
+.redistribution-timeline-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.redistribution-timeline-line {
+  flex: 1;
+  width: 2px;
+  min-height: 14px;
+  margin-top: 2px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.redistribution-entry-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+
+.redistribution-link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .show-update-details-text{
   color: blue;
   cursor: pointer;

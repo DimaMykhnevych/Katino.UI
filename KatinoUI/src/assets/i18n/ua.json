@@ -419,7 +419,8 @@
     },
     "tags": {
       "notNpOrder": "Не НП",
-      "refundMoney": "Повернення коштів"
+      "refundMoney": "Повернення коштів",
+      "pendingIncomingReturn": "Очікується повернення товару"
     },
     "deliveryType": {
       "warehouseOrPost": "Відділення/Поштомат",
@@ -540,7 +541,25 @@
       "scanSheetCreated": "Реєстр успішно створено",
       "scanSheetFailed": "Виникла помилка під час створення реєстру",
       "tagDetached": "Тег успішно видалено",
-      "tagDetachFailed": "Не вдалося видалити тег"
+      "tagDetachFailed": "Не вдалося видалити тег",
+      "redistributionOrderNotFound": "Замовлення не знайдено, можливо його було видалено"
+    },
+    "redistributionHistory": {
+      "title": "Історія перерозподілу",
+      "qty": "К-сть",
+      "wentToStock": "Пішло в наявність",
+      "direction": {
+        "outgoing": "Передано в",
+        "incoming": "Отримано з"
+      },
+      "reason": {
+        "manualEdit": "Ручне редагування",
+        "orderRejected": "Замовлення відмовлено",
+        "orderDeleted": "Замовлення видалено",
+        "orderEdited": "Замовлення відредаговано",
+        "sewing": "Пошиття",
+        "urgentReallocation": "Забрано з іншого замовлення"
+      }
     },
     "filters": {
       "statuses": "Статуси",

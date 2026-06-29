@@ -280,6 +280,83 @@
           <mat-icon>design_services</mat-icon>
           <span>{{ it.comment }}</span>
         </div>
+
+        <div
+          class="redistribution-history"
+          *ngIf="getRedistributionInfoForItem(it).length"
+        >
+          <div class="redistribution-history-title">
+            {{ "orders.redistributionHistory.title" | translate }}
+          </div>
+
+          <div
+            class="redistribution-entry"
+            *ngFor="
+              let info of getRedistributionInfoForItem(it);
+              trackBy: trackByRedistributionId;
+              last as isLast
+            "
+          >
+            <div class="redistribution-timeline-marker">
+              <span class="redistribution-timeline-dot"></span>
+              <span
+                class="redistribution-timeline-line"
+                *ngIf="!isLast"
+              ></span>
+            </div>
+
+            <div class="redistribution-entry-content">
+              <span
+                class="badge badge--subtle"
+                [class.badge--success]="!info.isCurrentOrderSource"
+                [class.badge--purple]="info.isCurrentOrderSource"
+              >
+                {{
+                  (info.isCurrentOrderSource
+                    ? "orders.redistributionHistory.direction.outgoing"
+                    : "orders.redistributionHistory.direction.incoming"
+                  ) | translate
+                }}
+              </span>
+
+              <span class="badge badge--neutral badge--subtle">
+                {{ getRedistributionReasonTextKey(info.history.reason) | translate }}
+              </span>
+
+              <span class="text-muted small">
+                {{ "orders.redistributionHistory.qty" | translate }}:
+                {{ info.history.quantity }}
+              </span>
+
+              <span class="text-muted small">
+                {{ info.history.createdAtUtc | date: "medium" }}
+              </span>
+
+              <a
+                *ngIf="info.otherOrderId; else otherOrderNoIdTpl"
+                class="redistribution-link"
+                (click)="onOpenOtherOrder(info.otherOrderId)"
+              >
+                {{ info.otherOrderTtn || "—" }}
+              </a>
+
+              <ng-template #otherOrderNoIdTpl>
+                <span
+                  *ngIf="info.otherOrderTtn; else stockNoteTpl"
+                  class="text-muted small"
+                >
+                  {{ info.otherOrderTtn }}
+                </span>
+              </ng-template>
+
+              <ng-template #stockNoteTpl>
+                <span *ngIf="info.wentToStock" class="text-muted small">
+                  {{ "orders.redistributionHistory.wentToStock" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

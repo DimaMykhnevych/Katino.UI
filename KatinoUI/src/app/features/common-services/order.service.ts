@@ -15,6 +15,7 @@ import { UpdateOrder } from 'src/app/core/models/order/update-order/update-order
 import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-delete-result';
 import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing-result';
 import { PreviewOrderCostRequest } from 'src/app/core/models/order/cost/preview-order-cost-request';
+import { ProductVariantRedistributionHistory } from 'src/app/core/models/order/product-variant-redistribution-history';
 
 @Injectable({
   providedIn: 'root',
@@ -64,6 +65,14 @@ export class OrderService {
 
   public getOrderById(id: string): Observable<Order> {
     return this._http.get<Order>(`${AppSettings.apiHost}/Order/${id}`);
+  }
+
+  public getRedistributionHistory(
+    id: string,
+  ): Observable<ProductVariantRedistributionHistory[]> {
+    return this._http.get<ProductVariantRedistributionHistory[]>(
+      `${AppSettings.apiHost}/Order/${id}/redistribution-history`,
+    );
   }
 
   public deleteOrder(id: string): Observable<OrderDeleteResult> {
