@@ -293,6 +293,13 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       });
   }
 
+  public totalQuantity(g: GroupedSewingQueueItem): number {
+    return (g.items ?? []).reduce(
+      (sum, row) => sum + (row.quantityToProduce || 0),
+      0
+    );
+  }
+
   public productTitle(row: SewingQueueItem): string {
     const pv = row.productVariant;
     const name = pv?.product?.name ?? '';
