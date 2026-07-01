@@ -345,7 +345,11 @@
               >
                 <div class="item-main">
                   <span class="item-title">{{ getItemTitle(it) }}</span>
-                  <span class="item-qty">× {{ getItemQtyText(it) }}</span>
+                  <span
+                    class="item-qty"
+                    [class.item-qty--highlight]="isItemQtyHighlighted(it)"
+                    >× {{ getItemQtyText(it) }}</span
+                  >
                 </div>
 
                 <div class="item-meta">

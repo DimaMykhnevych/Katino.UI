@@ -282,6 +282,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return `${qty}`;
   }
 
+  public isItemQtyHighlighted(it: any): boolean {
+    const toProduce = it?.quantityToProduce ?? 0;
+    const qty = it?.quantity ?? 0;
+    const value = toProduce > 0 ? toProduce : qty;
+    return value > 1;
+  }
+
   public getCustomCommentShort(comment?: string): string {
     if (!comment) return '';
     const trimmed = comment.trim();
@@ -386,6 +393,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
         }
 
         o.orderStatus = newStatus;
+
+        if (newStatus === OrderStatus.packed) {
+          o.tags = o.tags.filter(
+            (t) => t.type !== OrderTagType.pendingIncomingReturn,
+          );
+        }
+
         this.dataSource.data = [...this.dataSource.data];
 
         this._toastr.success(
