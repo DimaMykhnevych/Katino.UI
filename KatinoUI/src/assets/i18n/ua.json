@@ -558,7 +558,8 @@
         "orderDeleted": "Замовлення видалено",
         "orderEdited": "Замовлення відредаговано",
         "sewing": "Пошиття",
-        "urgentReallocation": "Забрано з іншого замовлення"
+        "urgentReallocation": "Забрано з іншого замовлення",
+        "returnCoveredBySewing": "Повернення покрито за рахунок пошиття"
       }
     },
     "filters": {
@@ -631,7 +632,9 @@
     },
     "labels": {
       "custom": "По параметрах",
-      "regular": "Звичайний"
+      "regular": "Звичайний",
+      "sendUntil": "Відправити до",
+      "incomingReturn": "Їде з повернення"
     },
     "placeholders": {
       "actual": "0"

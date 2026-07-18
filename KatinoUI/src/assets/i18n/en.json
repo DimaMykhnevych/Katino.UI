@@ -558,7 +558,8 @@
         "orderDeleted": "Order deleted",
         "orderEdited": "Order edited",
         "sewing": "Sewing",
-        "urgentReallocation": "Taken from another order"
+        "urgentReallocation": "Taken from another order",
+        "returnCoveredBySewing": "Covered by sewing an incoming return"
       }
     },
     "filters": {
@@ -631,7 +632,9 @@
     },
     "labels": {
       "custom": "Custom",
-      "regular": "Regular"
+      "regular": "Regular",
+      "sendUntil": "Send until",
+      "incomingReturn": "Coming from a return"
     },
     "placeholders": {
       "actual": "0"

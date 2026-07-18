@@ -239,6 +239,8 @@ export class CustomTranslateService {
         return 'orders.redistributionHistory.reason.sewing';
       case ProductVariantQuantityChangeReason.urgentReallocation:
         return 'orders.redistributionHistory.reason.urgentReallocation';
+      case ProductVariantQuantityChangeReason.returnCoveredBySewing:
+        return 'orders.redistributionHistory.reason.returnCoveredBySewing';
       default:
         return 'orders.redistributionHistory.reason.manualEdit';
     }

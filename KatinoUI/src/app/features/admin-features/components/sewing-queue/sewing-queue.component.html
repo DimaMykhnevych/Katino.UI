@@ -167,6 +167,21 @@
                   </button>
                 </div>
 
+                <div
+                  class="return-notice"
+                  *ngIf="row.isIncomingReturn"
+                  [class.return-notice-soon]="isSendUntilSoon(row)"
+                >
+                  <mat-icon class="notice-icon">assignment_return</mat-icon>
+                  <span>
+                    {{ "sewingQueue.labels.incomingReturn" | translate }}
+                    <ng-container *ngIf="row.sendUntil">
+                      • {{ "sewingQueue.labels.sendUntil" | translate }}:
+                      {{ row.sendUntil | date: "dd.MM.yyyy" }}
+                    </ng-container>
+                  </span>
+                </div>
+
                 <div class="text-muted small">
                   <span class="article" *ngIf="row.productVariant?.article">
                     #{{ row.productVariant.article }}
@@ -241,6 +256,21 @@
                   </button>
                 </div>
 
+                <div
+                  class="return-notice"
+                  *ngIf="row.isIncomingReturn"
+                  [class.return-notice-soon]="isSendUntilSoon(row)"
+                >
+                  <mat-icon class="notice-icon">assignment_return</mat-icon>
+                  <span>
+                    {{ "sewingQueue.labels.incomingReturn" | translate }}
+                    <ng-container *ngIf="row.sendUntil">
+                      • {{ "sewingQueue.labels.sendUntil" | translate }}:
+                      {{ row.sendUntil | date: "dd.MM.yyyy" }}
+                    </ng-container>
+                  </span>
+                </div>
+
                 <div class="m-meta">
                   <span
                     class="badge"
@@ -284,7 +314,9 @@
                 [formControl]="getActualControl(row)"
                 min="1"
                 [attr.max]="
-                  row.isCustomTailoring ? row.quantityToProduce : null
+                  row.isCustomTailoring || row.isIncomingReturn
+                    ? row.quantityToProduce
+                    : null
                 "
                 [class.invalid]="
                   getActualControl(row).invalid && getActualControl(row).touched

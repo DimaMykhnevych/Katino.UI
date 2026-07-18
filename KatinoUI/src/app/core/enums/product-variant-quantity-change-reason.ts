@@ -5,4 +5,5 @@ export enum ProductVariantQuantityChangeReason {
   orderEdited = 3,
   sewing = 4,
   urgentReallocation = 5,
+  returnCoveredBySewing = 6,
 }

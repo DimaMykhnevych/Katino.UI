@@ -149,9 +149,15 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
   }
 
   public getRowKey(row: SewingQueueItem): string {
-    return row.isCustomTailoring
-      ? `custom:${row.orderItemId}`
-      : `pv:${row.productVariantId}`;
+    if (row.isCustomTailoring) {
+      return `custom:${row.orderItemId}`;
+    }
+
+    if (row.isIncomingReturn) {
+      return `return:${row.orderItemId ?? row.productVariantId}`;
+    }
+
+    return `pv:${row.productVariantId}`;
   }
 
   public getActualControl(row: SewingQueueItem): FormControl {
@@ -193,7 +199,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     const reportItems: SubmitSewedReport[] = filledRows.map((row) => ({
       productVariantId: row.productVariantId,
       actualSewedQuantity: Number(this.getActualControl(row)?.value ?? 0),
-      orderItemId: row.isCustomTailoring ? row.orderItemId : undefined,
+      orderItemId:
+        row.isCustomTailoring || row.isIncomingReturn
+          ? row.orderItemId
+          : undefined,
     }));
 
     const req: SubmitSewedReportCommand = {
@@ -309,6 +318,18 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     return parts.length ? parts.join(' • ') : row.productVariantId;
   }
 
+  public isSendUntilSoon(row: SewingQueueItem): boolean {
+    if (!row.isIncomingReturn || !row.sendUntil) return false;
+
+    const sendDate =
+      row.sendUntil instanceof Date ? row.sendUntil : new Date(row.sendUntil);
+    const today = this.dayKey(new Date());
+    const send = this.dayKey(sendDate);
+    const twoDaysAhead = today + 2 * 24 * 60 * 60 * 1000;
+
+    return send <= twoDaysAhead;
+  }
+
   public groupCardClass(g: GroupedSewingQueueItem): string {
     const d =
       g.sendUntilDate instanceof Date
@@ -360,9 +381,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     for (const it of items) {
       const key = this.getRowKey(it);
 
-      const maxValidators = it.isCustomTailoring
-        ? [Validators.max(it.quantityToProduce)]
-        : [];
+      const maxValidators =
+        it.isCustomTailoring || it.isIncomingReturn
+          ? [Validators.max(it.quantityToProduce)]
+          : [];
 
       this.actualForms.set(
         key,
@@ -385,7 +407,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     const actual = Number(ctrl.value ?? 0);
     if (actual <= 0) return false;
 
-    if (row.isCustomTailoring && actual > row.quantityToProduce) {
+    if (
+      (row.isCustomTailoring || row.isIncomingReturn) &&
+      actual > row.quantityToProduce
+    ) {
       return false;
     }
 
