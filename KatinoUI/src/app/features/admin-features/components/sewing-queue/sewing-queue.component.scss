@@ -478,6 +478,16 @@
   color: #14532d;
 }
 
+.mb-return {
+  background: rgba(148, 163, 184, 0.18);
+  color: #475569;
+
+  &.mb-return-soon {
+    background: rgba(239, 68, 68, 0.15);
+    color: #b91c1c;
+  }
+}
+
 .more {
   margin-top: 8px;
   font-size: 13px;

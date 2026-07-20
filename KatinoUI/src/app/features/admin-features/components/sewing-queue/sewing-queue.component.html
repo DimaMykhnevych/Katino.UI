@@ -414,6 +414,14 @@
                 }}
               </span>
 
+              <span
+                *ngIf="row.isIncomingReturn"
+                class="mini-badge mb-return"
+                [class.mb-return-soon]="isSendUntilSoon(row)"
+              >
+                {{ "sewingQueue.labels.incomingReturn" | translate }}
+              </span>
+
               <span class="g-qty">
                 {{ "sewingQueue.table.toProduce" | translate }}:
                 <b>{{ row.quantityToProduce }}</b>
