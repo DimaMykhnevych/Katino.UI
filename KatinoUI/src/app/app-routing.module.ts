@@ -61,7 +61,7 @@ const routes: Routes = [
         path: 'sewing-queue',
         component: SewingQueueComponent,
         data: {
-          roles: [Roles.Admin, Roles.Sewer, Roles.Owner],
+          roles: [Roles.Admin, Roles.Sewer, Roles.Owner, Roles.DirectManager],
         },
       },
       {

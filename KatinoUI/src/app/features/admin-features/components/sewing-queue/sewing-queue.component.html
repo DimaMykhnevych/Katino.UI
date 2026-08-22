@@ -13,7 +13,7 @@
       </div>
 
       <mat-form-field
-        *ngIf="isAdminOrOwner"
+        *ngIf="canFilterBySewer"
         appearance="outline"
         class="sewer-filter"
       >
@@ -118,7 +118,7 @@
     </div>
 
     <ng-container *ngIf="!isLoading && dataSource.data.length > 0">
-      <div class="batch-submit-bar">
+      <div class="batch-submit-bar" *ngIf="!isReadOnly">
         <div class="batch-submit-info">
           {{ "sewingQueue.batch.filledRows" | translate }}:
           <b>{{ getFilledRowsCount() }}</b>

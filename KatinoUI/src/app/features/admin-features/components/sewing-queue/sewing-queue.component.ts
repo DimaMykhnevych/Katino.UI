@@ -85,6 +85,14 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
     return role === Roles.Admin || role === Roles.Owner;
   }
 
+  public get isReadOnly(): boolean {
+    return this._currentUser.userInfo?.role === Roles.DirectManager;
+  }
+
+  public get canFilterBySewer(): boolean {
+    return this.isAdminOrOwner || this.isReadOnly;
+  }
+
   public ngOnInit(): void {
     this._bp
       .observe([Breakpoints.Handset])
@@ -96,7 +104,7 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
           : this.DESKTOP_COLUMNS;
       });
 
-    if (this.isAdminOrOwner) {
+    if (this.canFilterBySewer) {
       this.loadSewers();
     }
 
@@ -389,7 +397,10 @@ export class SewingQueueComponent implements OnInit, OnDestroy {
       this.actualForms.set(
         key,
         this._fb.group({
-          actual: new FormControl(null, [Validators.min(1), ...maxValidators]),
+          actual: new FormControl(
+            { value: null, disabled: this.isReadOnly },
+            [Validators.min(1), ...maxValidators],
+          ),
         }),
       );
     }

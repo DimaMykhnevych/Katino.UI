@@ -30,7 +30,12 @@ export class SidenavComponent implements OnInit {
   public ordersPage: string[] = [Roles.Admin, Roles.Owner, Roles.DirectManager];
   public employeesPage: string[] = [Roles.Admin, Roles.Owner];
   public crmSettingsPage: string[] = [Roles.Admin, Roles.Owner];
-  public sewingQueuePage: string[] = [Roles.Admin, Roles.Owner, Roles.Sewer];
+  public sewingQueuePage: string[] = [
+    Roles.Admin,
+    Roles.Owner,
+    Roles.Sewer,
+    Roles.DirectManager,
+  ];
   public pnlPage: string[] = [Roles.Admin, Roles.Owner];
   public statisticsPage: string[] = [Roles.Admin, Roles.Owner];
   public isMobile = false;
