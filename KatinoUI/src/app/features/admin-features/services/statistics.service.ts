@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { convertToHttpParams } from 'src/app/core/http/request/http-params.util';
 import { GetSewingStatisticsRequest } from 'src/app/core/models/statistics/sewed-amount/get-sewing-statistics-request';
 import { GetSewingStatisticsResponse } from 'src/app/core/models/statistics/sewed-amount/get-sewing-statistics-response';
+import { GetTopOrderedProductsRequest } from 'src/app/core/models/statistics/top-products/get-top-ordered-products-request';
 import { GetTopSellingProductsRequest } from 'src/app/core/models/statistics/top-products/get-top-selling-products-request';
 import { GetTopSellingProductsResponse } from 'src/app/core/models/statistics/top-products/get-top-selling-products-response';
 import { AppSettings } from 'src/app/core/settings';
@@ -21,6 +22,19 @@ export class StatisticsService {
       convertToHttpParams<GetTopSellingProductsRequest>(request);
     return this._http.get<GetTopSellingProductsResponse>(
       `${AppSettings.apiHost}/Statistics/top-selling-products`,
+      {
+        params: httpParams,
+      },
+    );
+  }
+
+  public getTopOrderedProducts(
+    request: GetTopOrderedProductsRequest,
+  ): Observable<GetTopSellingProductsResponse> {
+    const httpParams: HttpParams =
+      convertToHttpParams<GetTopOrderedProductsRequest>(request);
+    return this._http.get<GetTopSellingProductsResponse>(
+      `${AppSettings.apiHost}/Statistics/top-ordered-products`,
       {
         params: httpParams,
       },

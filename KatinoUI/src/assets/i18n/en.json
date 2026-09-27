@@ -199,6 +199,12 @@
       "totalSold": "Sold",
       "empty": "No data for the selected period"
     },
+    "topOrderedProducts": {
+      "title": "Top Ordered Products",
+      "product": "Product",
+      "totalSold": "Ordered",
+      "empty": "No data for the selected period"
+    },
     "sewingStatistics": {
       "title": "Sewing Statistics",
       "product": "Product",

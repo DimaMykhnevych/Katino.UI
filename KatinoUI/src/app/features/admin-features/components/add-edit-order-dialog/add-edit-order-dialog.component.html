@@ -353,6 +353,7 @@
             <app-product-variant-autocomplete
               [label]="'orders.labels.addProduct' | translate"
               [showStatus]="true"
+              [productStatusesToExclude]="[ProductStatus.discontinued]"
               (productSelected)="onProductSelected($event)"
             ></app-product-variant-autocomplete>
 

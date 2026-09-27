@@ -79,6 +79,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   public initialRecipientWarehouse: NpWarehouse | null = null;
   public SaleType = SaleType;
   public DiscountType = DiscountType;
+  public ProductStatus = ProductStatus;
   public pricingResult: OrderPricingResult | null = null;
 
   public deliveryTypeOptions: DeliveryTypeOption[] = Object.values(DeliveryType)

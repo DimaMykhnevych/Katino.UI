@@ -29,6 +29,7 @@ import { ProductVariantService } from 'src/app/features/admin-features/services/
 export class ProductVariantAutocompleteComponent implements OnInit, OnDestroy {
   @Input() label = '';
   @Input() showStatus = false;
+  @Input() productStatusesToExclude?: ProductStatus[];
 
   @Output() productSelected = new EventEmitter<ProductVariant>();
 
@@ -52,6 +53,7 @@ export class ProductVariantAutocompleteComponent implements OnInit, OnDestroy {
           return this._pvService
             .getProductVariants({
               productName: value,
+              productStatusesToExclude: this.productStatusesToExclude,
               page: 1,
               pageSize: this.PAGE_SIZE,
             })

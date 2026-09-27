@@ -28,6 +28,7 @@ import { PnlExpensesComponent } from './components/pnl-expenses/pnl-expenses.com
 import { EmployeesComponent } from './components/employees/employees.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { TopSellingProductsComponent } from './components/statistics/top-selling-products/top-selling-products.component';
+import { TopOrderedProductsComponent } from './components/statistics/top-ordered-products/top-ordered-products.component';
 import { SewingStatisticsComponent } from './components/statistics/sewing-statistics/sewing-statistics.component';
 import { NgChartsModule } from 'ng2-charts';
 import { CollectionsComponent } from './components/collections/collections.component';
@@ -57,6 +58,7 @@ import { AddEditDiscountDialogComponent } from './components/discounts/add-edit-
     EmployeesComponent,
     StatisticsComponent,
     TopSellingProductsComponent,
+    TopOrderedProductsComponent,
     SewingStatisticsComponent,
     CollectionsComponent,
     CollectionItemComponent,

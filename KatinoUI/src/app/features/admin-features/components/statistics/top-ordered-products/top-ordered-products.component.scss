@@ -1,0 +1,71 @@
+.section-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  ::ng-deep .mat-expansion-panel-header {
+    padding: 0 24px;
+    height: 64px;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0 24px 24px;
+  }
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+mat-panel-title {
+  align-items: center;
+  gap: 12px;
+}
+
+.chart-wrapper {
+  width: 100%;
+  min-height: 180px;
+  position: relative;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  color: #aaa;
+
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+  }
+}
+
+mat-paginator {
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  .section-card {
+    padding: 6px;
+
+    ::ng-deep .mat-expansion-panel-body {
+      padding: 0 6px 6px;
+    }
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+}
