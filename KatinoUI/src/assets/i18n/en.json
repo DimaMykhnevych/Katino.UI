@@ -426,7 +426,8 @@
     "tags": {
       "notNpOrder": "Not NP",
       "refundMoney": "Refund money",
-      "pendingIncomingReturn": "Pending incoming return"
+      "pendingIncomingReturn": "Pending incoming return",
+      "fromSite": "From site"
     },
     "deliveryType": {
       "warehouseOrPost": "Warehouse/Postomat",

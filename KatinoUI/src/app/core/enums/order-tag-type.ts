@@ -3,4 +3,5 @@ export enum OrderTagType {
   refundMoney,
   custom,
   pendingIncomingReturn,
+  fromSite,
 }

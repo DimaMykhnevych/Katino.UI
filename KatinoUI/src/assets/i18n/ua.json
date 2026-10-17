@@ -426,7 +426,8 @@
     "tags": {
       "notNpOrder": "Не НП",
       "refundMoney": "Повернення коштів",
-      "pendingIncomingReturn": "Очікується повернення товару"
+      "pendingIncomingReturn": "Очікується повернення товару",
+      "fromSite": "З сайту"
     },
     "deliveryType": {
       "warehouseOrPost": "Відділення/Поштомат",

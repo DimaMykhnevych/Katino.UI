@@ -218,6 +218,8 @@ export class CustomTranslateService {
         return '';
       case OrderTagType.pendingIncomingReturn:
         return 'orders.tags.pendingIncomingReturn';
+      case OrderTagType.fromSite:
+        return 'orders.tags.fromSite';
       default:
         return '';
     }
