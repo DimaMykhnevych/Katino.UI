@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable, Subject, merge, of } from 'rxjs';
+import { EMPTY, Observable, Subject, merge, of } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -45,6 +45,8 @@ import { DeliveryType } from 'src/app/core/enums/delivery-type';
 import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 import { OrderTag } from 'src/app/core/models/order/order-tag';
 import { OrderTagService } from '../../services/order-tag.service';
+import { TtnStateHelper } from 'src/app/core/helpers/ttn-state.helper';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
@@ -327,10 +329,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  public shouldShowTtnWarning(o: Order): boolean {
-    if (!o?.internetDocumentCreationAttempted) return false;
-    const ttn = (o?.internetDocumentIntDocNumber || '').trim();
-    return ttn.length === 0;
+  public getTtnBadgeTextKey(o: Order): string | null {
+    return TtnStateHelper.getBadgeTextKey(TtnStateHelper.getState(o));
+  }
+
+  public getTtnBadgeClass(o: Order): string {
+    return TtnStateHelper.getBadgeClass(TtnStateHelper.getState(o));
   }
 
   public onStatusBadgeClick(o: Order, event: MouseEvent): void {
@@ -574,7 +578,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this._orderService
       .deleteOrder(order.id)
       .pipe(
-        catchError((error) => {
+        catchError((error: HttpErrorResponse) => {
+          if (error?.status === 409 && error.error?.ttnInProgress) {
+            this._toastr.warning(
+              this._translate.instant('toastrs.orderDeleteTtnInProgress'),
+            );
+            return EMPTY;
+          }
           return this.onCatchDeleteError();
         }),
       )

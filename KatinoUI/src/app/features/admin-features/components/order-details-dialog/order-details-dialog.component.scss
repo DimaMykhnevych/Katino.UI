@@ -26,11 +26,20 @@
   margin-top: 6px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
 
   .ttn {
     font-weight: 700;
     letter-spacing: 0.2px;
+  }
+
+  .ttn-action-btn {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    min-width: 0;
+    white-space: nowrap;
   }
 }
 
@@ -118,6 +127,7 @@
 }
 
 .badge--blue { background: rgba(2, 132, 199, 0.14); }
+.badge--fail { background: rgba(211, 47, 47, 0.18); }
 .badge--order-tag {
   background: rgba(11, 15, 245, 0.18);
   border-color: rgba(11, 15, 245, 0.28);

@@ -47,6 +47,7 @@ import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing-result';
 import { OrderPricingRequest } from 'src/app/core/models/order/cost/order-pricing-request';
 import { DiscountType } from 'src/app/core/enums/discount-type';
+import { TtnState } from 'src/app/core/enums/ttn-state';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -283,23 +284,17 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         const orderOk = isAdd
           ? res?.orderAddedSuccessfully
           : res?.orderUpdatedSuccessfully;
-        const docOk = isAdd
-          ? res?.npInternetDocCreatedSuccessfully
-          : res?.npInternetDocUpdatedSuccessfully;
-
         if (!orderOk) {
           this._toastr.error(this._t('orders.toastr.saveFailed'));
           return;
         }
 
-        if (docOk === false) {
-          this._toastr.warning(
-            isAdd
-              ? this._t('orders.toastr.docNotCreated')
-              : this._t('orders.toastr.docNotUpdated'),
-          );
-        } else {
+        if (res?.ttnState === TtnState.awaitingPayment) {
+          this._toastr.success(this._t('orders.toastr.ttnAfterPayment'));
+        } else if (res?.ttnState === TtnState.notRequired) {
           this._toastr.success(this._t('orders.toastr.saveSuccess'));
+        } else {
+          this._toastr.success(this._t('orders.toastr.ttnInBackground'));
         }
 
         this._dialogRef.close(true);

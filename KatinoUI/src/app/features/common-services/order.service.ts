@@ -16,6 +16,7 @@ import { OrderDeleteResult } from 'src/app/core/models/order/delete-order/order-
 import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing-result';
 import { PreviewOrderCostRequest } from 'src/app/core/models/order/cost/preview-order-cost-request';
 import { ProductVariantRedistributionHistory } from 'src/app/core/models/order/product-variant-redistribution-history';
+import { TtnActionResult } from 'src/app/core/models/order/ttn-action-result';
 
 @Injectable({
   providedIn: 'root',
@@ -78,6 +79,20 @@ export class OrderService {
   public deleteOrder(id: string): Observable<OrderDeleteResult> {
     return this._http.delete<OrderDeleteResult>(
       `${AppSettings.apiHost}/Order/${id}`,
+    );
+  }
+
+  public retryTtn(id: string): Observable<TtnActionResult> {
+    return this._http.post<TtnActionResult>(
+      `${AppSettings.apiHost}/Order/${id}/ttn/retry`,
+      {},
+    );
+  }
+
+  public createTtn(id: string): Observable<TtnActionResult> {
+    return this._http.post<TtnActionResult>(
+      `${AppSettings.apiHost}/Order/${id}/ttn/create`,
+      {},
     );
   }
 

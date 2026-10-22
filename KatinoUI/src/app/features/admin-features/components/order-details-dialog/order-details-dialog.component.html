@@ -21,6 +21,47 @@
       >
         <mat-icon>content_copy</mat-icon>
       </button>
+
+      <span
+        *ngIf="ttnBadgeTextKey as key"
+        class="badge"
+        [ngClass]="ttnBadgeClass"
+        [matTooltip]="order.ttnLastError || ''"
+        [matTooltipDisabled]="!order.ttnLastError"
+      >
+        {{ key | translate }}
+      </span>
+
+      <button
+        *ngIf="canRefreshTtn"
+        mat-stroked-button
+        class="ttn-action-btn"
+        type="button"
+        [disabled]="ttnBusy"
+        (click)="onRefreshTtn()"
+      >
+        {{ "orders.ttn.refresh" | translate }}
+      </button>
+      <button
+        *ngIf="canRetryTtn"
+        mat-stroked-button
+        class="ttn-action-btn"
+        type="button"
+        [disabled]="ttnBusy"
+        (click)="onRetryTtn()"
+      >
+        {{ "orders.ttn.retry" | translate }}
+      </button>
+      <button
+        *ngIf="canCreateTtn"
+        mat-stroked-button
+        class="ttn-action-btn"
+        type="button"
+        [disabled]="ttnBusy"
+        (click)="onCreateTtn()"
+      >
+        {{ "orders.ttn.create" | translate }}
+      </button>
     </div>
   </div>
 

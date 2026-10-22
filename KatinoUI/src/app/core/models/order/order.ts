@@ -4,6 +4,7 @@ import { OrderStatus } from '../../enums/order-status';
 import { PayerType } from '../../enums/payer-type';
 import { PaymentMethod } from '../../enums/payment-method';
 import { SaleType } from '../../enums/sale-type';
+import { TtnState } from '../../enums/ttn-state';
 import { NpCityResponse } from '../nova-post/np-city-response';
 import { NpContactPerson } from '../nova-post/np-contact-person';
 import { NpWarehouse } from '../nova-post/np-warehouse';
@@ -37,6 +38,8 @@ export interface Order {
   internetDocumentIntDocNumber: string;
   orderStatus: OrderStatus;
   orderInternetDocStatus: OrderInternetDocStatus;
+  ttnState: TtnState | null;
+  ttnLastError: string | null;
   comment: string;
   updatedAt: Date;
   updateReasonDetails: string;

@@ -316,7 +316,8 @@
     "productVariantDeleted": "Product variant was successfully deleted",
     "orderDeletedUnknownError": "An unknown error occurred during deleting order",
     "orderDeletionFailed": "An error occurred during deleting order",
-    "docNotDeleted": "Order has been deleted, however an error occurred during TTN deletion",
+    "docNotDeleted": "Order deleted, but the TTN could not be deleted in Nova Poshta — check the NP account",
+    "orderDeleteTtnInProgress": "TTN is being created right now, try deleting in a minute",
     "orderDeleteSuccess": "Order and TTN have been deleted successfully"
   },
   "dialogs": {
@@ -361,6 +362,18 @@
     "departmentOrPost": "Department/Parcel Terminal"
   },
   "orders": {
+    "ttn": {
+      "creating": "TTN is being created",
+      "updating": "TTN is being updated",
+      "awaitingPayment": "Awaiting payment",
+      "failed": "TTN error",
+      "refresh": "Refresh",
+      "retry": "Retry",
+      "create": "Create TTN",
+      "createConfirm": "Confirm payment and create TTN?",
+      "stateChanged": "TTN state has already changed, data refreshed",
+      "actionFailed": "Failed, please try again"
+    },
     "ordersHeader": "Orders",
     "searchingOrders": "Searching orders ...",
     "searchHelpText": "Internet doc number, Inst-link, receiver data",
@@ -380,7 +393,6 @@
       "openToSeeAll": "Open to see all",
       "sendUntil": "Send until",
       "sendUntilShort": "Due",
-      "ttnNotCreated": "Internet doc was not created",
       "comment": "Comment"
     },
     "sections": {
@@ -543,8 +555,8 @@
       "discontinuedErrorUpdate": "Cannot update order: discontinued product exists in items.",
       "saveFailed": "Failed to save the order.",
       "saveSuccess": "Order saved successfully.",
-      "docNotCreated": "Order saved, but the TTN was not created.",
-      "docNotUpdated": "Order updated, but the TTN was not updated.",
+      "ttnInBackground": "Order saved. TTN is being created in the background.",
+      "ttnAfterPayment": "TTN will be created after payment.",
       "scanSheetCreated": "Scan sheet created successfully",
       "scanSheetFailed": "An error occurred furing scan sheet creation",
       "tagDetached": "Tag removed successfully",

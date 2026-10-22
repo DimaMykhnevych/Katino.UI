@@ -272,33 +272,35 @@
                   {{ o.orderRecipient?.npContactPerson?.lastName }}
                   {{ o.orderRecipient?.npContactPerson?.firstName }}
                 </div>
-                <div class="ttn-row mb-3">
+                <div class="ttn-block mb-3">
+                  <div
+                    class="ttn-row"
+                    *ngIf="o.internetDocumentIntDocNumber || !getTtnBadgeTextKey(o)"
+                  >
+                    <span
+                      class="ttn"
+                      *ngIf="o.internetDocumentIntDocNumber; else noTtn"
+                    >
+                      <span class="ttn-prefix">
+                        {{ getTtnPrefix(o.internetDocumentIntDocNumber) }}
+                      </span>
+                      <span class="ttn-suffix">
+                        {{ getTtnSuffix(o.internetDocumentIntDocNumber) }}
+                      </span>
+                    </span>
+                    <ng-template #noTtn>—</ng-template>
+                  </div>
+
                   <span
-                    class="ttn"
-                    *ngIf="o.internetDocumentIntDocNumber; else noTtn"
-                  >
-                    <span class="ttn-prefix">
-                      {{ getTtnPrefix(o.internetDocumentIntDocNumber) }}
-                    </span>
-                    <span class="ttn-suffix">
-                      {{ getTtnSuffix(o.internetDocumentIntDocNumber) }}
-                    </span>
-                  </span>
-
-                  <ng-template #noTtn>—</ng-template>
-
-                  <button
-                    *ngIf="shouldShowTtnWarning(o)"
-                    mat-icon-button
-                    class="ttn-warning"
-                    type="button"
-                    [matTooltip]="'orders.table.ttnNotCreated' | translate"
+                    *ngIf="getTtnBadgeTextKey(o) as key"
+                    class="badge"
+                    [ngClass]="getTtnBadgeClass(o)"
+                    [matTooltip]="o.ttnLastError || ''"
+                    [matTooltipDisabled]="!o.ttnLastError"
                     matTooltipPosition="above"
-                    (click)="$event.stopPropagation()"
-                    aria-label="TTN not created"
                   >
-                    <mat-icon>error</mat-icon>
-                  </button>
+                    {{ key | translate }}
+                  </span>
                 </div>
               </ng-template>
 

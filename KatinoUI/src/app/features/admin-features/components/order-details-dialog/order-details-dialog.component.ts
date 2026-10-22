@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { catchError, take } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { Order } from 'src/app/core/models/order/order';
@@ -23,6 +23,13 @@ import { ProductVariantRedistributionHistory } from 'src/app/core/models/order/p
 import { OrderTagService } from '../../services/order-tag.service';
 import { OrderService } from 'src/app/features/common-services/order.service';
 import { DialogService } from 'src/app/features/common-services/dialog.service';
+import { TtnState } from 'src/app/core/enums/ttn-state';
+import { TtnStateHelper } from 'src/app/core/helpers/ttn-state.helper';
+import { TtnActionResult } from 'src/app/core/models/order/ttn-action-result';
+import { CurrentUserService } from 'src/app/core/permission/services';
+import { Roles } from 'src/app/core/models/roles';
+import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface OrderItemRedistributionInfo {
   history: ProductVariantRedistributionHistory;
@@ -44,6 +51,7 @@ export class OrderDetailsDialogComponent implements OnInit {
 
   public showDetailsClicked: boolean = false;
   public redistributionHistory: ProductVariantRedistributionHistory[] = [];
+  public ttnBusy = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public order: Order,
@@ -54,7 +62,45 @@ export class OrderDetailsDialogComponent implements OnInit {
     private _toastr: ToastrService,
     private _orderService: OrderService,
     private _dialogService: DialogService,
+    private _userService: CurrentUserService,
+    private _uiDialogService: UIDialogService,
   ) {}
+
+  public get ttnState(): TtnState {
+    return TtnStateHelper.getState(this.order);
+  }
+
+  public get ttnBadgeTextKey(): string | null {
+    return TtnStateHelper.getBadgeTextKey(this.ttnState);
+  }
+
+  public get ttnBadgeClass(): string {
+    return TtnStateHelper.getBadgeClass(this.ttnState);
+  }
+
+  public get canRefreshTtn(): boolean {
+    return TtnStateHelper.isInProgress(this.ttnState);
+  }
+
+  public get canRetryTtn(): boolean {
+    return (
+      this.canManageTtn &&
+      (this.ttnState === TtnState.failed || this.ttnState === TtnState.unknown)
+    );
+  }
+
+  public get canCreateTtn(): boolean {
+    return this.canManageTtn && this.ttnState === TtnState.awaitingPayment;
+  }
+
+  private get canManageTtn(): boolean {
+    const role = this._userService.userInfo.role;
+    return (
+      role === Roles.Admin ||
+      role === Roles.DirectManager ||
+      role === Roles.Owner
+    );
+  }
 
   public ngOnInit(): void {
     this._orderService
@@ -65,6 +111,32 @@ export class OrderDetailsDialogComponent implements OnInit {
       )
       .subscribe((history) => {
         this.redistributionHistory = history ?? [];
+      });
+  }
+
+  public onRefreshTtn(): void {
+    this.ttnBusy = true;
+    this.reloadOrder();
+  }
+
+  public onRetryTtn(): void {
+    this.runTtnAction(this._orderService.retryTtn(this.order.id));
+  }
+
+  public onCreateTtn(): void {
+    this._uiDialogService
+      .openConfirmationDialog({
+        titleKey: 'orders.ttn.create',
+        contentKey: 'orders.ttn.createConfirm',
+        confirmButtonTextKey: 'orders.ttn.create',
+        cancelButtonTextKey: 'common.cancel',
+        type: 'warning',
+      })
+      .afterClosed()
+      .subscribe((confirmed: string) => {
+        if (confirmed === 'true') {
+          this.runTtnAction(this._orderService.createTtn(this.order.id));
+        }
       });
   }
 
@@ -188,6 +260,43 @@ export class OrderDetailsDialogComponent implements OnInit {
     info: OrderItemRedistributionInfo,
   ): string {
     return info.history.id;
+  }
+
+  private runTtnAction(action$: Observable<TtnActionResult>): void {
+    this.ttnBusy = true;
+    action$.pipe(take(1)).subscribe({
+      next: () => this.reloadOrder(),
+      error: (err: HttpErrorResponse) => {
+        if (err?.status === 409) {
+          this._toastr.warning(this._t.instant('orders.ttn.stateChanged'));
+          this.reloadOrder();
+          return;
+        }
+        this.ttnBusy = false;
+        this._toastr.error(
+          this._t.instant(
+            err?.status === 404
+              ? 'orders.toastr.redistributionOrderNotFound'
+              : 'orders.ttn.actionFailed',
+          ),
+        );
+      },
+    });
+  }
+
+  private reloadOrder(): void {
+    this._orderService
+      .getOrderById(this.order.id)
+      .pipe(
+        catchError(() => of(null)),
+        take(1),
+      )
+      .subscribe((fresh) => {
+        this.ttnBusy = false;
+        if (fresh) {
+          Object.assign(this.order, fresh);
+        }
+      });
   }
 
   private matchesOrderItem(
