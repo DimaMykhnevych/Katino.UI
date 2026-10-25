@@ -35,4 +35,5 @@ export interface AddOrder {
   orderRecipient: AddOrderRecipient;
   addressInfo: AddOrderAddressInfo | null;
   generalOrderInfo?: string;
+  npApiKeyId?: string;
 }

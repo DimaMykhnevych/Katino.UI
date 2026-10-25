@@ -48,6 +48,7 @@ import { OrderPricingResult } from 'src/app/core/models/order/cost/order-pricing
 import { OrderPricingRequest } from 'src/app/core/models/order/cost/order-pricing-request';
 import { DiscountType } from 'src/app/core/enums/discount-type';
 import { TtnState } from 'src/app/core/enums/ttn-state';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface DeliveryTypeOption {
   value: DeliveryType;
@@ -264,16 +265,21 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
                 return this._orderService.addOrder(model);
               }
 
+              // An existing order keeps its sender: it belongs to the NP API key the order was created under,
+              // which may differ from the currently selected one
               const model = this.buildUpdateOrderModel(
                 settings,
-                senderContactPerson,
+                this.data?.order?.senderContactPerson ?? senderContactPerson,
               );
               return this._orderService.updateOrder(model);
             }),
           );
         }),
-        catchError(() => {
-          this._toastr.error(this._t('common.somethingWentWrong'));
+        catchError((err: HttpErrorResponse) => {
+          this._toastr.error(
+            this.npErrorMessage(err?.error?.error) ??
+              this._t('common.somethingWentWrong'),
+          );
           return EMPTY;
         }),
         finalize(() => (this.isUpdatingData = false)),
@@ -285,7 +291,10 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           ? res?.orderAddedSuccessfully
           : res?.orderUpdatedSuccessfully;
         if (!orderOk) {
-          this._toastr.error(this._t('orders.toastr.saveFailed'));
+          this._toastr.error(
+            this.npErrorMessage(res?.error) ??
+              this._t('orders.toastr.saveFailed'),
+          );
           return;
         }
 
@@ -299,6 +308,18 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
 
         this._dialogRef.close(true);
       });
+  }
+
+  // Maps an NP API key related error code from the backend to a message, null for any other error
+  private npErrorMessage(code: string | undefined): string | null {
+    const npErrorCodes = [
+      'npApiKeyNotSelected',
+      'npSenderKeyMismatch',
+      'npUnavailable',
+    ];
+    return code && npErrorCodes.includes(code)
+      ? this._t(`orders.toastr.npErrors.${code}`)
+      : null;
   }
 
   private normalizePhone(value: string): string {
@@ -411,6 +432,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           : undefined,
 
       customTags: [...this.customTagValues],
+      // The key the sender was loaded under, so the order is bound to the same NP account as its sender
+      npApiKeyId: senderContactPerson.npApiKeyId,
     };
 
     return model;

@@ -4,4 +4,5 @@ export interface UpdateCrmSettings {
   id: string;
   npCity: AddNpCity;
   npWarehouseId: string;
+  selectedNpApiKeyId?: string | null;
 }

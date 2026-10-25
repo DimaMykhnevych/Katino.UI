@@ -22,6 +22,19 @@
       (formReady)="onNpFormReady($event)"
     ></app-np-warehouse-selection>
 
+    <mat-form-field *ngIf="isOwner" class="w-100 mt-2">
+      <mat-label>{{ "crmSettingsPage.npSender" | translate }}</mat-label>
+      <mat-select
+        [(ngModel)]="selectedNpApiKeyId"
+        [disabled]="isSubmitting || isNpSyncInProgress"
+      >
+        <mat-option *ngFor="let key of npApiKeys" [value]="key.id">
+          {{ key.ownerFullName }} (…{{ key.last4 }})
+        </mat-option>
+      </mat-select>
+      <mat-hint>{{ "crmSettingsPage.npSenderHint" | translate }}</mat-hint>
+    </mat-form-field>
+
     <div class="mt-3 d-flex gap-2">
       <button
         mat-raised-button

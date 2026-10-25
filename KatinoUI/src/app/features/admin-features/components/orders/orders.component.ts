@@ -47,6 +47,7 @@ import { OrderTag } from 'src/app/core/models/order/order-tag';
 import { OrderTagService } from '../../services/order-tag.service';
 import { TtnStateHelper } from 'src/app/core/helpers/ttn-state.helper';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ScanSheetResult } from 'src/app/core/models/nova-post/scan-sheet-result';
 
 @Component({
   selector: 'app-orders',
@@ -179,15 +180,24 @@ export class OrdersComponent implements OnInit, OnDestroy {
       .pipe(
         catchError(() => {
           this.isCreatingScanSheet = false;
-          return of(false);
+          return of(null);
         }),
         takeUntil(this._destroy$),
       )
-      .subscribe((resp: boolean) => {
+      .subscribe((resp: ScanSheetResult | null) => {
         this.isCreatingScanSheet = false;
-        if (resp === true) {
+        // One scan sheet is created per NP API key, so some of them may succeed while others fail
+        const succeededGroups = resp?.groups.filter((g) => g.success).length ?? 0;
+        if (resp?.success) {
           this._toastr.success(
             this._translate.instant('orders.toastr.scanSheetCreated'),
+          );
+        } else if (succeededGroups > 0) {
+          this._toastr.warning(
+            this._translate.instant('orders.toastr.scanSheetPartiallyCreated', {
+              created: succeededGroups,
+              total: resp!.groups.length,
+            }),
           );
         } else {
           this._toastr.error(

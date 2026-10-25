@@ -5,4 +5,5 @@ export interface CrmUserSettings {
   id: string;
   npCity: NpCityResponse;
   npWarehouse: NpWarehouse;
+  selectedNpApiKeyId: string | null;
 }

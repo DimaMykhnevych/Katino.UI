@@ -329,6 +329,8 @@
   "crmSettingsPage": {
     "crmSettings": "CRM Settings",
     "npSettingsHint": "Save the city and warehouse from which orders are usually shipped",
+    "npSender": "Sender (Nova Post API key)",
+    "npSenderHint": "Who new parcels are created from. Existing orders stay on their own key",
     "sync": {
       "title": "Warehouse sync",
       "subtitle": "History of the last {{limit}} runs",
@@ -559,6 +561,12 @@
       "ttnAfterPayment": "TTN will be created after payment.",
       "scanSheetCreated": "Scan sheet created successfully",
       "scanSheetFailed": "An error occurred furing scan sheet creation",
+      "scanSheetPartiallyCreated": "{{created}} of {{total}} scan sheets created, the rest failed",
+      "npErrors": {
+        "npApiKeyNotSelected": "No sender (Nova Post API key) is selected in CRM settings.",
+        "npSenderKeyMismatch": "The sender doesn't belong to the selected API key. Refresh the page and try again.",
+        "npUnavailable": "Nova Post is unavailable or rejected the request. Try again later."
+      },
       "tagDetached": "Tag removed successfully",
       "tagDetachFailed": "Failed to remove tag",
       "redistributionOrderNotFound": "Order not found, it may have been deleted"

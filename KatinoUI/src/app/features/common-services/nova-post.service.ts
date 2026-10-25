@@ -5,8 +5,10 @@ import { convertToHttpParams } from 'src/app/core/http/request/http-params.util'
 import { CurrentSyncStatus } from 'src/app/core/models/nova-post/current-sync-status';
 import { GetNpCitiesResponse } from 'src/app/core/models/nova-post/get-np-cities-response';
 import { GetSyncRecords } from 'src/app/core/models/nova-post/get-sync-records';
+import { NpApiKey } from 'src/app/core/models/nova-post/np-api-key';
 import { NpContactPerson } from 'src/app/core/models/nova-post/np-contact-person';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
+import { ScanSheetResult } from 'src/app/core/models/nova-post/scan-sheet-result';
 import { SearchNpWarehouses } from 'src/app/core/models/nova-post/search-np-warehouses';
 import { AppSettings } from 'src/app/core/settings';
 
@@ -81,10 +83,14 @@ export class NovaPostService {
     );
   }
 
-  public createScanSheet(): Observable<boolean> {
-    return this._http.post<boolean>(
+  public createScanSheet(): Observable<ScanSheetResult> {
+    return this._http.post<ScanSheetResult>(
       `${AppSettings.apiHost}/NovaPost/scan-sheet`,
       null,
     );
+  }
+
+  public getNpApiKeys(): Observable<NpApiKey[]> {
+    return this._http.get<NpApiKey[]>(`${AppSettings.apiHost}/NpApiKey`);
   }
 }
