@@ -36,6 +36,7 @@ import { CollectionItemComponent } from './components/collections/collection-ite
 import { DiscountsComponent } from './components/discounts/discounts.component';
 import { DiscountItemComponent } from './components/discounts/discount-item/discount-item.component';
 import { AddEditDiscountDialogComponent } from './components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
+import { ScanSheetPreviewDialogComponent } from './components/scan-sheet-preview-dialog/scan-sheet-preview-dialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AddEditDiscountDialogComponent } from './components/discounts/add-edit-
     DiscountsComponent,
     DiscountItemComponent,
     AddEditDiscountDialogComponent,
+    ScanSheetPreviewDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -380,6 +380,13 @@
     "searchingOrders": "Пошук замовлень ...",
     "searchHelpText": "Номер ТТН, Inst-посилання, дані отримувача",
     "createScanSheet": "Створити реєстр",
+    "scanSheetPreview": {
+      "title": "Реєстри",
+      "sheetTitle": "Реєстр № {{number}}",
+      "download": "Завантажити",
+      "close": "Закрити",
+      "loadFailed": "Не вдалося завантажити реєстр. Його можна роздрукувати в кабінеті Нової Пошти."
+    },
     "table": {
       "created": "Створено",
       "ttn": "ТТН",

@@ -204,6 +204,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
             this._translate.instant('orders.toastr.scanSheetFailed'),
           );
         }
+
+        const printableGroups = (resp?.groups ?? []).filter(
+          (g) => g.success && !!g.npApiKeyId && !!g.scanSheetRef,
+        );
+        if (printableGroups.length > 0) {
+          this._dialogService.openScanSheetPreviewDialog(printableGroups);
+        }
       });
   }
 

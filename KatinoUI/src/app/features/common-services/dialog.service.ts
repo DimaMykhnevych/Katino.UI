@@ -15,6 +15,8 @@ import { AddEditOrderDialogComponent } from '../admin-features/components/add-ed
 import { AddEditOrderData } from '../admin-features/models/order/add-edit-order-data';
 import { AddEditDiscountData } from '../admin-features/models/add-edit-discount-data';
 import { AddEditDiscountDialogComponent } from '../admin-features/components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
+import { ScanSheetGroupResult } from 'src/app/core/models/nova-post/scan-sheet-result';
+import { ScanSheetPreviewDialogComponent } from '../admin-features/components/scan-sheet-preview-dialog/scan-sheet-preview-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -105,6 +107,17 @@ export class DialogService {
       data: data,
       autoFocus: false,
       restoreFocus: false,
+    });
+  }
+
+  public openScanSheetPreviewDialog(
+    groups: ScanSheetGroupResult[],
+  ): MatDialogRef<ScanSheetPreviewDialogComponent> {
+    return this.dialog.open(ScanSheetPreviewDialogComponent, {
+      width: '900px',
+      maxWidth: '100vw',
+      autoFocus: false,
+      data: groups,
     });
   }
 }

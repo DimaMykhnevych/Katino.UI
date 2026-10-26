@@ -380,6 +380,13 @@
     "searchingOrders": "Searching orders ...",
     "searchHelpText": "Internet doc number, Inst-link, receiver data",
     "createScanSheet": "Create scan sheet",
+    "scanSheetPreview": {
+      "title": "Scan sheets",
+      "sheetTitle": "Scan sheet No. {{number}}",
+      "download": "Download",
+      "close": "Close",
+      "loadFailed": "Failed to load the scan sheet. You can print it in the Nova Post cabinet."
+    },
     "table": {
       "created": "Created",
       "ttn": "TTN",

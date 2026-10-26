@@ -1,0 +1,42 @@
+.content {
+  max-height: 80vh;
+}
+
+.sheet + .sheet {
+  margin-top: 24px;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sheet-title {
+  font-weight: 500;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.error {
+  color: #c62828;
+}
+
+// White background keeps the barcode readable on any page theme
+.page {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+}
+
+.page + .page {
+  margin-top: 8px;
+}

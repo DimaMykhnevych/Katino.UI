@@ -90,6 +90,13 @@ export class NovaPostService {
     );
   }
 
+  public getScanSheetPdf(npApiKeyId: string, scanSheetRef: string): Observable<Blob> {
+    return this._http.get(
+      `${AppSettings.apiHost}/NovaPost/scan-sheet/${npApiKeyId}/${scanSheetRef}/pdf`,
+      { responseType: 'blob' },
+    );
+  }
+
   public getNpApiKeys(): Observable<NpApiKey[]> {
     return this._http.get<NpApiKey[]>(`${AppSettings.apiHost}/NpApiKey`);
   }

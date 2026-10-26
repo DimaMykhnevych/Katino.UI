@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ "orders.scanSheetPreview.title" | translate }}</h2>
+
+<mat-dialog-content class="content">
+  <section *ngFor="let sheet of sheets" class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title">
+        {{
+          "orders.scanSheetPreview.sheetTitle"
+            | translate: { number: sheet.group.scanSheetNumber || "—" }
+        }}
+      </span>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="onDownload(sheet)"
+        [disabled]="!sheet.blob"
+      >
+        <mat-icon>download</mat-icon>
+        {{ "orders.scanSheetPreview.download" | translate }}
+      </button>
+    </div>
+
+    <div *ngIf="sheet.isLoading" class="spinner-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <p *ngIf="sheet.failed" class="error">
+      {{ "orders.scanSheetPreview.loadFailed" | translate }}
+    </p>
+
+    <img
+      *ngFor="let page of sheet.pages"
+      class="page"
+      [src]="page"
+      alt="Scan sheet page"
+    />
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    {{ "orders.scanSheetPreview.close" | translate }}
+  </button>
+</mat-dialog-actions>
