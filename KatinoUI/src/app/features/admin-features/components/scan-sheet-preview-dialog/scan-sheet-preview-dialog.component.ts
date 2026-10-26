@@ -2,7 +2,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject, of } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { ScanSheetGroupResult } from 'src/app/core/models/nova-post/scan-sheet-result';
+import {
+  ScanSheetList,
+  ScanSheetListItem,
+} from 'src/app/core/models/nova-post/scan-sheet-list';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
 
 // The worker is copied to assets by angular.json
@@ -12,7 +15,7 @@ const PDF_WORKER_SRC = 'assets/pdfjs/pdf.worker.min.js';
 const MIN_RENDER_SCALE = 2;
 
 interface ScanSheetPreview {
-  group: ScanSheetGroupResult;
+  item: ScanSheetListItem;
   pages: string[];
   isLoading: boolean;
   failed: boolean;
@@ -26,15 +29,17 @@ interface ScanSheetPreview {
 })
 export class ScanSheetPreviewDialogComponent implements OnInit, OnDestroy {
   public sheets: ScanSheetPreview[];
+  public hasErrors: boolean;
 
   private _destroy$ = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) groups: ScanSheetGroupResult[],
+    @Inject(MAT_DIALOG_DATA) data: ScanSheetList,
     private _novaPostService: NovaPostService,
   ) {
-    this.sheets = groups.map((group) => ({
-      group,
+    this.hasErrors = data.hasErrors;
+    this.sheets = data.scanSheets.map((item) => ({
+      item,
       pages: [],
       isLoading: true,
       failed: false,
@@ -57,7 +62,7 @@ export class ScanSheetPreviewDialogComponent implements OnInit, OnDestroy {
     const url = URL.createObjectURL(sheet.blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `scan-sheet-${sheet.group.scanSheetNumber ?? sheet.group.scanSheetRef}.pdf`;
+    link.download = `scan-sheet-${sheet.item.scanSheetNumber ?? sheet.item.scanSheetRef}.pdf`;
     link.click();
     // Revoked on the next tick so the browser has started the download
     setTimeout(() => URL.revokeObjectURL(url));
@@ -68,7 +73,7 @@ export class ScanSheetPreviewDialogComponent implements OnInit, OnDestroy {
   // The PDF is fetched through the backend because NP's print URL contains the API key
   private loadSheet(sheet: ScanSheetPreview): void {
     this._novaPostService
-      .getScanSheetPdf(sheet.group.npApiKeyId!, sheet.group.scanSheetRef!)
+      .getScanSheetPdf(sheet.item.npApiKeyId, sheet.item.scanSheetRef)
       .pipe(
         catchError(() => of(null)),
         takeUntil(this._destroy$),

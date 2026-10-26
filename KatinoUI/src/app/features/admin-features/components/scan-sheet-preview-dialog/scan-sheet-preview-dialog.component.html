@@ -1,14 +1,33 @@
 <h2 mat-dialog-title>{{ "orders.scanSheetPreview.title" | translate }}</h2>
 
 <mat-dialog-content class="content">
+  <p *ngIf="hasErrors" class="error">
+    {{ "orders.scanSheetPreview.listPartiallyLoaded" | translate }}
+  </p>
+
+  <p *ngIf="sheets.length === 0" class="empty">
+    {{ "orders.scanSheetPreview.empty" | translate }}
+  </p>
+
   <section *ngFor="let sheet of sheets" class="sheet">
     <div class="sheet-header">
-      <span class="sheet-title">
-        {{
-          "orders.scanSheetPreview.sheetTitle"
-            | translate: { number: sheet.group.scanSheetNumber || "—" }
-        }}
-      </span>
+      <div>
+        <div class="sheet-title">
+          {{
+            "orders.scanSheetPreview.sheetTitle"
+              | translate: { number: sheet.item.scanSheetNumber || "—" }
+          }}
+          <span *ngIf="sheet.item.createdAt" class="sheet-time">
+            {{ sheet.item.createdAt | date: "HH:mm" }}
+          </span>
+        </div>
+        <div *ngIf="sheet.item.description" class="sheet-subtitle">
+          {{ sheet.item.description }}
+        </div>
+        <div *ngIf="sheet.item.ownerFullName" class="sheet-subtitle">
+          {{ sheet.item.ownerFullName }}
+        </div>
+      </div>
       <button
         mat-stroked-button
         color="primary"

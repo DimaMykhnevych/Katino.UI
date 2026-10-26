@@ -48,6 +48,10 @@ import { OrderTagService } from '../../services/order-tag.service';
 import { TtnStateHelper } from 'src/app/core/helpers/ttn-state.helper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ScanSheetResult } from 'src/app/core/models/nova-post/scan-sheet-result';
+import {
+  ScanSheetList,
+  ScanSheetListItem,
+} from 'src/app/core/models/nova-post/scan-sheet-list';
 
 @Component({
   selector: 'app-orders',
@@ -75,6 +79,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public form: FormGroup = this._builder.group({});
   public isRetrievingData = false;
   public isCreatingScanSheet = false;
+  public isLoadingScanSheets = false;
 
   public statusLoading = new Set<string>();
   public statusSaving = new Set<string>();
@@ -186,9 +191,40 @@ export class OrdersComponent implements OnInit, OnDestroy {
       )
       .subscribe((resp: ScanSheetResult | null) => {
         this.isCreatingScanSheet = false;
+        if (!resp) {
+          this._toastr.error(
+            this._translate.instant('orders.toastr.scanSheetFailed'),
+          );
+          return;
+        }
+
+        if (resp.groups.length === 0) {
+          this._toastr.info(
+            this._translate.instant('orders.toastr.scanSheetNoPackedOrders'),
+          );
+          return;
+        }
+
         // One scan sheet is created per NP API key, so some of them may succeed while others fail
-        const succeededGroups = resp?.groups.filter((g) => g.success).length ?? 0;
-        if (resp?.success) {
+        const succeededGroups = resp.groups.filter((g) => g.success).length;
+        const createdSheets: ScanSheetListItem[] = resp.groups
+          .filter((g) => g.success && !!g.npApiKeyId && !!g.scanSheetRef)
+          .map((g) => ({
+            npApiKeyId: g.npApiKeyId!,
+            scanSheetRef: g.scanSheetRef!,
+            scanSheetNumber: g.scanSheetNumber,
+          }));
+
+        if (resp.success && createdSheets.length === 0) {
+          // NP doesn't create a new scan sheet for documents that are already in one, so today's are shown instead
+          this._toastr.info(
+            this._translate.instant('orders.toastr.scanSheetNoNewDocuments'),
+          );
+          this.onShowScanSheetsClick();
+          return;
+        }
+
+        if (resp.success) {
           this._toastr.success(
             this._translate.instant('orders.toastr.scanSheetCreated'),
           );
@@ -196,7 +232,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
           this._toastr.warning(
             this._translate.instant('orders.toastr.scanSheetPartiallyCreated', {
               created: succeededGroups,
-              total: resp!.groups.length,
+              total: resp.groups.length,
             }),
           );
         } else {
@@ -205,12 +241,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
           );
         }
 
-        const printableGroups = (resp?.groups ?? []).filter(
-          (g) => g.success && !!g.npApiKeyId && !!g.scanSheetRef,
-        );
-        if (printableGroups.length > 0) {
-          this._dialogService.openScanSheetPreviewDialog(printableGroups);
+        if (createdSheets.length > 0) {
+          this._dialogService.openScanSheetPreviewDialog({
+            scanSheets: createdSheets,
+            hasErrors: false,
+          });
         }
+      });
+  }
+
+  public onShowScanSheetsClick(): void {
+    this.isLoadingScanSheets = true;
+    this._novaPostService
+      .getTodayScanSheets()
+      .pipe(
+        catchError(() => {
+          this.isLoadingScanSheets = false;
+          this._toastr.error(
+            this._translate.instant('orders.toastr.scanSheetsLoadFailed'),
+          );
+          return of(null);
+        }),
+        takeUntil(this._destroy$),
+      )
+      .subscribe((resp: ScanSheetList | null) => {
+        this.isLoadingScanSheets = false;
+        if (!resp) return;
+
+        this._dialogService.openScanSheetPreviewDialog(resp);
       });
   }
 

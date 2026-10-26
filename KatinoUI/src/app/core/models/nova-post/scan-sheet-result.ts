@@ -5,6 +5,8 @@ export interface ScanSheetGroupResult {
   // Set when the scan sheet was created, used to download its PDF
   scanSheetRef: string | null;
   scanSheetNumber: string | null;
+  // NP creates no scan sheet when all the documents are already in one
+  noNewDocuments: boolean;
   error: string | null;
 }
 

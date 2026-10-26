@@ -380,12 +380,15 @@
     "searchingOrders": "Searching orders ...",
     "searchHelpText": "Internet doc number, Inst-link, receiver data",
     "createScanSheet": "Create scan sheet",
+    "todayScanSheets": "Today's scan sheets",
     "scanSheetPreview": {
       "title": "Scan sheets",
       "sheetTitle": "Scan sheet No. {{number}}",
       "download": "Download",
       "close": "Close",
-      "loadFailed": "Failed to load the scan sheet. You can print it in the Nova Post cabinet."
+      "loadFailed": "Failed to load the scan sheet. You can print it in the Nova Post cabinet.",
+      "empty": "There are no scan sheets today yet.",
+      "listPartiallyLoaded": "Failed to get scan sheets for one of the API keys, the list may be incomplete."
     },
     "table": {
       "created": "Created",
@@ -569,6 +572,9 @@
       "scanSheetCreated": "Scan sheet created successfully",
       "scanSheetFailed": "An error occurred furing scan sheet creation",
       "scanSheetPartiallyCreated": "{{created}} of {{total}} scan sheets created, the rest failed",
+      "scanSheetNoNewDocuments": "No new TTNs, no scan sheet was created. Showing today's scan sheets.",
+      "scanSheetNoPackedOrders": "There are no packed orders for a scan sheet.",
+      "scanSheetsLoadFailed": "Failed to get scan sheets.",
       "npErrors": {
         "npApiKeyNotSelected": "No sender (Nova Post API key) is selected in CRM settings.",
         "npSenderKeyMismatch": "The sender doesn't belong to the selected API key. Refresh the page and try again.",

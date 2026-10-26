@@ -8,6 +8,7 @@ import { GetSyncRecords } from 'src/app/core/models/nova-post/get-sync-records';
 import { NpApiKey } from 'src/app/core/models/nova-post/np-api-key';
 import { NpContactPerson } from 'src/app/core/models/nova-post/np-contact-person';
 import { NpWarehouse } from 'src/app/core/models/nova-post/np-warehouse';
+import { ScanSheetList } from 'src/app/core/models/nova-post/scan-sheet-list';
 import { ScanSheetResult } from 'src/app/core/models/nova-post/scan-sheet-result';
 import { SearchNpWarehouses } from 'src/app/core/models/nova-post/search-np-warehouses';
 import { AppSettings } from 'src/app/core/settings';
@@ -87,6 +88,12 @@ export class NovaPostService {
     return this._http.post<ScanSheetResult>(
       `${AppSettings.apiHost}/NovaPost/scan-sheet`,
       null,
+    );
+  }
+
+  public getTodayScanSheets(): Observable<ScanSheetList> {
+    return this._http.get<ScanSheetList>(
+      `${AppSettings.apiHost}/NovaPost/scan-sheets/today`,
     );
   }
 

@@ -181,6 +181,22 @@
               }}</span>
             </div>
           </button>
+
+          <button
+            mat-stroked-button
+            *ngIf="isCreateScanSheetControlVisible()"
+            (click)="onShowScanSheetsClick()"
+            [disabled]="isLoadingScanSheets"
+          >
+            <div class="spinner-container">
+              <mat-spinner
+                *ngIf="isLoadingScanSheets"
+                diameter="20"
+                color="accent"
+              ></mat-spinner>
+              <span>{{ "orders.todayScanSheets" | translate }}</span>
+            </div>
+          </button>
         </div>
 
         <div class="total-items-text text-center">
