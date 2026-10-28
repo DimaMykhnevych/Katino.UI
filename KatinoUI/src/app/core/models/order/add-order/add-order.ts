@@ -5,7 +5,6 @@ import { SaleType } from 'src/app/core/enums/sale-type';
 import { AddOrderItem } from './add-order-item';
 import { AddOrderNpOptionsSeat } from './add-order-np-options-seat';
 import { NpCityResponse } from '../../nova-post/np-city-response';
-import { NpContactPerson } from '../../nova-post/np-contact-person';
 import { AddOrderRecipient } from './add-order-recipient';
 import { AddOrderAddressInfo } from './add-order-address-info';
 
@@ -31,9 +30,7 @@ export interface AddOrder {
 
   senderNpCity: NpCityResponse;
   recipientNpCity?: NpCityResponse;
-  senderContactPerson: NpContactPerson;
   orderRecipient: AddOrderRecipient;
   addressInfo: AddOrderAddressInfo | null;
   generalOrderInfo?: string;
-  npApiKeyId?: string;
 }

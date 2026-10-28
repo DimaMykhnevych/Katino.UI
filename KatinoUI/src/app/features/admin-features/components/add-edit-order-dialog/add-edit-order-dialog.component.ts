@@ -242,37 +242,15 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
             return EMPTY;
           }
 
-          return this._npService.getSenderContactPersons().pipe(
-            take(1),
-            switchMap((persons: NpContactPerson[]) => {
-              if (!persons || persons.length === 0) {
-                this._toastr.error(
-                  this._t('orders.toastr.senderContactMissing'),
-                );
-                return EMPTY;
-              }
+          // The backend picks the sender (selected NP API key + its selected sender contact person)
+          if (this.data?.isAdding) {
+            return this._orderService.addOrder(
+              this.buildAddOrderModel(settings),
+            );
+          }
 
-              const senderContactPerson =
-                persons.length > 1
-                  ? persons[persons.length - 2]
-                  : persons[0];
-
-              if (this.data?.isAdding) {
-                const model = this.buildAddOrderModel(
-                  settings,
-                  senderContactPerson,
-                );
-                return this._orderService.addOrder(model);
-              }
-
-              // An existing order keeps its sender: it belongs to the NP API key the order was created under,
-              // which may differ from the currently selected one
-              const model = this.buildUpdateOrderModel(
-                settings,
-                this.data?.order?.senderContactPerson ?? senderContactPerson,
-              );
-              return this._orderService.updateOrder(model);
-            }),
+          return this._orderService.updateOrder(
+            this.buildUpdateOrderModel(settings),
           );
         }),
         catchError((err: HttpErrorResponse) => {
@@ -314,8 +292,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   private npErrorMessage(code: string | undefined): string | null {
     const npErrorCodes = [
       'npApiKeyNotSelected',
-      'npSenderKeyMismatch',
-      'npUnavailable',
+      'npSenderNotSelected',
     ];
     return code && npErrorCodes.includes(code)
       ? this._t(`orders.toastr.npErrors.${code}`)
@@ -338,10 +315,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildAddOrderModel(
-    settings: CrmUserSettings,
-    senderContactPerson: NpContactPerson,
-  ): AddOrder {
+  private buildAddOrderModel(settings: CrmUserSettings): AddOrder {
     const dt = this.deliveryType!.value as DeliveryType;
 
     const addressInfo = (this.addressInfoGroup.value ??
@@ -413,7 +387,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         dt === DeliveryType.warehouseOrPost
           ? (this.recipientNpSelection.city ?? undefined)
           : undefined,
-      senderContactPerson: senderContactPerson,
 
       orderRecipient: {
         instUrl: this.instUrl?.value,
@@ -432,17 +405,12 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           : undefined,
 
       customTags: [...this.customTagValues],
-      // The key the sender was loaded under, so the order is bound to the same NP account as its sender
-      npApiKeyId: senderContactPerson.npApiKeyId,
     };
 
     return model;
   }
 
-  private buildUpdateOrderModel(
-    settings: CrmUserSettings,
-    senderContactPerson: NpContactPerson,
-  ): UpdateOrder {
+  private buildUpdateOrderModel(settings: CrmUserSettings): UpdateOrder {
     const dt = this.deliveryType!.value as DeliveryType;
 
     const existingOrder = this.data?.order!;
@@ -503,7 +471,6 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         dt === DeliveryType.warehouseOrPost
           ? (this.recipientNpSelection.city ?? undefined)
           : undefined,
-      senderContactPerson: senderContactPerson,
 
       orderRecipient: {
         instUrl: this.form.value.instUrl,

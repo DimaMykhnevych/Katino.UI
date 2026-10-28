@@ -562,7 +562,6 @@
       "statusUpdated": "Status updated",
       "statusUpdateFailed": "Failed to update status",
       "settingsRequired": "Please fill in CRM settings first (sender city and warehouse).",
-      "senderContactMissing": "Sender contact person was not found.",
       "discontinuedErrorAdd": "Cannot create order: discontinued product exists in items.",
       "discontinuedErrorUpdate": "Cannot update order: discontinued product exists in items.",
       "saveFailed": "Failed to save the order.",
@@ -577,8 +576,7 @@
       "scanSheetsLoadFailed": "Failed to get scan sheets.",
       "npErrors": {
         "npApiKeyNotSelected": "No sender (Nova Post API key) is selected in CRM settings.",
-        "npSenderKeyMismatch": "The sender doesn't belong to the selected API key. Refresh the page and try again.",
-        "npUnavailable": "Nova Post is unavailable or rejected the request. Try again later."
+        "npSenderNotSelected": "No sender contact person is selected for the chosen API key. Ask an admin to select one."
       },
       "tagDetached": "Tag removed successfully",
       "tagDetachFailed": "Failed to remove tag",
