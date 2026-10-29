@@ -85,7 +85,7 @@
         class="chat-config-section"
       >
         <p class="chat-config-label mb-2">
-          {{ notificationTypeTranslationKeys[i] | translate }}
+          {{ notificationTypeTranslationKeys[type] | translate }}
         </p>
 
         <!-- State B, not editing this row -->
@@ -93,7 +93,7 @@
           <div class="telegram-row">
             <mat-form-field appearance="outline" class="telegram-field">
               <mat-label>{{ "telegram.currentChat" | translate }}</mat-label>
-              <input matInput [value]="getChatNameDisplay(i)" readonly />
+              <input matInput [value]="getChatNameDisplay(type)" readonly />
             </mat-form-field>
             <button mat-stroked-button class="telegram-action-btn" (click)="onChangeChat(i)">
               {{ "telegram.changeChat" | translate }}

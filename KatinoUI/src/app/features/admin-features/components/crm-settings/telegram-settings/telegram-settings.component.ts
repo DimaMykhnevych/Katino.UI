@@ -33,12 +33,21 @@ export class TelegramSettingsComponent implements OnInit, OnDestroy {
     TelegramNotificationTypeDto.sewingReport,
     TelegramNotificationTypeDto.orderRejection,
     // TelegramNotificationTypeDto.stockRedistribution,
+    TelegramNotificationTypeDto.systemNotifications,
   ];
-  public readonly notificationTypeTranslationKeys = [
-    'telegram.notificationType.sewingReport',
-    'telegram.notificationType.orderRejection',
-    'telegram.notificationType.stockRedistribution',
-  ];
+  public readonly notificationTypeTranslationKeys: Record<
+    TelegramNotificationTypeDto,
+    string
+  > = {
+    [TelegramNotificationTypeDto.sewingReport]:
+      'telegram.notificationType.sewingReport',
+    [TelegramNotificationTypeDto.orderRejection]:
+      'telegram.notificationType.orderRejection',
+    [TelegramNotificationTypeDto.stockRedistribution]:
+      'telegram.notificationType.stockRedistribution',
+    [TelegramNotificationTypeDto.systemNotifications]:
+      'telegram.notificationType.systemNotifications',
+  };
 
   private _destroy$ = new Subject<void>();
 
@@ -94,10 +103,10 @@ export class TelegramSettingsComponent implements OnInit, OnDestroy {
 
   // ─── Public methods ───────────────────────────────────────────────────────────
 
-  public getChatNameDisplay(index: number): string {
+  public getChatNameDisplay(type: TelegramNotificationTypeDto): string {
     return (
       this.telegramSettings?.chatConfigs.find(
-        (c) => c.notificationType === index,
+        (c) => c.notificationType === type,
       )?.chatName ?? ''
     );
   }
@@ -184,14 +193,14 @@ export class TelegramSettingsComponent implements OnInit, OnDestroy {
         : null;
 
     const chatConfigs: TelegramChatConfig[] = this.notificationTypes
-      .map((type) => {
-        const ctrl = this.chatConfigsArray.at(type);
+      .map((type, i) => {
+        const ctrl = this.chatConfigsArray.at(i);
         const notificationsEnabled = ctrl.get('notificationsEnabled')!
           .value as boolean;
         let chatId: string | undefined;
         let chatName: string | undefined;
 
-        if (this.isConfigured && this.isEditingChatIndex !== type) {
+        if (this.isConfigured && this.isEditingChatIndex !== i) {
           const existing = this.telegramSettings?.chatConfigs.find(
             (c) => c.notificationType === type,
           );

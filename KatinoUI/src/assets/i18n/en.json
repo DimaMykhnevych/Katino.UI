@@ -725,7 +725,8 @@
     "notificationType": {
       "sewingReport": "Sewing report",
       "orderRejection": "Order rejection",
-      "stockRedistribution": "Stock redistribution"
+      "stockRedistribution": "Stock redistribution",
+      "systemNotifications": "System notifications"
     },
     "toastr": {
       "validateError": "Token validation error",

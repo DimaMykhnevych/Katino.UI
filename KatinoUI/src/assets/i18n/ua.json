@@ -725,7 +725,8 @@
     "notificationType": {
       "sewingReport": "Звіт про пошиття",
       "orderRejection": "Відхилення замовлення",
-      "stockRedistribution": "Перерозподіл залишків"
+      "stockRedistribution": "Перерозподіл залишків",
+      "systemNotifications": "Системні сповіщення"
     },
     "toastr": {
       "validateError": "Помилка перевірки токена",
