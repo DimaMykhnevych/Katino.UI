@@ -11,6 +11,7 @@ import { catchError, finalize, switchMap, takeUntil } from 'rxjs/operators';
 import { CurrentSyncStatus } from 'src/app/core/models/nova-post/current-sync-status';
 import { SyncRecord } from 'src/app/core/models/nova-post/sync-record';
 import { SyncStatus } from 'src/app/core/enums/sync-status';
+import { SyncType } from 'src/app/core/enums/sync-type';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
 
 import { ToastrService } from 'ngx-toastr';
@@ -32,6 +33,7 @@ export class NpSyncHistoryComponent implements OnInit, OnDestroy {
 
   public dataSource = new MatTableDataSource<SyncRecord>([]);
   public displayedColumns: string[] = [
+    'syncType',
     'status',
     'startedAt',
     'completedAt',
@@ -98,6 +100,16 @@ export class NpSyncHistoryComponent implements OnInit, OnDestroy {
         return 'crmSettingsPage.sync.status.failed';
       default:
         return 'crmSettingsPage.sync.status.notStarted';
+    }
+  }
+
+  public getSyncTypeTextKey(syncType: SyncType): string {
+    switch (syncType) {
+      case SyncType.cities:
+        return 'crmSettingsPage.sync.type.cities';
+      case SyncType.warehouses:
+      default:
+        return 'crmSettingsPage.sync.type.warehouses';
     }
   }
 

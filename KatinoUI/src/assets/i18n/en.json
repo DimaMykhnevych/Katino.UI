@@ -332,7 +332,7 @@
     "npSender": "Sender (Nova Post API key)",
     "npSenderHint": "Who new parcels are created from. Existing orders stay on their own key",
     "sync": {
-      "title": "Warehouse sync",
+      "title": "Cities and warehouses sync",
       "subtitle": "History of the last {{limit}} runs",
       "currentStatus": "Current status",
       "trigger": "Trigger sync",
@@ -343,7 +343,12 @@
         "completed": "Completed",
         "failed": "Failed"
       },
+      "type": {
+        "cities": "Cities",
+        "warehouses": "Warehouses"
+      },
       "table": {
+        "type": "Type",
         "status": "Status",
         "startedAt": "Started",
         "completedAt": "Completed",
