@@ -14,6 +14,7 @@ import { EmployeesComponent } from './features/admin-features/components/employe
 import { StatisticsComponent } from './features/admin-features/components/statistics/statistics.component';
 import { CollectionsComponent } from './features/admin-features/components/collections/collections.component';
 import { DiscountsComponent } from './features/admin-features/components/discounts/discounts.component';
+import { HelpComponent } from './features/admin-features/components/help/help.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,20 @@ const routes: Routes = [
       {
         path: 'discounts',
         component: DiscountsComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
+        },
+      },
+      {
+        path: 'help',
+        component: HelpComponent,
+        data: {
+          roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
+        },
+      },
+      {
+        path: 'help/:topic',
+        component: HelpComponent,
         data: {
           roles: [Roles.Admin, Roles.Owner, Roles.DirectManager],
         },

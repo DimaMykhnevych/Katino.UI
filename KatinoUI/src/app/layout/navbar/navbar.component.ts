@@ -27,6 +27,13 @@ export class NavbarComponent implements OnInit {
     private _eventPeriod: EventPeriodService,
   ) {}
 
+  // Same roles as the help route
+  public get canSeeHelp(): boolean {
+    return [Roles.Admin, Roles.Owner, Roles.DirectManager].includes(
+      this.userRole ?? '',
+    );
+  }
+
   public get currentLanguage(): string | null {
     return localStorage.getItem('language');
   }

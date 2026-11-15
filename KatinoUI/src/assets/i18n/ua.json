@@ -88,6 +88,7 @@
     "owner": "Власник"
   },
   "navbar": {
+    "help": "Довідка",
     "menu": "Меню",
     "products": "Товари",
     "availability": "Наявність",
@@ -99,6 +100,12 @@
     "statistics": "Статистика",
     "collections": "Колекції",
     "discounts": "Знижки"
+  },
+  "helpPage": {
+    "title": "Довідка",
+    "topics": {
+      "receipts": "Фіскальні чеки"
+    }
   },
   "collections": {
     "header": "Колекції",

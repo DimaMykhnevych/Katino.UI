@@ -1,0 +1,27 @@
+<div class="main container-fluid p-3">
+  <div class="table-header">
+    <h2 class="table-title">
+      <mat-icon class="title-icon">help_outline</mat-icon>
+      {{ "helpPage.title" | translate }}
+    </h2>
+  </div>
+
+  <div class="help-layout">
+    <nav class="topics">
+      <button
+        *ngFor="let topic of topics"
+        type="button"
+        class="topic"
+        [class.active]="topic.id === selectedTopicId"
+        (click)="onTopicSelect(topic.id)"
+      >
+        <mat-icon>{{ topic.icon }}</mat-icon>
+        <span>{{ topic.titleKey | translate }}</span>
+      </button>
+    </nav>
+
+    <article class="help-article mat-elevation-z2" [ngSwitch]="selectedTopicId">
+      <app-receipts-help *ngSwitchCase="'receipts'"></app-receipts-help>
+    </article>
+  </div>
+</div>

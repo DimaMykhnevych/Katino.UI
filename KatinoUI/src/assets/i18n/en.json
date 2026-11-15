@@ -88,6 +88,7 @@
     "owner": "Owner"
   },
   "navbar": {
+    "help": "Help",
     "menu": "Menu",
     "products": "Products",
     "availability": "Availability",
@@ -99,6 +100,12 @@
     "statistics": "Statistics",
     "collections": "Collections",
     "discounts": "Discounts"
+  },
+  "helpPage": {
+    "title": "Help",
+    "topics": {
+      "receipts": "Fiscal receipts"
+    }
   },
   "collections": {
     "header": "Collections",

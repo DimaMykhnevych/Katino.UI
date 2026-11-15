@@ -41,6 +41,8 @@ import { DiscountsComponent } from './components/discounts/discounts.component';
 import { DiscountItemComponent } from './components/discounts/discount-item/discount-item.component';
 import { AddEditDiscountDialogComponent } from './components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
 import { ScanSheetPreviewDialogComponent } from './components/scan-sheet-preview-dialog/scan-sheet-preview-dialog.component';
+import { HelpComponent } from './components/help/help.component';
+import { ReceiptsHelpComponent } from './components/help/topics/receipts-help/receipts-help.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,8 @@ import { ScanSheetPreviewDialogComponent } from './components/scan-sheet-preview
     ReceiptReturnDialogComponent,
     ReceiptPdfDialogComponent,
     OrderReceiptsComponent,
+    HelpComponent,
+    ReceiptsHelpComponent,
   ],
   imports: [
     CommonModule,

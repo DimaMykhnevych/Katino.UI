@@ -34,6 +34,21 @@
 
       <!-- Right-aligned items -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <!-- Help -->
+        <li *ngIf="canSeeHelp" class="nav-item help-item">
+          <a
+            class="help-btn"
+            routerLink="/help"
+            routerLinkActive="active"
+            [matTooltip]="'navbar.help' | translate"
+            [attr.aria-label]="'navbar.help' | translate"
+          >
+            <mat-icon>help_outline</mat-icon>
+            <!-- Only in the collapsed mobile menu, where a bare icon looks out of place -->
+            <span class="help-text">{{ "navbar.help" | translate }}</span>
+          </a>
+        </li>
+
         <!-- Language Selection -->
         <li class="nav-item language-selector">
           <div class="language-toggle">
