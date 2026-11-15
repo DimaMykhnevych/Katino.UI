@@ -303,3 +303,50 @@
     grid-template-columns: 1fr;
   }
 }
+
+.receipt-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  .ttn-action-btn {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+}
+
+.receipt-error {
+  margin-top: 4px;
+  color: #c62828;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+// Shown while the fresh order loads over the one the dialog was opened with
+.refresh-bar {
+  height: 3px;
+  margin-bottom: -3px;
+
+  ::ng-deep .mat-progress-bar-fill::after {
+    background-color: #06b6d4;
+  }
+
+  ::ng-deep .mat-progress-bar-buffer {
+    background-color: rgba(6, 182, 212, 0.2);
+  }
+}
+
+.dialog-content {
+  transition: opacity 0.2s, background-color 0.2s;
+
+  // Actions are blocked so nothing is pressed against the possibly outdated state
+  &.is-refreshing {
+    opacity: 0.55;
+    background-color: rgba(0, 0, 0, 0.03);
+    pointer-events: none;
+  }
+}

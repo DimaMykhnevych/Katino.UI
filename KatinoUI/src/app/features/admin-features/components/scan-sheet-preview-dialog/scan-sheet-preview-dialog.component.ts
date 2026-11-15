@@ -7,12 +7,10 @@ import {
   ScanSheetListItem,
 } from 'src/app/core/models/nova-post/scan-sheet-list';
 import { NovaPostService } from 'src/app/features/common-services/nova-post.service';
-
-// The worker is copied to assets by angular.json
-const PDF_WORKER_SRC = 'assets/pdfjs/pdf.worker.min.js';
-
-// Rendered above screen resolution so the barcode stays sharp for the scanner
-const MIN_RENDER_SCALE = 2;
+import {
+  downloadBlob,
+  renderPdfPages,
+} from 'src/app/core/helpers/pdf-render.helper';
 
 interface ScanSheetPreview {
   item: ScanSheetListItem;
@@ -59,13 +57,10 @@ export class ScanSheetPreviewDialogComponent implements OnInit, OnDestroy {
   public onDownload(sheet: ScanSheetPreview): void {
     if (!sheet.blob) return;
 
-    const url = URL.createObjectURL(sheet.blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `scan-sheet-${sheet.item.scanSheetNumber ?? sheet.item.scanSheetRef}.pdf`;
-    link.click();
-    // Revoked on the next tick so the browser has started the download
-    setTimeout(() => URL.revokeObjectURL(url));
+    downloadBlob(
+      sheet.blob,
+      `scan-sheet-${sheet.item.scanSheetNumber ?? sheet.item.scanSheetRef}.pdf`,
+    );
   }
 
   // ─── Private ─────────────────────────────────────────────────────────────────
@@ -85,36 +80,13 @@ export class ScanSheetPreviewDialogComponent implements OnInit, OnDestroy {
         }
 
         sheet.blob = blob;
-        this.renderPages(sheet, blob)
-          .then(() => (sheet.isLoading = false))
+        renderPdfPages(blob)
+          .then((pages) => {
+            sheet.pages = pages;
+            sheet.isLoading = false;
+          })
           .catch(() => this.markFailed(sheet));
       });
-  }
-
-  // Pages are rendered to images because mobile browsers can't show a PDF inside a page
-  private async renderPages(sheet: ScanSheetPreview, blob: Blob): Promise<void> {
-    // pdf.js is loaded lazily so it doesn't grow the main bundle
-    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_SRC;
-
-    const data = new Uint8Array(await blob.arrayBuffer());
-    const pdf = await pdfjsLib.getDocument({ data }).promise;
-    const scale = Math.max(MIN_RENDER_SCALE, window.devicePixelRatio || 1);
-
-    try {
-      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
-        const page = await pdf.getPage(pageNumber);
-        const viewport = page.getViewport({ scale });
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        await page.render({ canvasContext: canvas.getContext('2d')!, viewport }).promise;
-        sheet.pages.push(canvas.toDataURL('image/png'));
-      }
-    } finally {
-      pdf.destroy();
-    }
   }
 
   private markFailed(sheet: ScanSheetPreview): void {

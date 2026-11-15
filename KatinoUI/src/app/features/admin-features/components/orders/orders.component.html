@@ -95,6 +95,21 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
+          <mat-form-field
+            class="form-control status-field"
+            appearance="outline"
+          >
+            <mat-label>{{ "orders.filters.receipts" | translate }}</mat-label>
+            <mat-select formControlName="receiptState">
+              <mat-option [value]="null">
+                {{ "orders.filters.allReceipts" | translate }}
+              </mat-option>
+              <mat-option [value]="ReceiptState.awaitingReturn">
+                {{ "orders.filters.awaitingReturn" | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <!-- Row 3: sort + creation date range -->

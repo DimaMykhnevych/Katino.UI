@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>{{ "orders.receipt.returnTitle" | translate }}</h2>
+
+<mat-dialog-content class="content">
+  <div class="kv">
+    <div class="k">{{ "orders.receipt.returnAmount" | translate }}</div>
+    <div class="v">{{ info.returnAmount | number: "1.2-2" }}</div>
+
+    <ng-container *ngIf="info.remainderAmount > 0">
+      <div class="k">{{ "orders.receipt.remainderAmount" | translate }}</div>
+      <div class="v">{{ info.remainderAmount | number: "1.2-2" }}</div>
+    </ng-container>
+  </div>
+
+  <mat-form-field *ngIf="showGuarantee" appearance="outline" class="guarantee-field w-100 mt-2">
+    <mat-label>{{ "orders.receipt.guaranteeAmount" | translate }}</mat-label>
+    <input
+      matInput
+      type="number"
+      min="0"
+      [max]="info.maxGuaranteeAmount"
+      step="0.01"
+      [formControl]="guarantee"
+    />
+    <mat-hint>
+      {{
+        "orders.receipt.guaranteeHint"
+          | translate: { max: (info.maxGuaranteeAmount | number: "1.2-2") }
+      }}
+    </mat-hint>
+    <mat-error>
+      {{
+        "orders.receipt.errors.invalidGuaranteeRange"
+          | translate: { max: (info.maxGuaranteeAmount | number: "1.2-2") }
+      }}
+    </mat-error>
+  </mat-form-field>
+
+  <p *ngIf="serverErrorKey" class="server-error">
+    {{ serverErrorKey | translate }}
+  </p>
+
+  <div class="kv refund mt-2">
+    <div class="k">{{ "orders.receipt.refundToClient" | translate }}</div>
+    <div class="v">{{ refundToClient | number: "1.2-2" }}</div>
+  </div>
+
+  <p class="warning mt-3 mb-0">
+    <mat-icon>warning_amber</mat-icon>
+    <span>{{ "orders.receipt.returnWarning" | translate }}</span>
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="onCancel()" [disabled]="isSubmitting">
+    {{ "common.cancel" | translate }}
+  </button>
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="onSubmit()"
+    [disabled]="!canSubmit"
+  >
+    {{ "orders.receipt.returnButton" | translate }}
+  </button>
+</mat-dialog-actions>

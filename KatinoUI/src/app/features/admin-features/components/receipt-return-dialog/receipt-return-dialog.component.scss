@@ -1,0 +1,61 @@
+.kv {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 16px;
+
+  .v {
+    text-align: right;
+    font-weight: 500;
+  }
+}
+
+.refund {
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  .k,
+  .v {
+    font-weight: 600;
+  }
+}
+
+.server-error {
+  color: #c62828;
+  font-size: 13px;
+  margin: 0;
+}
+
+.warning {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: #b26a00;
+  font-size: 13px;
+
+  mat-icon {
+    flex-shrink: 0;
+  }
+}
+
+// Same field look as the Checkbox accounts and Telegram cards
+.guarantee-field {
+  ::ng-deep {
+    .mat-form-field-outline {
+      color: rgba(148, 163, 184, 0.3);
+    }
+
+    .mat-form-field-outline-thick {
+      color: #06b6d4;
+    }
+
+    .mat-form-field-label {
+      color: #64748b;
+    }
+  }
+
+  // Keep the validation error red over the cyan outline
+  &.mat-form-field-invalid ::ng-deep .mat-form-field-outline-thick,
+  &.mat-form-field-invalid ::ng-deep .mat-form-field-label {
+    color: #f44336;
+  }
+}

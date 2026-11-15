@@ -318,13 +318,15 @@
     "orderDeletionFailed": "An error occurred during deleting order",
     "docNotDeleted": "Order deleted, but the TTN could not be deleted in Nova Poshta — check the NP account",
     "orderDeleteTtnInProgress": "TTN is being created right now, try deleting in a minute",
-    "orderDeleteSuccess": "Order and TTN have been deleted successfully"
+    "orderDeleteSuccess": "Order and TTN have been deleted successfully",
+    "orderDeleteReceiptsUnfinished": "Finish the receipts of this order first"
   },
   "dialogs": {
     "productVariantDeletionTitle": "Product Variant Deletion",
     "productVariantDeletionContent": "Are you sure you want to delete {{productInfo}} ?",
     "orderDeletionTitle": "Order Deletion",
-    "orderDeletionContent": "Are you sure you want to delete order from {{orderDate}}?\n Order items:\n {{orderInfo}} ?"
+    "orderDeletionContent": "Are you sure you want to delete order from {{orderDate}}?\n Order items:\n {{orderInfo}} ?",
+    "orderDeletionPrepaymentReturned": "The prepayment is refunded to the client"
   },
   "crmSettingsPage": {
     "crmSettings": "CRM Settings",
@@ -450,7 +452,8 @@
       "comment": "Comment",
       "generalOrderInfo": "Delivery information",
       "tags": "Tags",
-      "customTags": "Custom tags"
+      "customTags": "Custom tags",
+      "createReceipt": "Create receipt"
     },
     "tags": {
       "notNpOrder": "Not NP",
@@ -616,7 +619,10 @@
       "sortByCreationDate": "By creation date",
       "sortByUrgency": "By urgency",
       "tags": "Tags",
-      "allTags": "All tags"
+      "allTags": "All tags",
+      "awaitingReturn": "Awaiting return receipt",
+      "receipts": "Receipts",
+      "allReceipts": "All"
     },
     "addingOrder": {
       "dialogTitle": "Adding Order"
@@ -660,6 +666,79 @@
       "length": "Length",
       "width": "Width",
       "height": "Height"
+    },
+    "receipt": {
+      "title": "Fiscal receipt",
+      "listTitle": "Receipts",
+      "loading": "Loading…",
+      "empty": "No receipts",
+      "retry": "Retry",
+      "returnButton": "Issue return receipt",
+      "returnTitle": "Issue return receipt",
+      "returnAmount": "Return receipt",
+      "remainderAmount": "New receipt for the kept items",
+      "guaranteeAmount": "Guarantee payment",
+      "guaranteeHint": "From 0 to {{max}}",
+      "refundToClient": "Refund to the client",
+      "returnWarning": "Press only when the money is actually being refunded to the client.",
+      "returnAccepted": "The return receipt is queued",
+      "downloadPdf": "Download PDF",
+      "state": {
+        "notRequired": "Not required",
+        "awaitingPayment": "Awaiting payment",
+        "pending": "Queued",
+        "inProgress": "Issuing",
+        "waitingForTtn": "Awaiting TTN",
+        "done": "Done",
+        "unknown": "Retrying",
+        "failed": "Error",
+        "awaitingReturn": "Awaiting return receipt"
+      },
+      "kind": {
+        "sell": "Sale receipt",
+        "sellReturn": "Return receipt",
+        "prepayment": "Prepayment receipt",
+        "prepaymentChainReturn": "Prepayment chain return",
+        "ettnPrepayment": "Deferred cash-on-delivery receipt",
+        "ettnCashOnDelivery": "Deferred receipt (full cash on delivery)",
+        "guaranteeSell": "Guarantee payment"
+      },
+      "status": {
+        "pending": "Queued",
+        "processing": "Processing",
+        "done": "Done",
+        "failed": "Error",
+        "cancelled": "Cancelled"
+      },
+      "columns": {
+        "kind": "Type",
+        "status": "Status",
+        "amount": "Amount, UAH",
+        "fiscalCode": "Fiscal code",
+        "ttn": "TTN",
+        "createdAt": "Created",
+        "completedAt": "Completed"
+      },
+      "errors": {
+        "receiptTaskNotFound": "No receipts found for this order, data refreshed.",
+        "notRetryable": "The receipt no longer needs a retry, data refreshed.",
+        "retryFailed": "Retry failed, try again.",
+        "notAwaitingReturn": "The order no longer awaits a return receipt, data refreshed.",
+        "returnInfoFailed": "Failed to get the return amounts.",
+        "guaranteeTooLarge": "The guarantee payment is larger than allowed.",
+        "invalidGuarantee": "Invalid amount: at least 0 and at most 2 decimals.",
+        "invalidGuaranteeRange": "From 0 to {{max}}, at most 2 decimals",
+        "returnFailed": "Failed to issue the return receipt, try again.",
+        "receiptNotFound": "Receipt not found.",
+        "receiptPdfNotAvailable": "The PDF of this receipt is not available.",
+        "checkboxUnavailable": "Checkbox is unavailable, try again later.",
+        "pdfFailed": "Failed to download the PDF.",
+        "listFailed": "Failed to load receipts."
+      },
+      "openOnCheckbox": "View on the Checkbox website",
+      "copyLink": "Copy link",
+      "receiptNumber": "Receipt {{number}}",
+      "receiptNumberOf": "Receipt {{number}} of {{total}}"
     }
   },
   "sewingQueue": {
@@ -808,6 +887,37 @@
         "deleteFailed": "Failed to delete expense",
         "amountInvalid": "Invalid amount"
       }
+    }
+  },
+  "checkboxAccounts": {
+    "title": "Checkbox (fiscal receipts)",
+    "subtitle": "Checkbox cash register for a Nova Post API key. One account per key.",
+    "empty": "No Checkbox accounts yet.",
+    "add": "Add account",
+    "addTitle": "New Checkbox account",
+    "editTitle": "Edit account",
+    "npApiKey": "Nova Post API key",
+    "licenseKey": "Cash register license key",
+    "licenseKeyLength": "4 to 256 characters",
+    "cashierLogin": "Cashier login",
+    "cashierPassword": "Cashier password",
+    "taxCode": "Tax code",
+    "taxCodeHint": "8 — no VAT",
+    "keepHint": "Leave empty to keep",
+    "active": "Active",
+    "inactive": "Deactivated",
+    "deactivate": "Deactivate",
+    "deactivateTitle": "Deactivate the Checkbox account?",
+    "deactivateConfirm": "The account \"{{owner}}\" will be deactivated. This cannot be undone: the account cannot be activated again.",
+    "saved": "Checkbox account saved",
+    "loadFailed": "Failed to load Checkbox accounts",
+    "errors": {
+      "checkboxAccountInvalid": "Checkbox rejected the credentials: check the license key, cashier login and password.",
+      "checkboxAccountDuplicate": "This API key or license key already has an account.",
+      "checkboxAccountNotFound": "Account not found, reload the page.",
+      "npApiKeyNotFound": "Nova Post API key not found.",
+      "checkboxValidationUnavailable": "Checkbox is unavailable, try again later.",
+      "unknown": "Failed to save the Checkbox account."
     }
   }
 }

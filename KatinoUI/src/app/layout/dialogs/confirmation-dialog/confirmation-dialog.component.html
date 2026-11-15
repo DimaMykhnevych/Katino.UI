@@ -19,6 +19,13 @@
     <p class="dialog-content">
       {{ data.contentKey | translate : data.contentParams }}
     </p>
+    <mat-checkbox
+      *ngIf="data.checkboxLabelKey"
+      color="primary"
+      [(ngModel)]="data.checkboxChecked"
+    >
+      {{ data.checkboxLabelKey | translate }}
+    </mat-checkbox>
   </div>
 
   <div mat-dialog-actions class="dialog-actions">

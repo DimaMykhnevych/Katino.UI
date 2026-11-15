@@ -1,0 +1,174 @@
+<div class="mat-elevation-z8 checkbox-card p-3">
+  <h2 class="mb-1">
+    <mat-icon class="checkbox-icon">receipt_long</mat-icon>
+    {{ "checkboxAccounts.title" | translate }}
+  </h2>
+  <p class="text-muted mb-3 checkbox-subtitle">
+    {{ "checkboxAccounts.subtitle" | translate }}
+  </p>
+
+  <div *ngIf="isLoading" class="spinner-container my-3">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <p *ngIf="accounts.length === 0" class="text-muted">
+      {{ "checkboxAccounts.empty" | translate }}
+    </p>
+
+    <div class="account-list" *ngIf="accounts.length">
+      <div
+        class="account-row"
+        *ngFor="let account of accounts"
+        [class.account-row--inactive]="!account.isActive"
+      >
+        <div class="account-info">
+          <div class="account-title">
+            {{ account.npApiKeyOwnerFullName }}
+            <span
+              class="badge ms-2"
+              [ngClass]="account.isActive ? 'badge--success' : 'badge--neutral'"
+            >
+              {{
+                (account.isActive
+                  ? "checkboxAccounts.active"
+                  : "checkboxAccounts.inactive"
+                ) | translate
+              }}
+            </span>
+          </div>
+          <div class="text-muted small">
+            {{ "checkboxAccounts.licenseKey" | translate }}: …{{
+              account.licenseKeyLast4
+            }}
+            • {{ "checkboxAccounts.cashierLogin" | translate }}:
+            {{ account.cashierLogin }} •
+            {{ "checkboxAccounts.taxCode" | translate }}: {{ account.taxCode }}
+          </div>
+        </div>
+
+        <div class="d-flex gap-2" *ngIf="isAdmin && account.isActive">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="onEdit(account)"
+            [disabled]="isSaving || deactivatingId === account.id"
+          >
+            {{ "common.edit" | translate }}
+          </button>
+          <button
+            mat-stroked-button
+            color="warn"
+            type="button"
+            (click)="onDeactivate(account)"
+            [disabled]="isSaving || deactivatingId === account.id"
+          >
+            {{ "checkboxAccounts.deactivate" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button
+      *ngIf="isAdmin && !form"
+      mat-raised-button
+      color="primary"
+      class="mt-3"
+      type="button"
+      (click)="onAdd()"
+    >
+      {{ "checkboxAccounts.add" | translate }}
+    </button>
+
+    <form *ngIf="form" [formGroup]="form" class="account-form mt-3">
+      <h3 class="mb-2">
+        <ng-container *ngIf="isAdding">{{
+          "checkboxAccounts.addTitle" | translate
+        }}</ng-container>
+        <ng-container *ngIf="!isAdding"
+          >{{ "checkboxAccounts.editTitle" | translate }}:
+          {{ editedAccount?.npApiKeyOwnerFullName }}</ng-container
+        >
+      </h3>
+
+      <mat-form-field *ngIf="isAdding" appearance="outline" class="w-100">
+        <mat-label>{{ "checkboxAccounts.npApiKey" | translate }}</mat-label>
+        <mat-select formControlName="npApiKeyId">
+          <mat-option *ngFor="let key of npApiKeys" [value]="key.id">
+            {{ key.ownerFullName }} (…{{ key.last4 }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>{{ "checkboxAccounts.licenseKey" | translate }}</mat-label>
+        <input matInput formControlName="licenseKey" autocomplete="off" />
+        <mat-hint *ngIf="!isAdding">{{
+          "checkboxAccounts.keepHint" | translate
+        }}</mat-hint>
+        <mat-error>{{
+          "checkboxAccounts.licenseKeyLength" | translate
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>{{ "checkboxAccounts.cashierLogin" | translate }}</mat-label>
+        <input matInput formControlName="cashierLogin" autocomplete="off" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>{{
+          "checkboxAccounts.cashierPassword" | translate
+        }}</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="cashierPassword"
+          autocomplete="new-password"
+        />
+        <mat-hint *ngIf="!isAdding">{{
+          "checkboxAccounts.keepHint" | translate
+        }}</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>{{ "checkboxAccounts.taxCode" | translate }}</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          max="99"
+          formControlName="taxCode"
+        />
+        <mat-hint>{{ "checkboxAccounts.taxCodeHint" | translate }}</mat-hint>
+      </mat-form-field>
+
+      <div class="d-flex gap-2 mt-3">
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="onSave()"
+          [disabled]="form.invalid || isSaving"
+        >
+          <div class="btn-content">
+            <mat-spinner
+              *ngIf="isSaving"
+              diameter="18"
+              color="accent"
+            ></mat-spinner>
+            <span>{{ "common.save" | translate }}</span>
+          </div>
+        </button>
+        <button
+          mat-button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="isSaving"
+        >
+          {{ "common.cancel" | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</div>

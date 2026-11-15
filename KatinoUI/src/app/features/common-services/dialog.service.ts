@@ -17,6 +17,14 @@ import { AddEditDiscountData } from '../admin-features/models/add-edit-discount-
 import { AddEditDiscountDialogComponent } from '../admin-features/components/discounts/add-edit-discount-dialog/add-edit-discount-dialog.component';
 import { ScanSheetList } from 'src/app/core/models/nova-post/scan-sheet-list';
 import { ScanSheetPreviewDialogComponent } from '../admin-features/components/scan-sheet-preview-dialog/scan-sheet-preview-dialog.component';
+import {
+  ReceiptReturnDialogComponent,
+  ReceiptReturnDialogData,
+} from '../admin-features/components/receipt-return-dialog/receipt-return-dialog.component';
+import {
+  ReceiptPdfDialogComponent,
+  ReceiptPdfDialogData,
+} from '../admin-features/components/receipt-pdf-dialog/receipt-pdf-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -115,6 +123,29 @@ export class DialogService {
   ): MatDialogRef<ScanSheetPreviewDialogComponent> {
     return this.dialog.open(ScanSheetPreviewDialogComponent, {
       width: '900px',
+      maxWidth: '100vw',
+      autoFocus: false,
+      data: data,
+    });
+  }
+
+  public openReceiptReturnDialog(
+    data: ReceiptReturnDialogData,
+  ): MatDialogRef<ReceiptReturnDialogComponent, boolean> {
+    return this.dialog.open(ReceiptReturnDialogComponent, {
+      width: '450px',
+      maxWidth: '100vw',
+      disableClose: true,
+      autoFocus: false,
+      data: data,
+    });
+  }
+
+  public openReceiptPdfDialog(
+    data: ReceiptPdfDialogData,
+  ): MatDialogRef<ReceiptPdfDialogComponent> {
+    return this.dialog.open(ReceiptPdfDialogComponent, {
+      width: '500px',
       maxWidth: '100vw',
       autoFocus: false,
       data: data,

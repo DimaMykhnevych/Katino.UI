@@ -37,7 +37,7 @@
         mat-stroked-button
         class="ttn-action-btn"
         type="button"
-        [disabled]="ttnBusy"
+        [disabled]="ttnBusy || isRefreshing"
         (click)="onRefreshTtn()"
       >
         {{ "orders.ttn.refresh" | translate }}
@@ -47,7 +47,7 @@
         mat-stroked-button
         class="ttn-action-btn"
         type="button"
-        [disabled]="ttnBusy"
+        [disabled]="ttnBusy || isRefreshing"
         (click)="onRetryTtn()"
       >
         {{ "orders.ttn.retry" | translate }}
@@ -57,7 +57,7 @@
         mat-stroked-button
         class="ttn-action-btn"
         type="button"
-        [disabled]="ttnBusy"
+        [disabled]="ttnBusy || isRefreshing"
         (click)="onCreateTtn()"
       >
         {{ "orders.ttn.create" | translate }}
@@ -70,7 +70,13 @@
   </button>
 </h2>
 
-<mat-dialog-content class="dialog-content">
+<mat-progress-bar
+  *ngIf="isRefreshing"
+  class="refresh-bar"
+  mode="indeterminate"
+></mat-progress-bar>
+
+<mat-dialog-content class="dialog-content" [class.is-refreshing]="isRefreshing">
   <!-- MAIN -->
   <div class="section">
     <div class="section-title">{{ "orders.details.main" | translate }}</div>
@@ -162,6 +168,44 @@
         </span>
       </div>
 
+      <ng-container *ngIf="hasReceipt">
+        <div class="k">{{ "orders.receipt.title" | translate }}</div>
+        <div class="v">
+          <div class="receipt-row">
+            <span class="badge" [ngClass]="receiptBadgeClass">
+              {{ receiptLabelKey | translate }}
+            </span>
+            <button
+              *ngIf="canRetryReceipt"
+              mat-stroked-button
+              class="ttn-action-btn"
+              type="button"
+              [disabled]="receiptBusy"
+              (click)="onRetryReceipt()"
+            >
+              {{ "orders.receipt.retry" | translate }}
+            </button>
+            <button
+              *ngIf="canReturnReceipt"
+              mat-stroked-button
+              color="warn"
+              class="ttn-action-btn"
+              type="button"
+              [disabled]="receiptBusy"
+              (click)="onReturnReceipt()"
+            >
+              {{ "orders.receipt.returnButton" | translate }}
+            </button>
+          </div>
+          <div
+            *ngIf="isReceiptFailed && order.receiptLastError"
+            class="receipt-error"
+          >
+            {{ order.receiptLastError }}
+          </div>
+        </div>
+      </ng-container>
+
       <div class="k">{{ "orders.labels.orderDescription" | translate }}</div>
       <div class="v">
         <span *ngIf="order.description; else noDesc">{{
@@ -170,6 +214,16 @@
         <ng-template #noDesc>—</ng-template>
       </div>
     </div>
+  </div>
+
+  <!-- RECEIPTS -->
+  <div class="section" [hidden]="!hasReceipt && !receiptsCount">
+    <div class="section-title">{{ "orders.receipt.listTitle" | translate }}</div>
+    <app-order-receipts
+      [orderId]="order.id"
+      [refreshKey]="receiptsRefreshKey"
+      (loaded)="receiptsCount = $event"
+    ></app-order-receipts>
   </div>
 
   <!-- RECIPIENT -->

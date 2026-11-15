@@ -318,13 +318,15 @@
     "orderDeletionFailed": "Виникла помилка під час видалення замовлення",
     "docNotDeleted": "Замовлення видалено, але ТТН у Новій Пошті не вдалося видалити — перевірте кабінет НП",
     "orderDeleteTtnInProgress": "ТТН зараз створюється, спробуйте видалити за хвилину",
-    "orderDeleteSuccess": "Замовлення та ТТН видалено"
+    "orderDeleteSuccess": "Замовлення та ТТН видалено",
+    "orderDeleteReceiptsUnfinished": "Спочатку завершіть чеки по цьому замовленню"
   },
   "dialogs": {
     "productVariantDeletionTitle": "Видалення Варіанту Товару",
     "productVariantDeletionContent": "Ви впевненні, що бажаєте видалити товар {{productInfo}} ?",
     "orderDeletionTitle": "Видалення Замовлення",
-    "orderDeletionContent": "Ви впевненні, що бажаєте видалити заомвлення від {{orderDate}}?\n Склад замовлення:\n {{orderInfo}} ?"
+    "orderDeletionContent": "Ви впевненні, що бажаєте видалити заомвлення від {{orderDate}}?\n Склад замовлення:\n {{orderInfo}} ?",
+    "orderDeletionPrepaymentReturned": "Передплата повертається клієнту"
   },
   "crmSettingsPage": {
     "crmSettings": "Налаштування CRM",
@@ -450,7 +452,8 @@
       "comment": "Коментар",
       "generalOrderInfo": "Інформація про доставку",
       "tags": "Теги",
-      "customTags": "Кастомні теги"
+      "customTags": "Кастомні теги",
+      "createReceipt": "Створити чек"
     },
     "tags": {
       "notNpOrder": "Не НП",
@@ -616,7 +619,10 @@
       "sortByCreationDate": "За датою створення",
       "sortByUrgency": "За терміновістю",
       "tags": "Теги",
-      "allTags": "Усі теги"
+      "allTags": "Усі теги",
+      "awaitingReturn": "Очікує чек повернення",
+      "receipts": "Чеки",
+      "allReceipts": "Усі"
     },
     "addingOrder": {
       "dialogTitle": "Додавання Замовлення"
@@ -660,6 +666,79 @@
       "length": "Довжина",
       "width": "Ширина",
       "height": "Висота"
+    },
+    "receipt": {
+      "title": "Фіскальний чек",
+      "listTitle": "Чеки",
+      "loading": "Завантаження…",
+      "empty": "Чеків немає",
+      "retry": "Повторити",
+      "returnButton": "Пробити чек повернення",
+      "returnTitle": "Пробити чек повернення",
+      "returnAmount": "Чек повернення",
+      "remainderAmount": "Новий чек на залишені речі",
+      "guaranteeAmount": "Гарантійний платіж",
+      "guaranteeHint": "Від 0 до {{max}}",
+      "refundToClient": "Повернути клієнту",
+      "returnWarning": "Натискайте, лише коли гроші справді повертаються клієнту.",
+      "returnAccepted": "Чек повернення поставлено в чергу",
+      "downloadPdf": "Завантажити PDF",
+      "state": {
+        "notRequired": "Не потрібен",
+        "awaitingPayment": "Чекає оплату",
+        "pending": "В черзі",
+        "inProgress": "Пробивається",
+        "waitingForTtn": "Чекає ТТН",
+        "done": "Готово",
+        "unknown": "Повторюється",
+        "failed": "Помилка",
+        "awaitingReturn": "Очікує чек повернення"
+      },
+      "kind": {
+        "sell": "Чек продажу",
+        "sellReturn": "Чек повернення",
+        "prepayment": "Чек передплати",
+        "prepaymentChainReturn": "Повернення ланцюжка передплати",
+        "ettnPrepayment": "Відкладений чек післяплати",
+        "ettnCashOnDelivery": "Відкладений чек (повна післяплата)",
+        "guaranteeSell": "Гарантійний платіж"
+      },
+      "status": {
+        "pending": "В черзі",
+        "processing": "Обробляється",
+        "done": "Готово",
+        "failed": "Помилка",
+        "cancelled": "Скасовано"
+      },
+      "columns": {
+        "kind": "Тип",
+        "status": "Статус",
+        "amount": "Сума, грн",
+        "fiscalCode": "Фіскальний код",
+        "ttn": "ТТН",
+        "createdAt": "Створено",
+        "completedAt": "Завершено"
+      },
+      "errors": {
+        "receiptTaskNotFound": "Чеків для цього замовлення не знайдено, дані оновлено.",
+        "notRetryable": "Чек уже не потребує повтору, дані оновлено.",
+        "retryFailed": "Не вдалося повторити, спробуйте ще раз.",
+        "notAwaitingReturn": "Замовлення вже не очікує чек повернення, дані оновлено.",
+        "returnInfoFailed": "Не вдалося отримати суми повернення.",
+        "guaranteeTooLarge": "Гарантійний платіж більший за допустимий.",
+        "invalidGuarantee": "Некоректна сума: не менше 0 і не більше 2 знаків після коми.",
+        "invalidGuaranteeRange": "Від 0 до {{max}}, не більше 2 знаків після коми",
+        "returnFailed": "Не вдалося пробити чек повернення, спробуйте ще раз.",
+        "receiptNotFound": "Чек не знайдено.",
+        "receiptPdfNotAvailable": "PDF цього чека недоступний.",
+        "checkboxUnavailable": "Checkbox недоступний, спробуйте пізніше.",
+        "pdfFailed": "Не вдалося завантажити PDF.",
+        "listFailed": "Не вдалося завантажити чеки."
+      },
+      "openOnCheckbox": "Переглянути на сайті Checkbox",
+      "copyLink": "Скопіювати посилання",
+      "receiptNumber": "Чек {{number}}",
+      "receiptNumberOf": "Чек {{number}} з {{total}}"
     }
   },
   "sewingQueue": {
@@ -808,6 +887,37 @@
         "deleteFailed": "Не вдалося видалити витрату",
         "amountInvalid": "Некоректна сума"
       }
+    }
+  },
+  "checkboxAccounts": {
+    "title": "Checkbox (фіскальні чеки)",
+    "subtitle": "Каса Checkbox для API ключа Нової Пошти. Один акаунт на ключ.",
+    "empty": "Акаунтів Checkbox ще немає.",
+    "add": "Додати акаунт",
+    "addTitle": "Новий акаунт Checkbox",
+    "editTitle": "Редагування акаунта",
+    "npApiKey": "API ключ Нової Пошти",
+    "licenseKey": "Ліцензійний ключ каси",
+    "licenseKeyLength": "Від 4 до 256 символів",
+    "cashierLogin": "Логін касира",
+    "cashierPassword": "Пароль касира",
+    "taxCode": "Код податку",
+    "taxCodeHint": "8 — без ПДВ",
+    "keepHint": "Залиште порожнім, щоб не змінювати",
+    "active": "Активний",
+    "inactive": "Деактивовано",
+    "deactivate": "Деактивувати",
+    "deactivateTitle": "Деактивувати акаунт Checkbox?",
+    "deactivateConfirm": "Акаунт «{{owner}}» буде деактивовано. Цю дію неможливо скасувати: активувати акаунт знову не можна.",
+    "saved": "Акаунт Checkbox збережено",
+    "loadFailed": "Не вдалося завантажити акаунти Checkbox",
+    "errors": {
+      "checkboxAccountInvalid": "Checkbox не прийняв дані: перевірте ліцензійний ключ, логін і пароль касира.",
+      "checkboxAccountDuplicate": "Для цього API ключа або ліцензійного ключа вже є акаунт.",
+      "checkboxAccountNotFound": "Акаунт не знайдено, оновіть сторінку.",
+      "npApiKeyNotFound": "API ключ Нової Пошти не знайдено.",
+      "checkboxValidationUnavailable": "Checkbox недоступний, спробуйте пізніше.",
+      "unknown": "Не вдалося зберегти акаунт Checkbox."
     }
   }
 }

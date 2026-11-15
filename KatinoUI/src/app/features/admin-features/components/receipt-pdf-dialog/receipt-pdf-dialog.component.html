@@ -1,0 +1,69 @@
+<div mat-dialog-title class="header">
+  <div class="title">{{ kindKey | translate }}</div>
+  <!-- The row's fiscal codes and amount cover all its receipts, so one of several shows only its position -->
+  <div *ngIf="isOneOfSeveral" class="subtitle">
+    {{
+      "orders.receipt.receiptNumberOf"
+        | translate: { number: receiptNumber, total: receiptTotal }
+    }}
+  </div>
+  <div *ngIf="!isOneOfSeveral" class="subtitle">
+    <span *ngIf="receipt.fiscalCode"
+      >{{ "orders.receipt.columns.fiscalCode" | translate }}:
+      {{ receipt.fiscalCode }} •
+    </span>
+    {{ receipt.amount | number: "1.2-2" }} ₴
+  </div>
+  <div *ngIf="receiptUrl" class="link-row">
+    <a
+      class="receipt-link"
+      [href]="receiptUrl"
+      [title]="receiptUrl"
+      target="_blank"
+      rel="noopener"
+    >
+      {{ "orders.receipt.openOnCheckbox" | translate }}
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+    <button
+      mat-icon-button
+      type="button"
+      class="copy-btn"
+      (click)="onCopyLink()"
+      [attr.aria-label]="'orders.receipt.copyLink' | translate"
+      [title]="'orders.receipt.copyLink' | translate"
+    >
+      <mat-icon>{{ isLinkCopied ? "check" : "content_copy" }}</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content class="content">
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <p *ngIf="errorKey" class="error">{{ errorKey | translate }}</p>
+
+  <img
+    *ngFor="let page of pages"
+    class="page"
+    [src]="page"
+    alt="Receipt page"
+  />
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="onDownload()"
+    [disabled]="!blob"
+  >
+    <mat-icon>download</mat-icon>
+    {{ "orders.scanSheetPreview.download" | translate }}
+  </button>
+  <button mat-button mat-dialog-close>
+    {{ "orders.scanSheetPreview.close" | translate }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,73 @@
+<div *ngIf="isLoading && !receipts.length" class="text-muted small">
+  {{ "orders.receipt.loading" | translate }}
+</div>
+
+<p *ngIf="!isLoading && !receipts.length" class="text-muted small mb-0">
+  {{ "orders.receipt.empty" | translate }}
+</p>
+
+<div class="receipts-table-wrapper" *ngIf="receipts.length">
+  <table class="receipts-table">
+    <thead>
+      <tr>
+        <th>{{ "orders.receipt.columns.kind" | translate }}</th>
+        <th>{{ "orders.receipt.columns.status" | translate }}</th>
+        <th class="num">{{ "orders.receipt.columns.amount" | translate }}</th>
+        <th>{{ "orders.receipt.columns.fiscalCode" | translate }}</th>
+        <th>{{ "orders.receipt.columns.ttn" | translate }}</th>
+        <th>{{ "orders.receipt.columns.createdAt" | translate }}</th>
+        <th>{{ "orders.receipt.columns.completedAt" | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let r of receipts">
+        <tr
+          [class.clickable]="getPdfIds(r).length === 1"
+          (click)="onRowClick(r)"
+        >
+          <td>{{ getKindKey(r.kind) | translate }}</td>
+          <td>
+            <span class="badge" [ngClass]="getStatusBadgeClass(r.status)">
+              {{ getStatusKey(r.status) | translate }}
+            </span>
+          </td>
+          <td class="num">{{ r.amount | number: "1.2-2" }}</td>
+          <td class="fiscal-codes">
+            <div *ngFor="let code of getFiscalCodes(r)">{{ code }}</div>
+            <ng-container *ngIf="!getFiscalCodes(r).length">—</ng-container>
+          </td>
+          <td>{{ r.ettnNumber || "—" }}</td>
+          <td>{{ r.createdAt | date: "medium" }}</td>
+          <td>{{ r.completedAt ? (r.completedAt | date: "medium") : "—" }}</td>
+          <td class="pdf-cell">
+            <ng-container *ngIf="getPdfIds(r).length > 1">
+              <button
+                *ngFor="let id of getPdfIds(r); let i = index"
+                mat-stroked-button
+                type="button"
+                class="pdf-btn"
+                (click)="onOpenPdf(r, i, $event)"
+              >
+                {{ "orders.receipt.receiptNumber" | translate: { number: i + 1 } }}
+              </button>
+            </ng-container>
+            <button
+              *ngIf="getPdfIds(r).length === 1"
+              mat-icon-button
+              type="button"
+              [disabled]="downloadingId === r.id"
+              (click)="onDownloadPdf(r, $event)"
+              [matTooltip]="'orders.receipt.downloadPdf' | translate"
+            >
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="r.lastError" class="error-row">
+          <td colspan="8">{{ r.lastError }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

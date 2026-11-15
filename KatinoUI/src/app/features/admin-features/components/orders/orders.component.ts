@@ -46,6 +46,9 @@ import { OrderTagType } from 'src/app/core/enums/order-tag-type';
 import { OrderTag } from 'src/app/core/models/order/order-tag';
 import { OrderTagService } from '../../services/order-tag.service';
 import { TtnStateHelper } from 'src/app/core/helpers/ttn-state.helper';
+import { ReceiptStateHelper } from 'src/app/core/helpers/receipt-state.helper';
+import { ReceiptState } from 'src/app/core/enums/receipt-state';
+import { ConfirmationDialogInfo } from 'src/app/layout/dialogs/models/confirmation-dialog-info';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ScanSheetResult } from 'src/app/core/models/nova-post/scan-sheet-result';
 import {
@@ -62,6 +65,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) private _statusMenuTrigger?: MatMenuTrigger;
   public readonly DeliveryType = DeliveryType;
   public readonly OrderTagType = OrderTagType;
+  public readonly ReceiptState = ReceiptState;
   public readonly ALL_STATUSES_VALUE = DefaultOptions.allSelectionOptionId;
   public readonly ALL_TAGS_VALUE = DefaultOptions.allSelectionOptionId;
   public readonly orderSortOptions: { value: OrderSort; labelKey: string }[] = [
@@ -298,7 +302,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
       'shortDate',
     );
 
-    const dialogRef = this._uiDialogService.openConfirmationDialog({
+    // Only a prepayment covered by a receipt can be returned on delete: the manager says whether it is
+    const askPrepaymentReturned =
+      ReceiptStateHelper.hasReceipt(order.receiptState) &&
+      (order.afterpaymentOnGoodsCost ?? 0) > 0 &&
+      (order.afterpaymentOnGoodsCost ?? 0) < order.cost;
+
+    const dialogInfo: ConfirmationDialogInfo = {
       titleKey: 'dialogs.orderDeletionTitle',
       contentKey: 'dialogs.orderDeletionContent',
       contentParams: {
@@ -309,11 +319,19 @@ export class OrdersComponent implements OnInit, OnDestroy {
       cancelButtonTextKey: 'common.cancel',
       type: 'danger',
       icon: 'delete_outline',
-    });
+      checkboxLabelKey: askPrepaymentReturned
+        ? 'dialogs.orderDeletionPrepaymentReturned'
+        : undefined,
+      checkboxChecked: true,
+    };
+    const dialogRef = this._uiDialogService.openConfirmationDialog(dialogInfo);
 
     dialogRef.afterClosed().subscribe((confirmed: string) => {
       if (confirmed === 'true') {
-        this.onOrderDelete(order);
+        this.onOrderDelete(
+          order,
+          askPrepaymentReturned ? !!dialogInfo.checkboxChecked : undefined,
+        );
       }
     });
   }
@@ -581,6 +599,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     return this.form.get('orderSort');
   }
 
+  get receiptStateControl() {
+    return this.form.get('receiptState');
+  }
+
   get orderTagsControl() {
     return this.form.get('orderTags');
   }
@@ -624,6 +646,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
       search: (this.form.value.orderSearchString || '').trim(),
       orderStatuses: isAll ? [] : (values as OrderStatus[]),
       tagIds: this.getSelectedTagIds(),
+      // Read from the control: form.value is not updated yet while the control's valueChanges runs
+      receiptStates:
+        this.receiptStateControl!.value !== null
+          ? [this.receiptStateControl!.value as ReceiptState]
+          : [],
       createdFrom: toUtcStartOfDay(this.form.value.createdFrom),
       createdTo: toUtcEndOfDay(this.form.value.createdTo),
       sort: sort ?? this.form.value.orderSort ?? OrderSort.byCreationDate,
@@ -649,14 +676,20 @@ export class OrdersComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onOrderDelete(order: Order): void {
+  private onOrderDelete(order: Order, prepaymentReturned?: boolean): void {
     this._orderService
-      .deleteOrder(order.id)
+      .deleteOrder(order.id, prepaymentReturned)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error?.status === 409 && error.error?.ttnInProgress) {
             this._toastr.warning(
               this._translate.instant('toastrs.orderDeleteTtnInProgress'),
+            );
+            return EMPTY;
+          }
+          if (error?.status === 409 && error.error?.receiptAwaitingReturn) {
+            this._toastr.warning(
+              this._translate.instant('toastrs.orderDeleteReceiptsUnfinished'),
             );
             return EMPTY;
           }
@@ -770,6 +803,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       orderSearchString: new FormControl(''),
       orderStatuses: new FormControl([this.ALL_STATUSES_VALUE]),
       orderTags: new FormControl([this.ALL_TAGS_VALUE]),
+      receiptState: new FormControl(null),
       createdFrom: new FormControl(null),
       createdTo: new FormControl(null),
       orderSort: new FormControl(OrderSort.byCreationDate),
@@ -818,6 +852,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
       this.pageIndex = 0;
       this.fetchOrders();
     });
+
+    this.receiptStateControl!.valueChanges.pipe(takeUntil(this._destroy$))
+      .subscribe(() => {
+        this.pageIndex = 0;
+        this.fetchOrders();
+      });
 
     this.orderSort!.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(
       (sort: OrderSort) => {

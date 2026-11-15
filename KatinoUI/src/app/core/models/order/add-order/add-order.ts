@@ -33,4 +33,6 @@ export interface AddOrder {
   orderRecipient: AddOrderRecipient;
   addressInfo: AddOrderAddressInfo | null;
   generalOrderInfo?: string;
+  // Only for not Nova Post retail orders
+  createReceipt: boolean;
 }

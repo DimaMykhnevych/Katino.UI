@@ -515,6 +515,12 @@
                 </div>
               </div>
 
+              <div class="col-12" *ngIf="isCreateReceiptVisible">
+                <mat-checkbox formControlName="createReceipt" color="primary" class="prepayment-checkbox">
+                  {{ "orders.labels.createReceipt" | translate }}
+                </mat-checkbox>
+              </div>
+
               <div class="col-12">
                 <mat-checkbox formControlName="isPrepayment" color="primary" class="prepayment-checkbox">
                   {{ "orders.labels.prepayment" | translate }}

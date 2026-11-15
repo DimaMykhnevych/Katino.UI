@@ -30,6 +30,9 @@ import { CurrentUserService } from 'src/app/core/permission/services';
 import { Roles } from 'src/app/core/models/roles';
 import { UIDialogService } from 'src/app/layout/dialogs/services/ui-dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ReceiptState } from 'src/app/core/enums/receipt-state';
+import { ReceiptStateHelper } from 'src/app/core/helpers/receipt-state.helper';
+import { ReceiptReturnInfo } from 'src/app/core/models/order/receipt/receipt-return-info';
 
 export interface OrderItemRedistributionInfo {
   history: ProductVariantRedistributionHistory;
@@ -52,6 +55,12 @@ export class OrderDetailsDialogComponent implements OnInit {
   public showDetailsClicked: boolean = false;
   public redistributionHistory: ProductVariantRedistributionHistory[] = [];
   public ttnBusy = false;
+  public receiptBusy = false;
+  // The dialog opens with the order the caller had (e.g. from an older list load) and greys it out until the fresh one arrives
+  public isRefreshing = true;
+  // Bumped after every receipt action so the receipts list reloads
+  public receiptsRefreshKey = 0;
+  public receiptsCount = 0;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public order: Order,
@@ -93,6 +102,35 @@ export class OrderDetailsDialogComponent implements OnInit {
     return this.canManageTtn && this.ttnState === TtnState.awaitingPayment;
   }
 
+  public get hasReceipt(): boolean {
+    return ReceiptStateHelper.hasReceipt(this.order.receiptState);
+  }
+
+  public get receiptLabelKey(): string {
+    return ReceiptStateHelper.getLabelKey(this.order.receiptState!);
+  }
+
+  public get receiptBadgeClass(): string {
+    return ReceiptStateHelper.getBadgeClass(this.order.receiptState!);
+  }
+
+  public get isReceiptFailed(): boolean {
+    return this.order.receiptState === ReceiptState.failed;
+  }
+
+  public get canRetryReceipt(): boolean {
+    return (
+      this.canManageTtn && ReceiptStateHelper.canRetry(this.order.receiptState)
+    );
+  }
+
+  public get canReturnReceipt(): boolean {
+    return (
+      this.canManageTtn &&
+      ReceiptStateHelper.isAwaitingReturn(this.order.receiptState)
+    );
+  }
+
   private get canManageTtn(): boolean {
     const role = this._userService.userInfo.role;
     return (
@@ -103,6 +141,8 @@ export class OrderDetailsDialogComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.reloadOrder();
+
     this._orderService
       .getRedistributionHistory(this.order.id)
       .pipe(
@@ -137,6 +177,65 @@ export class OrderDetailsDialogComponent implements OnInit {
         if (confirmed === 'true') {
           this.runTtnAction(this._orderService.createTtn(this.order.id));
         }
+      });
+  }
+
+  public onRetryReceipt(): void {
+    if (this.receiptBusy) return;
+
+    this.receiptBusy = true;
+    this._orderService
+      .retryReceipt(this.order.id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => this.reloadAfterReceiptAction(),
+        error: (err: HttpErrorResponse) => {
+          const code: string | undefined = err?.error?.error;
+          const key =
+            code === 'receiptTaskNotFound' || code === 'notRetryable'
+              ? `orders.receipt.errors.${code}`
+              : 'orders.receipt.errors.retryFailed';
+          if (err?.status === 404 || err?.status === 409) {
+            this._toastr.warning(this._t.instant(key));
+          } else {
+            this._toastr.error(this._t.instant(key));
+          }
+          this.reloadAfterReceiptAction();
+        },
+      });
+  }
+
+  public onReturnReceipt(): void {
+    if (this.receiptBusy) return;
+
+    this.receiptBusy = true;
+    this._orderService
+      .getReceiptReturnInfo(this.order.id)
+      .pipe(take(1))
+      .subscribe({
+        next: (info: ReceiptReturnInfo) => {
+          this.receiptBusy = false;
+          this._dialogService
+            .openReceiptReturnDialog({ orderId: this.order.id, info })
+            .afterClosed()
+            .subscribe((changed) => {
+              if (changed) {
+                this.receiptBusy = true;
+                this.reloadAfterReceiptAction();
+              }
+            });
+        },
+        error: (err: HttpErrorResponse) => {
+          // 404: the order no longer awaits a return
+          this._toastr.warning(
+            this._t.instant(
+              err?.status === 404
+                ? 'orders.receipt.errors.notAwaitingReturn'
+                : 'orders.receipt.errors.returnInfoFailed',
+            ),
+          );
+          this.reloadAfterReceiptAction();
+        },
       });
   }
 
@@ -284,6 +383,11 @@ export class OrderDetailsDialogComponent implements OnInit {
     });
   }
 
+  private reloadAfterReceiptAction(): void {
+    this.receiptsRefreshKey++;
+    this.reloadOrder();
+  }
+
   private reloadOrder(): void {
     this._orderService
       .getOrderById(this.order.id)
@@ -293,6 +397,8 @@ export class OrderDetailsDialogComponent implements OnInit {
       )
       .subscribe((fresh) => {
         this.ttnBusy = false;
+        this.receiptBusy = false;
+        this.isRefreshing = false;
         if (fresh) {
           Object.assign(this.order, fresh);
         }

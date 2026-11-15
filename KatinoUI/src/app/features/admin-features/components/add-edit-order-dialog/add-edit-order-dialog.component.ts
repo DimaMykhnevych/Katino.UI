@@ -405,6 +405,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
           : undefined,
 
       customTags: [...this.customTagValues],
+      createReceipt:
+        this.isCreateReceiptVisible && this.createReceipt?.value === true,
     };
 
     return model;
@@ -747,6 +749,7 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
         this.data?.order?.description ?? this.DEFAULT_DESCRIPTION,
       ),
       comment: new FormControl(this.data?.order?.comment ?? ''),
+      createReceipt: new FormControl(false),
       generalOrderInfo: new FormControl(
         this.data?.order?.generalOrderInfo ?? '',
         isNotNp ? [Validators.required] : [],
@@ -969,6 +972,19 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   get cost() {
     return this.form.get('cost');
   }
+  get createReceipt() {
+    return this.form.get('createReceipt');
+  }
+
+  // Nova Post retail orders always get a receipt, drop and wholesale never do: only this case is a choice
+  get isCreateReceiptVisible(): boolean {
+    return (
+      !!this.data?.isAdding &&
+      this.saleType?.value === SaleType.retail &&
+      this.deliveryType?.value === DeliveryType.notNovaPost
+    );
+  }
+
   get isPrepayment() {
     return this.form.get('isPrepayment');
   }

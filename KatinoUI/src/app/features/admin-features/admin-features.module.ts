@@ -18,6 +18,10 @@ import { DialogsModule } from 'src/app/layout/dialogs/dialogs.module';
 import { OrdersComponent } from './components/orders/orders.component';
 import { CrmSettingsComponent } from './components/crm-settings/crm-settings.component';
 import { TelegramSettingsComponent } from './components/crm-settings/telegram-settings/telegram-settings.component';
+import { CheckboxAccountsComponent } from './components/crm-settings/checkbox-accounts/checkbox-accounts.component';
+import { ReceiptReturnDialogComponent } from './components/receipt-return-dialog/receipt-return-dialog.component';
+import { ReceiptPdfDialogComponent } from './components/receipt-pdf-dialog/receipt-pdf-dialog.component';
+import { OrderReceiptsComponent } from './components/order-details-dialog/order-receipts/order-receipts.component';
 import { CommonComponentsModule } from 'src/app/features/common-components/common-components.module';
 import { NpSyncHistoryComponent } from './components/np-sync-history/np-sync-history.component';
 import { OrderDetailsDialogComponent } from './components/order-details-dialog/order-details-dialog.component';
@@ -50,6 +54,7 @@ import { ScanSheetPreviewDialogComponent } from './components/scan-sheet-preview
     OrdersComponent,
     CrmSettingsComponent,
     TelegramSettingsComponent,
+    CheckboxAccountsComponent,
     NpSyncHistoryComponent,
     OrderDetailsDialogComponent,
     AddEditOrderDialogComponent,
@@ -67,6 +72,9 @@ import { ScanSheetPreviewDialogComponent } from './components/scan-sheet-preview
     DiscountItemComponent,
     AddEditDiscountDialogComponent,
     ScanSheetPreviewDialogComponent,
+    ReceiptReturnDialogComponent,
+    ReceiptPdfDialogComponent,
+    OrderReceiptsComponent,
   ],
   imports: [
     CommonModule,
