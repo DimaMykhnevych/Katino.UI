@@ -100,7 +100,8 @@ export class AddEditOrderDialogComponent implements OnInit, OnDestroy {
   > = {
     2: { l: 33, w: 23, h: 10 },
     4: { l: 40, w: 20, h: 20 },
-    10: { l: 50, w: 50, h: 16 },
+    // Same volumetric weight as 50x50x16 (10 kg), but every side <= 40 cm so NP accepts it for postomats too
+    10: { l: 40, w: 40, h: 25 },
   };
 
   constructor(
